@@ -1,0 +1,22 @@
+
+body{
+    margin: 0;
+    padding:0 40px;
+    font: size 16px;
+}
+
+
+h1{
+    font-size: 3em;
+}
+
+a{
+    text-decoration: none;
+    color: rgb(41, 171, 226);
+    transition: color 0.3s ease, opacity 0.3s ease; 
+}
+
+a:hover{
+    color: rgb(41, 171, 226);
+    opacity: 0.75;
+}
