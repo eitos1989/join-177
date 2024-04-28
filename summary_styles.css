@@ -1,0 +1,206 @@
+body {
+  margin: 0;
+  background-color: rgb(246, 247, 248);
+  box-sizing: border-box;
+}
+
+.contentwrapper {
+  max-width: 1440px;
+}
+
+.headline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 650px;
+  padding: 0 80px;
+}
+
+.blue_seperator {
+  background-color: rgb(41, 171, 226);
+  height: 72px;
+  width: 4px;
+}
+
+h1 {
+  font-size: 72px;
+}
+
+h2 {
+  font-size: 28px;
+  color: rgb(42, 54, 71);
+}
+
+.upper_card {
+  background-color: white;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-radius: 24px;
+  width: 25%;
+  padding: 40px;
+  border: 1px solid rgb(237, 238, 239);
+  transition: transform 125ms;
+}
+
+.flex_collum {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.upper_card h1 {
+  margin: 0;
+}
+
+.upper_card h3 {
+  margin: 0;
+}
+
+.upper_card img {
+  width: 64px;
+  height: 64px;
+}
+
+.upper_card:hover {
+    cursor: pointer;
+    background-color: rgb(42, 54, 71);
+    transform: scale(1.05);
+    color: white;
+}
+
+
+.flex_space {
+  display: flex;
+  justify-content: space-between;
+}
+
+.middle_card {
+  background-color: white;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  border-radius: 24px;
+  width: auto;
+  margin-top: 40px;
+  padding: 40px;
+  margin-bottom: 40px;
+  border: 1px solid rgb(237, 238, 239);
+}
+.grey_seperator {
+  background-color: rgb(209, 209, 209);
+  width: 4px;
+  height: 150px;
+  border-radius: 2px;
+}
+.middle_card img {
+  width: 80px;
+  height: 80px;
+}
+.left_section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.middle_card h1 {
+  margin: 0;
+}
+
+.middle_card h3 {
+  margin: 0;
+}
+
+.middle_card b {
+  font-size: 24px;
+  color: rgb(42, 54, 71);
+}
+
+.middle_card:hover {
+    cursor: pointer;
+    background-color: rgb(42, 54, 71);
+    transform: scale(1.05);
+    color: white;
+}
+
+.middle_card:hover b {
+    color: white;
+}
+
+.lower_card {
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 24px;
+  width: auto;
+  padding: 40px 40px;
+  border: 1px solid rgb(237, 238, 239);
+  box-shadow: 0 2px 4px 0 rgba(237, 238, 239, 0.2);
+  text-align: center;
+}
+
+.lower_card h1 {
+  margin: 0;
+}
+
+.lower_card h3 {
+  margin: 0;
+}
+
+.lower_card:hover {
+    cursor: pointer;
+    background-color: rgb(42, 54, 71);
+    transform: scale(1.05);
+    color: white;
+}
+
+#gretting {
+  font-size: 40px;
+}
+
+.mid_flex {
+  display: flex;
+  justify-content: space-between;
+}
+
+.greeting {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.main_container {
+  display: flex;
+  padding: 0 80px;
+  gap: 20px;
+}
+
+.content_container {
+  width: 50%;
+}
+
+.greeting {
+  width: 25%; /* Adjust as needed */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Add your greeting styles here */
+}
+
+.mid_flex {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; /* Add this to align the middle card and the greeting at the top */
+}
+
+#greet {
+  font-size: 48px;
+}
+
+#username {
+  font-size: 64px;
+  color: rgb(41, 171, 226);
+}
