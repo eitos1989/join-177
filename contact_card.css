@@ -1,0 +1,212 @@
+.card_template {
+  display: flex;
+  flex-direction: row;
+  border-radius: 20px;
+  background-color: white;
+  height: 55vh;
+  width: 80%;
+}
+.left_collumn {
+  display: flex;
+  flex-direction: column;
+  color: white;
+  background-color: rgb(42, 54, 71);
+  padding: 32px;
+  border-radius: 20px 0 0 20px;
+  justify-content: center;
+  width: 35%;
+}
+.left_collumn img {
+  height: 88px;
+  width: 56px;
+  margin-top: -50px;
+}
+
+.left_collumn h1 {
+  margin: 0;
+  font-size: 48px;
+}
+.blue_seperator_card {
+  width: 60px;
+  height: 2px;
+  background-color: rgb(41, 171, 226);
+  border-radius: 1px;
+}
+
+.right_collumn {
+  display: flex;
+  justify-content: space-between;
+}
+
+.contact_details_collumn {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  flex: 5; /* Erhöhen Sie die Breite der .contact_details_collumn */
+}
+
+.flex_row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 95%;
+}
+.contact_details_collumn input {
+  font-size: 16px;
+  padding: 10px;
+  border: 1px solid rgb(209, 209, 209);
+  border-radius: 8px;
+  margin: 5px 0;
+  width: 80%;
+  box-sizing: border-box;
+  transition: border-color 0.125s ease;
+}
+
+.contact_details_collumn input:focus {
+  border-color: #007bff;
+}
+
+form {
+  width: 100%;
+}
+
+.button_row {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+}
+
+.create__contact_but {
+  background-color: rgb(42, 54, 71);
+  color: white;
+  border-radius: 6px;
+  border: none;
+  padding: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+}
+
+.cancel_but {
+  background-color: white;
+  color: rgb(42, 54, 71);
+  border: solid 1px rgb(42, 54, 71);
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+}
+
+.create__contact_but:hover {
+  background-color: rgb(41, 171, 226);
+}
+
+.cancel_but:hover {
+  border: solid 1px rgb(41, 171, 226);
+  color: rgb(41, 171, 226);
+}
+
+.cancel_but:hover svg path {
+  stroke: rgb(41, 171, 226);
+}
+
+.empty_user_img {
+    margin: 0px 40px;
+    width: 120px;
+    height: 120px;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+
+.card_template {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 20;
+  animation: slide-in 125ms forwards;
+}
+
+.input-with-image {
+  position: relative;
+}
+
+.input-with-image input {
+  width: 80%;
+  padding-right: 24px; /* Make room for the image */
+  position: relative;
+  z-index: 1;
+}
+
+.input-with-image::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: calc(20% + 24px); /* 20% ist der verbleibende Platz, 24px ist die Breite des Bildes */
+  width: 24px;
+  height: 24px;
+  background: url('./img/person_input.svg') no-repeat;
+  background-size: contain;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+.input-with-image_1 {
+  position: relative;
+}
+
+.input-with-image_1 input {
+  width: 80%;
+  padding-right: 24px; /* Make room for the image */
+  position: relative;
+  z-index: 1;
+}
+
+.input-with-image_1::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: calc(20% + 24px); /* 20% ist der verbleibende Platz, 24px ist die Breite des Bildes */
+  width: 24px;
+  height: 24px;
+  background: url('./img/mail.svg') no-repeat;
+  background-size: contain;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+.input-with-image_2 {
+  position: relative;
+}
+
+.input-with-image_2 input {
+  width: 80%;
+  padding-right: 24px; /* Make room for the image */
+  position: relative;
+  z-index: 1;
+}
+
+.input-with-image_2::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: calc(20% + 24px); /* 20% ist der verbleibende Platz, 24px ist die Breite des Bildes */
+  width: 24px;
+  height: 24px;
+  background: url('./img/call.svg') no-repeat;
+  background-size: contain;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+
