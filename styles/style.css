@@ -1,0 +1,65 @@
+@import url("font.css");
+
+:root {
+    --font-size-body: 16px;
+    --font-size-t7: 12px;
+    --font-size-t6: 20px;
+    --font-size-t5: 27px;
+    --font-size-t2: 47px;
+    --font-size-t1: 61px;
+    --color-icon: #a8a8a8;
+    --color-style: #d1d1d1;
+    --color-boton-gradient: #f5f5f5;
+    --color-light-blue: #29abe2;
+    --color-main: #2a3647;
+    --color-background: #F6F7F8;
+    --font-width-bold: 700;
+  }
+
+
+.body{
+    background-color: var(--color-background);
+    color: var(--color-main);
+    font-size: var(--font-size-body);
+}
+
+.loginContainer {
+    width: 650px;
+    height: 500px;
+    border-radius: 30px;
+    padding: 48px, 115px, 48px, 115px;
+    background-color: #fff;
+    box-shadow: 1px 1px 1px 1px rgba(255, 255, 255, .4);;
+}
+
+.loginHeadline {
+    font-size: var(--font-size-t1);
+    font-weight: var(--font-width-bold);
+    text-align: center;
+}
+
+.text-big {
+    size: var(--font-size-t6);
+}
+
+.btn-dark{
+    color: #fff;
+    background-color: #2A3647;
+    font-weight: 700;
+    size: 16px;
+    padding: 15px, 16px, 15px, 16px;
+    height: 50px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.btn-light{
+    border: 1px solid #2A3647;
+    background-color: #fff;
+    font-weight: 700;
+    size: 16px;
+    padding: 15px, 16px, 15px, 16px;
+    height: 50px;
+    border-radius: 8px;
+    text-align: center;
+}
