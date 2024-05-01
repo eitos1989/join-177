@@ -14,22 +14,39 @@
     --color-main: #2a3647;
     --color-background: #F6F7F8;
     --font-width-bold: 700;
-  }
+}
 
 
-.body{
+body{
     background-color: var(--color-background);
     color: var(--color-main);
     font-size: var(--font-size-body);
+    margin: 0px;
+    padding: 0px;
+    font-family: 'Inter', sans-serif;
+}
+
+.headerLine {
+    display: flex;
+    justify-content: flex-end;
+    text-align: center;
+    align-items: center;
+}
+
+.formCenter {
+    display: flex;
+    flex-direction: column;
 }
 
 .loginContainer {
-    width: 650px;
-    height: 500px;
     border-radius: 30px;
-    padding: 48px, 115px, 48px, 115px;
+    padding: 48px 115px 48px 115px;
     background-color: #fff;
-    box-shadow: 1px 1px 1px 1px rgba(255, 255, 255, .4);;
+    box-shadow: 5px 5px 5px 5px rgba(255, 255, 255, .4);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
 .loginHeadline {
@@ -39,16 +56,30 @@
 }
 
 .text-big {
-    size: var(--font-size-t6);
+    font-size: var(--font-size-t1);
+}
+
+.text-middle {
+    font-size: var(--font-size-t6);
+}
+
+.mb-32 {
+    margin-bottom: 32px;
+}
+
+.mb-20 {
+    margin-bottom: 20px;
+}
+
+.mr-35 {
+    margin-right: 35px;
 }
 
 .btn-dark{
     color: #fff;
     background-color: #2A3647;
     font-weight: 700;
-    size: 16px;
-    padding: 15px, 16px, 15px, 16px;
-    height: 50px;
+    padding: 15px 16px 15px 16px;
     border-radius: 8px;
     text-align: center;
 }
@@ -58,8 +89,53 @@
     background-color: #fff;
     font-weight: 700;
     size: 16px;
-    padding: 15px, 16px, 15px, 16px;
-    height: 50px;
+    padding: 15px 16px 15px 16px;
     border-radius: 8px;
     text-align: center;
 }
+
+.loginContainer input {
+    border: 1px solid var(--color-style);
+    color: var(--color-style);
+    border-radius: 10px;
+    padding: 12px 21px 12px 21px;
+    font-size: var(--font-size-t6);
+}
+
+.mail {
+    background-image: url('../img/mail.svg');
+    background-position: right center; 
+    background-repeat: no-repeat;
+}
+
+.lock{
+    background-image: url('../img/lock.svg');
+    background-position: right center; 
+    background-repeat: no-repeat;
+}
+
+.mainWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+}
+
+.footer{
+    color: var(--color-icon);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.footer a {
+    padding: 8px;
+    margin: 8px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+
+
+
+  
