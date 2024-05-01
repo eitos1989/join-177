@@ -152,7 +152,7 @@ form {
   content: '';
   position: absolute;
   top: 50%;
-  right: calc(20% + 24px); /* 20% ist der verbleibende Platz, 24px ist die Breite des Bildes */
+  right: calc(20% + 8px); /* 20% ist der verbleibende Platz, 24px ist die Breite des Bildes */
   width: 24px;
   height: 24px;
   background: url('./img/person_input.svg') no-repeat;
@@ -176,7 +176,7 @@ form {
   content: '';
   position: absolute;
   top: 50%;
-  right: calc(20% + 24px); /* 20% ist der verbleibende Platz, 24px ist die Breite des Bildes */
+  right: calc(20% + 8px); /* 20% ist der verbleibende Platz, 24px ist die Breite des Bildes */
   width: 24px;
   height: 24px;
   background: url('./img/mail.svg') no-repeat;
@@ -200,7 +200,7 @@ form {
   content: '';
   position: absolute;
   top: 50%;
-  right: calc(20% + 24px); /* 20% ist der verbleibende Platz, 24px ist die Breite des Bildes */
+  right: calc(20% + 8px); /* 20% ist der verbleibende Platz, 24px ist die Breite des Bildes */
   width: 24px;
   height: 24px;
   background: url('./img/call.svg') no-repeat;

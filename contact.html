@@ -6,9 +6,14 @@
     <title>Contacts</title>
     <link rel="stylesheet" href="contact_styles.css" />
     <link rel="stylesheet" href="./fonts/inter_font.css" />
-    <link rel="stylesheet" href="contact_card.css">
+    <link rel="stylesheet" href="contact_card.css" />
+    <link
+      rel="shortcut icon"
+      href="./img/favicon_join.svg"
+      type="image/x-icon"
+    />
   </head>
-  <body>
+  <body onload="renderContactsInSidePanel()">
     <div class="contact_wrapper">
       <div class="contact_sidebar">
         <button class="add_new_contact" onclick="createCard()">
@@ -16,17 +21,9 @@
           <img src="./img/person_add_button.svg" alt="add_contact_img" />
         </button>
 
-        <div class="letter"><h2>A</h2></div>
-        <div class="grey_seperator"></div>
-        <div class="contact">
-          <div class="profil_badge">AM</div>
-          <div class="flex_col">
-            <h2>John Doe</h2>
-            <a href="mailto:john.doe@example.com">john.doe@example.com</a>
-          </div>
+        <div class="contact_container">
+          <!-- Contacts will be rendered here -->
         </div>
-        <div class="letter"><h2>B</h2></div>
-        <div class="grey_seperator"></div>
       </div>
 
       <div class="contact_headline">
@@ -36,21 +33,7 @@
       </div>
     </div>
     <div class="contact_content">
-      <div class="user_row">
-        <div class="profil_badge_big"><h1>AM</h1></div>
-        <div class="flex_col">
-          <h2>John Doe</h2>
-          <div class="flex_row">
-            <img src="./img/edit_pen_white.svg" alt="edit_pen_img">
-            <img src="./img/delete_basket_white.svg" alt="edit_pen_img">
-          </div>
-        </div>
-      </div>
-    <h3 class="Contact_information_headline">Contact Information</h3>
-    <h4 class="email_and_number">Email</h4>
-    <a href="mailto:john.doe@example.com">john.doe@example.com</a>
-    <h4 class="email_and_number">Phone</h4>
-    <a href="tel:+1234567890">+49 1111 111 11 1</a>
+
     </div>
 
     <script src="contact_script.js"></script>
