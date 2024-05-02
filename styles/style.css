@@ -189,6 +189,11 @@ a {
     border: 3px solid var(--color-light-blue);
 }
 
+.btn-disabled {
+    cursor: inherit;
+    opacity: 50%;
+}
+
 
 
 

@@ -20,18 +20,18 @@
                 </a>
             </div>
             <div class="loginHeadline mb-32">Sign up</div>
-            <form action="#; false;">
+            <form action="#; false;" validate>
                 <div class="formCenter">
-                    <input type="name" placeholder="name" required class="mb-32 person">
-                    <input type="email" placeholder="Email" required class="mb-32 mail" autocomplete="username">
-                    <input type="password" id="registerPassword" placeholder="Password" autocomplete="new-password" required class="mb-32 lock" onchange="validatePassword()">
-                    <input type="password" id="registerConfirmPassword" placeholder="Confirm Password" autocomplete="new-password" required class="mb-32 lock" onkeyup="validatePassword()">
+                    <input type="name" id="registerName" placeholder="name" required minlength="3" class="mb-32 person">
+                    <input type="email" id="registerEmail" placeholder="Email" required class="mb-32 mail" autocomplete="username">
+                    <input type="password" id="registerPassword" minlength="8" placeholder="Password" autocomplete="new-password" required class="mb-32 lock" onchange="validatePassword()">
+                    <input type="password" id="registerConfirmPassword" minlength="8" placeholder="Confirm Password" autocomplete="new-password" required class="mb-32 lock" onkeyup="validatePassword()">
                     <label class="mb-20 dFlexJC">
-                        <input type="checkbox" required> I accept the <a href="privacy_policy.html" target="_blank"> privacy policy</a>
+                        <input type="checkbox" id="accept" required > I accept the <a href="privacy_policy.html" target="_blank"> privacy policy</a>
                     </label>
                 </div>
                 <div class="dFlexJC">
-                    <button type="submit" class="btn-dark text-middle mr-35">Sign up</button>
+                    <button type="submit" id="registerSubmit" disabled=true class="btn-dark text-middle btn-disabled">Sign up</button>
                 </div>
             </form>
             <div class="error-msg" id="error-msg"></div>
