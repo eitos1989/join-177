@@ -68,3 +68,16 @@
     cursor: pointer;
     color: rgb(1, 124, 237);
 }
+
+.container {
+    display: flex;
+    height: 100vh;
+}
+
+.completeRightContainer {
+    flex: 84%;
+}
+
+.sidepanelContainer{
+    flex: 16%;
+}
