@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Summary</title>
     <link rel="stylesheet" href="summary_styles.css" />
+    <link rel="stylesheet" href="sidepanel.css">
     <link rel="icon" href="img/favicon_join.svg" type="image/x-icon" />
   </head>
   <body onload="includeSidepanelHTML()">
@@ -35,7 +36,6 @@
             </div>
           </div> 
         </div>
-
 <div class="middle_card">
             <div class="left_section">
               <img src="./img/urgency_summary.svg" alt="urgency_symbol" />
@@ -45,52 +45,43 @@
               </div>
             </div>
             <div class="grey_seperator"></div>
-
             <div class="flex_collumn">
-              <h1>1</h1>
-              <h3>Urgent</h3>
+              <b>April 26, 2024</b>
+              <h3>Upcoming Deadline</h3>
             </div>
           </div>
-          <div class="grey_seperator"></div>
-          <div class="flex_collumn">
-            <b>April 26, 2024</b>
-            <h3>Upcoming Deadline</h3>
-          </div>
-        </div>
 
 
-      <div class="flex_space">
-        <div class="lower_card">
-          <div class="flex_collumn">
-            <h1>5</h1>
-            <h3>Tasks in Board</h3>
+        <div class="flex_space">
+          <div class="lower_card">
+            <div class="flex_collumn">
+              <h1>5</h1>
+              <h3>Tasks in Board</h3>
+            </div>
           </div>
-        </div>
-        <div class="lower_card">
-          <div class="flex_collumn">
-            <h1>2</h1>
-            <h3>Tasks in Progress</h3>
+          <div class="lower_card">
+            <div class="flex_collumn">
+              <h1>2</h1>
+              <h3>Tasks in Progress</h3>
+            </div>
           </div>
-        </div>
-        <div class="lower_card">
-          <div class="flex_collumn">
-            <h1>2</h1>
-            <h3>Awaiting Feedback</h3>
+          <div class="lower_card">
+            <div class="flex_collumn">
+              <h1>2</h1>
+              <h3>Awaiting Feedback</h3>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-
-
-    <div class="greeting"> <!-- Moved this outside of the content_container -->
-      <div class="flex_collumn">
-        <div id="greet">Good Morning,</div>
-        <div id="username">Sofia Müller</div>
+      <div class="greeting"> <!-- Moved this outside of the content_container -->
+        <div class="flex_collumn">
+          <div id="greet">Good Morning,</div>
+          <div id="username">Sofia Müller</div>
+        </div>
       </div>
     </div>
   </div>
-</div>
-  <script src="summary_script.js"></script>
-  <script src="includeSidepanel.js"></script>
-</body>
+    <script src="summary_script.js"></script>
+    <script src="includeSidepanel.js"></script>
+  </body>
 </html>
