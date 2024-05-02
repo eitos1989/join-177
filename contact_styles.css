@@ -8,7 +8,7 @@ body {
   left: 0;
   top: 0;
   height: 100%;
-  width: 250px; /* Adjust as needed */
+  width: 410px; /* Adjust as needed */
   background-color: rgb(255, 255, 255); /* Adjust as needed */
   padding: 20px;
   display: flex;
@@ -21,11 +21,12 @@ body {
   overflow-y: auto; /*scrollbar?*/
 }
 .contact_sidebar::-webkit-scrollbar {
-  width: 10px; /* Adjust as needed */
+  width: 8px; /* Adjust as needed */
+
 }
 
 .contact_sidebar::-webkit-scrollbar-track {
-  background: #f1f1f1; /* Adjust as needed */
+  background: #eeeeee; /* Adjust as needed */
 }
 
 .contact_sidebar::-webkit-scrollbar-thumb {
@@ -54,6 +55,10 @@ body {
   font-weight: 700;
 }
 
+.add_new_contact:hover {
+  background-color: rgb(41, 171, 226);;
+}
+
 .letter {
   font-size: 24px;
   font-weight: 600;
@@ -75,7 +80,20 @@ body {
 .contact {
   display: flex;
   flex-direction: row;
-  gap: 40px;
+  align-items: center;
+  gap: 24px;
+  margin-top: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  padding: 16px 20px;
+  border-radius: 10px;
+  width: 350px;
+}
+
+.contact:hover {
+  background-color: #f5f5f5;
+
+
 }
 
 .profil_badge {
@@ -111,29 +129,35 @@ body {
   margin-bottom: 0.5em;
   font-size: 1em;
   font-weight: 450;
+  padding-left: 20px;
 }
 
 .blue_seperator {
   height: 100%;
-  width: 2px;
-  background-color: rgb(0, 124, 238);
+  width: 4px;
+  background-color: rgb(41, 171, 226);
+  border-radius: 2px;
 }
 
 .contact_headline {
   margin-top: 72px;
   flex-grow: 1;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 24px;
   align-items: center;
-  max-width: calc(100% - 290px);
-  margin-left: 290px;
+  max-width: calc(100% - 450px);
+  margin-left: 490px;
 }
 
 .contact_headline h1 {
   margin: 0;
-  font-size: 2em;
+  font-size: 3.5em;
   font-weight: 900;
+
+  text-shadow: 1px 0 #000000;
+  letter-spacing: 1px;
+  font-weight: bold;
 }
 
 .contact_headline h2 {
@@ -144,7 +168,7 @@ body {
 }
 
 .contact_content {
-  margin-left: 290px;
+  margin-left: 450px;
   display: flex;
   flex-direction: column;
   padding: 40px;
@@ -186,22 +210,23 @@ body {
 .flex_row h3 {
   margin: 0;
   font-size: 20px;
-  color:rgb(42, 54, 71);
+  color: rgb(42, 54, 71);
   font-weight: 500;
   margin-left: -12px;
 }
 
-.Contact_information_headline{
-  margin: 2em 0 ;
+.Contact_information_headline {
+  margin: 2em 0;
+  font-weight: 400;
 }
 
-.email_and_number{
+.email_and_number {
   font-weight: 900;
   margin: 1em 0;
   margin-bottom: 10px;
 }
 
-a{
+a {
   text-decoration: none;
   color: rgb(0, 124, 238);
   margin: 0;
@@ -224,4 +249,22 @@ a{
   }
 }
 
-/* contact_card styles*/
+/* Add this to define the slide-out animation */
+@keyframes slide-out {
+  from {
+    transform: translate(-50%, -50%);
+  }
+  to {
+    transform: translate(100%, -50%);
+  }
+}
+
+/* Add this to apply the slide-out animation when the card is closing */
+.card_template.slide-out {
+  animation: slide-out 125ms forwards;
+}
+
+.active {
+  background-color: rgb(42, 54, 71);
+  color: white;
+}
