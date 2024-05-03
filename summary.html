@@ -4,14 +4,16 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Summary</title>
-    <link rel="stylesheet" href="summary_styles.css" />
-    <link rel="stylesheet" href="sidepanel.css">
+    <link rel="stylesheet" href="styles/style.css" />
+    <!-- <link rel="stylesheet" href="sidepanel.css"> -->
     <link rel="icon" href="img/favicon_join.svg" type="image/x-icon" />
   </head>
   <body onload="includeSidepanelHTML()">
     <div class="container">
       <div class="sidepanelContainer" w3-include-html="./sidepanel.html"></div>
+      
       <div class="completeRightContainer">
+        <div class="headerContainer" w3-include-html="./header.html"></div>
         <div class="headline">
           <h1>Join 360</h1>
           <div class="blue_seperator"></div>

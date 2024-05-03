@@ -1,4 +1,11 @@
 @import url("font.css");
+@import url("../contact_card.css");
+@import url("../contact_styles.css");
+@import url("../legal_notice.css");
+@import url("../privacy_policy.css");
+@import url("../summary_styles.css");
+@import url("../sidepanel.css");
+@import url("../header.css");
 
 :root {
     --font-size-body: 16px;
@@ -23,7 +30,7 @@ body{
     margin: 0px;
     padding: 0px;
     font-family: 'Inter', sans-serif;
-    height: 100vh;
+    /* height: 100vh; */
 }
 
 .headerLine {
@@ -107,6 +114,19 @@ body{
     border-radius: 8px;
     text-align: center;
     cursor: pointer;
+}
+
+#login-img {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: #ffffff;
+    opacity: 1;
+    animation: background-switch 1s ease forwards;
+    animation-delay: 0.5s;
+    z-index: 100;
 }
 
 .btn-dark a {
