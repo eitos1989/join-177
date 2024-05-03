@@ -1,5 +1,4 @@
 .header {
-    width: 100%-160px;
     height: 100px;
     display: flex;
     align-items: center;
@@ -23,4 +22,9 @@
     justify-content: center;
     font-size: var(--font-size-t6);
     color: var(--color-light-blue);
+}
+
+.user_badge:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    cursor: pointer;
 }
