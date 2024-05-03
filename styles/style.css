@@ -30,7 +30,7 @@ body{
     margin: 0px;
     padding: 0px;
     font-family: 'Inter', sans-serif;
-    height: 100vh;
+    /* height: 100vh; */
 }
 
 .headerLine {
