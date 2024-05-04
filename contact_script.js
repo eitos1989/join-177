@@ -48,7 +48,7 @@ let contacts = [
   {
     name: "Helen Johnson",
     email: "helen.johnson@example.com",
-    phone: "222-333-4444",
+    phone: "222-333-4444",   
   },
 ];
 
@@ -63,7 +63,7 @@ function createCardHTML() {
     </div>
     <div class="flex_row">
       <img class="empty_user_img" src="./img/empty_user_img.svg" alt="empty_profile picture" />
-      <form class="contact_details_collumn">
+      <form class="contact_details_collumn" onsubmit="saveContact(event)">
       <div class="input-with-image">
         <input type="text" id="name" name="name" placeholder="Name" autocomplete="name" required />
       </div>
@@ -104,14 +104,8 @@ function createCardElement() {
   card.className = "card_template";
   card.innerHTML = createCardHTML();
   document.body.appendChild(card);
-
-  let form = document.querySelector(".contact_details_collumn");
-  let createContactButton = form.querySelector(".create__contact_but");
-  createContactButton.addEventListener("click", validateAndSaveContact);
-
   return card;
 }
-
 //slide out animation für card
 function addSlideOutAnimation(card, overlay) {
   overlay.addEventListener("click", function () {
@@ -128,21 +122,6 @@ function createCard() {
   let overlay = createOverlay();
   let card = createCardElement();
   addSlideOutAnimation(card, overlay);
-}
-
-//funktion um den User input eines Forms in das array contacts zu pushen und anschließend in dem sidepanel anzuzeigen
-function validateAndSaveContact(event) {
-  event.preventDefault();
-
-  let form = event.target.form;
-  console.log(form);
-  let name = form.elements["name"].value;
-  let email = form.elements["email"].value;
-  let phone = form.elements["phone"].value;
-
-  contacts.push({ name, email, phone });
-
-  renderContactsInSidePanel();
 }
 
 //Funktion um die Contact Details zu erstellen und die Namen und Emails anzuzeigen
@@ -265,23 +244,23 @@ function renderContactsInSidePanel() {
     console.error("Contact container not found");
     return;
   }
-
   clearSidePanel();
-
   // Sort contacts alphabetically by name
   contacts.sort((a, b) => a.name.localeCompare(b.name));
-
   let currentLetter = "";
   for (let contact of contacts) {
-    let firstLetterOfName = contact.name[0].toUpperCase();
-    if (firstLetterOfName !== currentLetter) {
-      currentLetter = firstLetterOfName;
-      createAndAppendLetterAndSeparator(contactContainer, contact.name);
+    if (contact.name && contact.name.includes(" ")) {
+      let firstLetterOfName = contact.name[0].toUpperCase();
+      if (firstLetterOfName !== currentLetter) {
+        currentLetter = firstLetterOfName;
+        createAndAppendLetterAndSeparator(contactContainer, contact.name);
+      }
     }
-
     createAndAppendContact(contactContainer, contact);
   }
 }
+
+
 //generiert zufällige Farbe und returnt sie
 function getRandomColor() {
   let r = Math.floor(Math.random() * 256);
@@ -324,3 +303,60 @@ addHoverEffect(
   "./img/delete_basket_blue.svg",
   "./img/delete_basket_white.svg"
 );
+
+//Kommunikation mit Backend
+const BASE_URL = "https://contact-storage-f1196-default-rtdb.europe-west1.firebasedatabase.app/"
+
+async function saveContact(event) {
+  event.preventDefault();
+  let name = document.getElementById('name').value;
+  let email = document.getElementById('email').value;
+  let phone = document.getElementById('phone').value;
+
+  let data = {
+    name: name,
+    email: email,
+    phone: phone
+  };
+
+  // Update local contacts array
+  contacts.push(data);
+
+  // Push the entire contacts array to the database
+  await pushContactsToDatabase();
+
+  // Re-render contacts
+  renderContactsInSidePanel();
+}
+
+async function postData(path = "", data = {}) {
+  let response = await fetch(BASE_URL + path, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  });
+  let responseToJson = await response.json();
+  return responseToJson;
+}
+
+async function getContacts() {
+    let response = await fetch(BASE_URL + "/contacts.json");
+    let responseToJson = await response.json();
+    console.log(responseToJson);
+    return responseToJson;
+}
+
+async function pushContactsToDatabase() {
+  let response = await fetch(BASE_URL + "/contacts.json", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(contacts),
+  });
+  let responseToJson = await response.json();
+  return responseToJson;
+}
+
