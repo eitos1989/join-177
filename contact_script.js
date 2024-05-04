@@ -75,15 +75,15 @@ function createCardHTML() {
         <input type="tel" id="phone" name="phone" placeholder="Phone" autocomplete="tel" required />
       </div>
       <div class="button_row">
-        <button class="cancel_but">
-          cancel
-          <svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M7.001 6.50008L12.244 11.7431M1.758 11.7431L7.001 6.50008L1.758 11.7431ZM12.244 1.25708L7 6.50008L12.244 1.25708ZM7 6.50008L1.758 1.25708L7 6.50008Z" stroke="#2A3647" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-          </svg>
-        </button>
+      <button type="button" class="cancel_but" onclick="closeCard()">
+      cancel
+      <svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7.001 6.50008L12.244 11.7431M1.758 11.7431L7.001 6.50008L1.758 11.7431ZM12.244 1.25708L7 6.50008L12.244 1.25708ZM7 6.50008L1.758 1.25708L7 6.50008Z" stroke="#2A3647" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+      </svg>
+    </button>
         <button class="create__contact_but" type="submit">
           Create contact
-          <img src="./img/create_contact_check.svg" alt="cancel_button_img" />
+          <img src="./img/create_contact_check.svg" alt="Save_button_img" />
         </button>
       </div>
     </form>
@@ -169,7 +169,7 @@ function renderContactDetails(contact) {
       <div class="flex_col">
         <h2>${contact.name}</h2>
         <div class="flex_row">
-          <img src="./img/edit_pen_white.svg" alt="edit_pen_img" />
+          <img src="./img/edit_pen_white.svg" alt="edit_pen_img" onclick="editContact('${contact.id}')" />
           <img src="./img/delete_basket_white.svg" alt="delete_img" onclick="removeContact('${contact.id}')" />
         </div>
       </div>
@@ -260,6 +260,7 @@ function renderContactsInSidePanel() {
       }
     }
     createAndAppendContact(contactContainer, contact);
+    addEditAndDeleteButtonListeners();
   }
 }
 
@@ -408,4 +409,96 @@ async function removeContact(id) {
 
   // Re-render the contacts in the side panel
   renderContactsInSidePanel();
+}
+
+const FORM_SELECTOR = '.contact_details_collumn';
+const CANCEL_BUTTON_SELECTOR = '.cancel_but';
+const SAVE_BUTTON_SELECTOR = '.create__contact_but';
+
+async function editContact(id) {
+  await createCard();
+  let contact = findContactById(id);
+  fillFormWithContactInfo(contact);
+  setFormSubmitEventToUpdateContact(id);
+  setButtonActions(contact.id);
+}
+
+function findContactById(id) {
+  return contacts.find(contact => contact.id === id);
+}
+
+function fillFormWithContactInfo(contact) {
+  let nameInput = document.getElementById('name');
+  let emailInput = document.getElementById('email');
+  let phoneInput = document.getElementById('phone');
+
+  nameInput.value = contact.name;
+  emailInput.value = contact.email;
+  phoneInput.value = contact.phone;
+}
+
+function setFormSubmitEventToUpdateContact(id) {
+  let form = document.querySelector(FORM_SELECTOR);
+  form.onsubmit = function(event) {
+    event.preventDefault();
+    updateContact(id);
+  };
+}
+
+function setButtonActions(contactId) {
+  let cancelButton = document.querySelector(CANCEL_BUTTON_SELECTOR);
+  let saveButton = document.querySelector(SAVE_BUTTON_SELECTOR);
+
+  cancelButton.innerHTML = 'Delete';
+  cancelButton.onclick = function() { removeContact(contactId); };
+
+  saveButton.innerHTML = 'Save <img src="./img/create_contact_check.svg" alt="Save_button_img" />';
+}
+
+async function updateContact(id) {
+  // Get the updated contact information from the form
+  let name = document.getElementById('name').value;
+  let email = document.getElementById('email').value;
+  let phone = document.getElementById('phone').value;
+
+  // Update the contact in the local contacts array
+  let contact = contacts.find(contact => contact.id === id);
+  contact.name = name;
+  contact.email = email;
+  contact.phone = phone;
+
+  // Update the contact in the database
+  await fetch(BASE_URL + "/contacts/" + id + ".json", {
+    method: "PUT",
+    body: JSON.stringify(contact)
+  });
+
+  // Re-render the contacts in the side panel
+  renderContactsInSidePanel();
+}
+
+function closeCard() {
+  let card = document.querySelector('.card_template');
+  let overlay = document.querySelector('.overlay');
+  overlay.remove();
+  card.remove();
+}
+
+function addEditAndDeleteButtonListeners() {
+  let editButtons = document.querySelectorAll('.edit_button');
+  let deleteButtons = document.querySelectorAll('.delete_button');
+
+  editButtons.forEach(button => {
+    button.onclick = function() {
+      let id = button.closest('.contact').dataset.id;
+      editContact(id);
+    };
+  });
+
+  deleteButtons.forEach(button => {
+    button.onclick = function() {
+      let id = button.closest('.contact').dataset.id;
+      removeContact(id);
+    };
+  });
 }
