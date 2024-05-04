@@ -1,4 +1,5 @@
 //beispiel Contact-array mit 10 Kontakten
+let colors = ["#9747FF", "#FF5EB3", "#6E52FF", "#9327FF", "#00BEE8", "#1FD7C1", "#FF745E", "#FFA35E", "#FC71FF", "#FFC701", "#0038FF", "#C3FF2B", "#FFE62B", "#FF4646", "#FFBB2B",];
 let contacts = [
   {
     name: "John Doe",
@@ -145,9 +146,9 @@ function createContactDetails(name, email) {
 function createContactElement(contact) {
   let contactElement = document.createElement("div");
   contactElement.className = "contact";
-  contactElement.dataset.email = contact.email;
+  contactElement.dataset.id = contact.id;
 
-  let badge = createContactBadge(contact.name);
+  let badge = createContactBadge(contact); // Pass the entire contact object
   contactElement.appendChild(badge);
 
   let details = createContactDetails(contact.name, contact.email);
@@ -164,12 +165,12 @@ function createContactElement(contact) {
 function renderContactDetails(contact) {
   return `
     <div class="user_row">
-      <div class="profil_badge_big"><h1>${contact.name[0].toUpperCase() + contact.name.split(" ")[1][0].toUpperCase()}</h1></div>
+      <div class="profil_badge_big" style="background-color: ${contact.color};"><h1>${contact.name[0].toUpperCase() + contact.name.split(" ")[1][0].toUpperCase()}</h1></div>
       <div class="flex_col">
         <h2>${contact.name}</h2>
         <div class="flex_row">
           <img src="./img/edit_pen_white.svg" alt="edit_pen_img" />
-          <img src="./img/delete_basket_white.svg" alt="edit_pen_img" />
+          <img src="./img/delete_basket_white.svg" alt="delete_img" onclick="removeContact('${contact.id}')" />
         </div>
       </div>
     </div>
@@ -190,15 +191,17 @@ function updateContactDetails(contact) {
 
 //fügt eine 'active' Klasse zum angeklickten Kontakt hinzu
 function updateActiveContact(contact) {
-  // Entfernen der 'active' Klasse von allen Kontakt-Divs
+  // Remove the 'active' class from all contact divs
   let contactElements = document.querySelectorAll(".contact");
   contactElements.forEach(function(contactElement) {
     contactElement.classList.remove("active");
   });
 
-  // Hinzufügen der 'active' Klasse zum angeklickten Kontakt-Div
-  let activeContactElement = document.querySelector(`.contact[data-email="${contact.email}"]`);
-  activeContactElement.classList.add("active");
+  // Add the 'active' class to the selected contact
+  let activeContactElement = document.querySelector(`.contact[data-id="${contact.id}"]`);
+  if (activeContactElement) {
+    activeContactElement.classList.add("active");
+  }
 }
 
 //diese Funktion leert das Sidepanel
@@ -263,19 +266,23 @@ function renderContactsInSidePanel() {
 
 //generiert zufällige Farbe und returnt sie
 function getRandomColor() {
-  let r = Math.floor(Math.random() * 256);
-  let g = Math.floor(Math.random() * 256);
-  let b = Math.floor(Math.random() * 256);
-  return `rgb(${r}, ${g}, ${b})`;
+  let randomIndex = Math.floor(Math.random() * colors.length);
+  return colors[randomIndex];
 }
 
 // diese FUnktion erstellt das Badge für die Contact Elemente es nimmt den ersten Buchstaben des Vornamens und des Nachnamens diese werden dann in Großbuchstaben umgewandelt und als Badge angezeigt mit einer Random Color
-function createContactBadge(name) {
+function createContactBadge(contact) {
   let badge = document.createElement("div");
   badge.className = "profil_badge";
-  badge.textContent =
-    name[0].toUpperCase() + name.split(" ")[1][0].toUpperCase();
-  badge.style.backgroundColor = getRandomColor();
+  if (contact && contact.name) { // Überprüfen Sie, ob der Kontakt und sein Name existieren
+    let names = contact.name.split(" ");
+    if (names.length > 1) {
+      badge.textContent = names[0][0].toUpperCase() + names[1][0].toUpperCase();
+    } else if (names.length === 1) {
+      badge.textContent = names[0][0].toUpperCase();
+    }
+    badge.style.backgroundColor = contact.color; // Use the color from the contact object
+  }
   return badge;
 }
 
@@ -312,11 +319,13 @@ async function saveContact(event) {
   let name = document.getElementById('name').value;
   let email = document.getElementById('email').value;
   let phone = document.getElementById('phone').value;
+  let color = getRandomColor(); // Generate a random color
 
   let data = {
     name: name,
     email: email,
-    phone: phone
+    phone: phone,
+    color: color // Save the color
   };
 
   // Update local contacts array
@@ -342,10 +351,17 @@ async function postData(path = "", data = {}) {
 }
 
 async function getContacts() {
-    let response = await fetch(BASE_URL + "/contacts.json");
-    let responseToJson = await response.json();
-    console.log(responseToJson);
-    return responseToJson;
+  let response = await fetch(BASE_URL + "/contacts.json");
+  let data = await response.json();
+  let contacts = [];
+  for (let id in data) {
+    let contact = data[id];
+    if (contact) { // Überprüfen Sie, ob der Kontakt existiert
+      contact.id = id; // Add the ID to the contact object
+      contacts.push(contact);
+    }
+  }
+  return contacts;
 }
 
 async function pushContactsToDatabase() {
@@ -360,3 +376,36 @@ async function pushContactsToDatabase() {
   return responseToJson;
 }
 
+async function loadContacts() {
+  // Fetch contacts from the database
+  let response = await getContacts();
+  
+  // Update the local contacts array
+  contacts = response.map((contact) => {
+    // If the contact doesn't have a color, assign a random one
+    if (!contact.color) {
+      contact.color = getRandomColor();
+    }
+    return contact;
+  });
+  
+  // Render the contacts in the side panel
+  renderContactsInSidePanel();
+}
+
+async function removeContact(id) {
+  // Remove the contact from the database
+  await fetch(BASE_URL + "/contacts/" + id + ".json", {
+    method: "DELETE"
+  });
+
+  // Remove the contact from the local contacts array
+  contacts = contacts.filter(contact => contact.id !== id);
+
+  // Clear the contact content div
+  let contactContent = document.querySelector(".contact_content");
+  contactContent.innerHTML = '';
+
+  // Re-render the contacts in the side panel
+  renderContactsInSidePanel();
+}
