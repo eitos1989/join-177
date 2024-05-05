@@ -261,28 +261,20 @@ const BASE_URL = "https://contact-storage-f1196-default-rtdb.europe-west1.fireba
 
 async function saveContact(event) {
   event.preventDefault();
-  let name = document.getElementById('name').value;
-  let email = document.getElementById('email').value;
-  let phone = document.getElementById('phone').value;
-  let color = getRandomColor(); // Zufällige Farbe generieren
-  let newContact = {
-    name: name,
-    email: email,
-    phone: phone,
-    color: color
+  // Kontaktinformationen sammeln
+  let contact = {
+    name: document.getElementById('name').value,
+    email: document.getElementById('email').value,
+    phone: document.getElementById('phone').value,
+    color: getRandomColor(),
   };
 
   // Kontakt zur Datenbank hinzufügen und ID erhalten
-  let response = await fetch(BASE_URL + "/contacts.json", {
-    method: "",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(newContact),
-  });
-  let responseData = await response.json();
-  newContact.id = responseData.name;
-  contacts.push(newContact);
+  let id = await addContactToDatabase(contact);
+  contact.id = id; // Fügen Sie die ID dem Kontaktobjekt hinzu
+
+  // Kontakt zum lokalen Array hinzufügen und Ansicht aktualisieren
+  contacts.push(contact);
   renderContactsInSidePanel();
 }
 
@@ -301,16 +293,16 @@ async function getContacts() {
   return contacts;
 }
 
-async function pushContactsToDatabase() {
+async function addContactToDatabase(contact) {
   let response = await fetch(BASE_URL + "/contacts.json", {
-    method: "PUT",
+    method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify(contacts),
+    body: JSON.stringify(contact),
   });
-  let responseToJson = await response.json();
-  return responseToJson;
+  let responseData = await response.json();
+  return responseData.name; // Firebase generiert eine eindeutige ID, die hier zurückgegeben wird
 }
 
 async function loadContacts() {
