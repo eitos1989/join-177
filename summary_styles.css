@@ -10,9 +10,9 @@ body {
 
 .headline {
   display: flex;
-  justify-content: space-between;
+  gap: 24px;
   align-items: center;
-  width: 650px;
+
   padding: 0 80px;
 }
 
@@ -43,10 +43,10 @@ h2 {
   transition: transform 125ms;
 }
 
-.flex_collum {
+.flex_collumn {
   display: flex;
   flex-direction: column;
-  justify-content: space-around;
+  justify-content: center;
   align-items: center;
 }
 
@@ -170,12 +170,15 @@ h2 {
   display: flex;
   justify-content: center;
   align-items: center;
+
 }
 
 .main_container {
   display: flex;
-  padding: 0 80px;
+  padding-left: 80px;
+  padding-right: 10px;
   gap: 20px;
+  width: 100%;
 }
 
 .content_container {
@@ -183,7 +186,7 @@ h2 {
 }
 
 .greeting {
-  width: 25%; /* Adjust as needed */
+  width: 400px; /* Adjust as needed */
   display: flex;
   justify-content: center;
   align-items: center;
