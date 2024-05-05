@@ -1,0 +1,104 @@
+{
+    "tasks": [
+      {
+        "id": 1,
+        "title": "Projektplanung",
+        "desc": "Vorbereitung des Projektplans und Meilensteine festlegen.",
+        "assigned": ["John Doe"],
+        "due-date": "2024-05-10",
+        "prio": "urgent",
+        "category": "in Progress",
+        "subtask": ["Meilensteine definieren", "Ressourcen zuweisen"]
+      },
+      {
+        "id": 2,
+        "title": "Dokumentation",
+        "desc": "Technische Dokumentation erstellen.",
+        "assigned": ["Jane Doe"],
+        "due-date": "2024-05-15",
+        "prio": "medium",
+        "category": "to do",
+        "subtask": ["Gliederung erstellen", "Schreibarbeit durchführen"]
+      },
+      {
+        "id": 3,
+        "title": "Testphase",
+        "desc": "Testpläne entwickeln und durchführen.",
+        "assigned": ["Alex Smith"],
+        "due-date": "2024-05-20",
+        "prio": "low",
+        "category": "await Feedback",
+        "subtask": ["Testfälle definieren", "Testumgebung einrichten"]
+      },
+      {
+        "id": 4,
+        "title": "Kundenpräsentation",
+        "desc": "Präsentation für den Kunden vorbereiten.",
+        "assigned": ["Mary Johnson"],
+        "due-date": "2024-05-25",
+        "prio": "urgent",
+        "category": "to do",
+        "subtask": ["Präsentation erstellen", "Feedback einholen"]
+      },
+      {
+        "id": 5,
+        "title": "Code-Review",
+        "desc": "Quellcode überprüfen und Kommentare hinzufügen.",
+        "assigned": ["Tom Brown"],
+        "due-date": "2024-05-30",
+        "prio": "medium",
+        "category": "in Progress",
+        "subtask": ["Code durchsehen", "Anmerkungen machen"]
+      },
+      {
+        "id": 6,
+        "title": "Team-Meeting",
+        "desc": "Wöchentliches Team-Meeting zur Besprechung des Fortschritts.",
+        "assigned": ["Team"],
+        "due-date": "2024-05-07",
+        "prio": "low",
+        "category": "Done",
+        "subtask": ["Agenda vorbereiten", "Meeting durchführen"]
+      },
+      {
+        "id": 7,
+        "title": "Datenbank-Optimierung",
+        "desc": "Performance-Optimierungen für die Datenbank.",
+        "assigned": ["Chris White"],
+        "due-date": "2024-06-10",
+        "prio": "urgent",
+        "category": "to do",
+        "subtask": ["Indexierung prüfen", "Abfragen optimieren"]
+      },
+      {
+        "id": 8,
+        "title": "Release-Planung",
+        "desc": "Planung der nächsten Software-Veröffentlichung.",
+        "assigned": ["Lisa Green"],
+        "due-date": "2024-06-15",
+        "prio": "medium",
+        "category": "await Feedback",
+        "subtask": ["Versionierung festlegen", "Release-Notizen erstellen"]
+      },
+      {
+        "id": 9,
+        "title": "Kundenservice",
+        "desc": "Verbesserung des Kundenserviceprozesses.",
+        "assigned": ["Nancy Black"],
+        "due-date": "2024-06-20",
+        "prio": "low",
+        "category": "to do",
+        "subtask": ["Kundenfeedback analysieren", "Änderungen implementieren"]
+      },
+      {
+        "id": 10,
+        "title": "Wartung der Hardware",
+        "desc": "Regelmäßige Wartung der Hardwarekomponenten.",
+        "assigned": ["Michael Gray"],
+        "due-date": "2024-06-25",
+        "prio": "urgent",
+        "category": "in Progress",
+        "subtask": ["Hardware überprüfen", "Reparaturen durchführen"]
+      }
+    ]
+  }
