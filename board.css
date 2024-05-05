@@ -1,0 +1,183 @@
+.headlineBoardSide {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-right: 48px;
+}
+
+.rightSideHeadlineBoard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
+.headlineBoard {
+    font-size: xxx-large;
+}
+
+.findTaskInputField {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 16px;
+    };
+}
+
+.inputFieldFindTask {
+    width: 280px;
+    padding: 8px;
+    border-radius: 8px;
+    border: unset;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-right: 1px solid rgb(209,209,209); 
+}
+
+.buttonFindTask {
+    padding: 8px;
+    border: unset;
+    border-radius: 8px;
+    background-color: white;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.addTaskButton {
+    width: 92px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    padding: 8px;
+    border: unset;
+    border-radius: 8px;
+    background-color: rgb(42,54,71);
+    color: white;
+    img {
+        height: 12px;
+    }
+}
+
+.boradSide {
+    display: flex;
+    justify-content: space-between;
+    align-items: start;
+    margin-right: 48px;
+}
+
+.toDo {
+    width: 22%;
+}
+
+.toDoHeadline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    img {
+        height: 24px;
+    }
+}
+
+.toDoContainer {
+    height: 100vh;
+}
+
+.noTasksToDo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    border-style: dotted;
+    height: 48px;
+    background-color: rgb(231,231,231);
+    color: rgb(176,176,176);
+}
+
+.inProgress {
+    width: 22%;
+}
+
+.inProgressHeadline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    img {
+        height: 24px;
+    }
+}
+
+.inProgressContainer {
+    height: 100vh;
+}
+
+.noInProgress {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    border-style: dotted;
+    height: 48px;
+    background-color: rgb(231,231,231);
+    color: rgb(176,176,176);
+}
+
+.awaitFeedback {
+    width: 22%;
+}
+
+.awaitFeedbackHeadline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    img {
+        height: 24px;
+    }
+}
+
+.awaitFeedbackContainer {
+    height: 100vh;
+}
+
+.noAwaitFeedback {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    border-style: dotted;
+    height: 48px;
+    background-color: rgb(231,231,231);
+    color: rgb(176,176,176);
+}
+
+.done {
+    width: 22%;
+}
+
+.doneHeadline {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    img {
+        height: 24px;
+    }
+}
+
+.doneContainer {
+    height: 100vh;
+}
+
+.noDone {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    border-style: dotted;
+    height: 48px;
+    background-color: rgb(231,231,231);
+    color: rgb(176,176,176);
+}

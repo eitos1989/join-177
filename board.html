@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="sidepanel.css">
+    <link rel="stylesheet" href="board.css">
+    <link rel="stylesheet" href="addTask.css">
+    
+    <script src="sidepanel.js"></script>
+    <script src="includeSidepanel.js"></script>
+    <script src="board.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+</head>
+<body onload="includeSidepanelHTML()">
+    <div class="container">
+        <div class="sidepanelContainer" w3-include-html="./sidepanel.html"></div>
+        <div  id="boardRightContainer" class="completeRightContainer">
+            <div class="headlineBoardSide">
+                <h1 class="headlineBoard">Board</h1>
+                <div class="rightSideHeadlineBoard">
+                    <div class="findTaskInputField">
+                        <input class="inputFieldFindTask" placeholder="Find Task"><button class="buttonFindTask"><img src="./img/search.png"></button>
+                    </div>
+                    <button class="addTaskButton" onclick="showAddTaskContainer()">Add Task <img src="./img/add.png"></button>    
+                </div>    
+            </div>
+            <div class="boradSide">
+                <div class="toDo">
+                    <div class="toDoHeadline">
+                        <h2>To do</h2><img src="./img/plus button.png">
+                    </div>    
+                    <div class="toDoContainer">
+                        <div class="noTasksToDo">No tasks To do</div>
+                    </div>
+                </div>
+                <div class="inProgress">
+                    <div class="inProgressHeadline">
+                        <h2>In progress</h2><img src="./img/plus button.png">
+                    </div>
+                    <div class="inProgressContainer">
+                        <div class="noInProgress">No tasks in progress</div>
+                    </div>
+                </div>
+                <div class="awaitFeedback">
+                    <div class="awaitFeedbackHeadline">
+                        <h2>Await feedback</h2><img src="./img/plus button.png">
+                    </div>
+                    <div class="awaitFeedbackContainer">
+                        <div class="noAwaitFeedback">No tasks await feedback</div>
+                    </div>
+                </div>
+                <div class="done">
+                    <div class="doneHeadline">
+                        <h2>Done</h2><img src="./img/plus button.png">
+                    </div>
+                    <div class="doneContainer">
+                        <div class="noDone">No tasks done</div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>    
+    </div>     
+</body>    
