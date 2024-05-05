@@ -40,8 +40,3 @@ async function deleteData(path="") {
     let responseAsJson = await response.json();
     console.log(responseAsJson)
 }
-
-
-
-
-

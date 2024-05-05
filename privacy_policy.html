@@ -5,8 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Privacy Policy</title>
     <link rel="stylesheet" href="./privacy_policy.css" />
+    <link rel="stylesheet" href="styles/style.css" />
   </head>
-  <body>
+  <body onload="includeSidepanelHTML()">
+    <div class="container">
+      <div class="sidepanelContainer" w3-include-html="./sidepanel.html"></div>
+      
+      <div class="completeRightContainer">
+        <div class="headerContainer" w3-include-html="./header.html"></div>
+        <div class="padding_container">
     <h1>Privacy Policy</h1>
     <p>Last updated: April 25, 2024</p>
     <p>This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.</p>
@@ -183,5 +190,12 @@
     <ul>
     <li>By email: <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="187d7471796b367d6b6c7d6a7a796d7d6a587f75797174367b7775">[email&#160;protected]</a></li>
     </p>
+
+  </div>
+</div>
+</div>
   </body>
+
+  <script src="scripts/script.js"></script>
+  <script src="includeSidepanel.js"></script>
 </html>

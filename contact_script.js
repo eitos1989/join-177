@@ -1,57 +1,5 @@
-//beispiel Contact-array mit 10 Kontakten
-let colors = ["#9747FF", "#FF5EB3", "#6E52FF", "#9327FF", "#00BEE8", "#1FD7C1", "#FF745E", "#FFA35E", "#FC71FF", "#FFC701", "#0038FF", "#C3FF2B", "#FFE62B", "#FF4646", "#FFBB2B",];
-let contacts = [
-  {
-    name: "John Doe",
-    email: "john.doe@example.com",
-    phone: "123-456-7890",
-  },
-  {
-    name: "Jane Smith",
-    email: "jane.smith@example.com",
-    phone: "098-765-4321",
-  },
-  {
-    name: "Bob Johnson",
-    email: "bob.johnson@example.com",
-    phone: "111-222-3333",
-  },
-  {
-    name: "Alice Williams",
-    email: "alice.williams@example.com",
-    phone: "444-555-6666",
-  },
-  {
-    name: "Charlie Brown",
-    email: "charlie.brown@example.com",
-    phone: "777-888-9999",
-  },
-  {
-    name: "Diana Prince",
-    email: "diana.prince@example.com",
-    phone: "666-555-4444",
-  },
-  {
-    name: "Ethan Hunt",
-    email: "ethan.hunt@example.com",
-    phone: "333-222-1111",
-  },
-  {
-    name: "Fiona Apple",
-    email: "fiona.apple@example.com",
-    phone: "999-888-7777",
-  },
-  {
-    name: "George Washington",
-    email: "george.washington@example.com",
-    phone: "555-444-3333",
-  },
-  {
-    name: "Helen Johnson",
-    email: "helen.johnson@example.com",
-    phone: "222-333-4444",   
-  },
-];
+let colors = ["#9747FF", "#FF5EB3", "#6E52FF", "#9327FF", "#00BEE8", "#1FD7C1", "#FF745E", "#FFA35E", "#FC71FF", "#FFC701", "#0038FF", "#C3FF2B", "#FFE62B", "#FF4646", "#FFBB2B",]; 
+let contacts = [{name: "John Doe", email: "john.doe@example.com", phone: "123-456-7890"}, {name: "Jane Smith", email: "jane.smith@example.com", phone: "098-765-4321"}, {name: "Bob Johnson", email: "bob.johnson@example.com", phone: "111-222-3333"}, {name: "Alice Williams", email: "alice.williams@example.com", phone: "444-555-6666"}, {name: "Charlie Brown", email: "charlie.brown@example.com", phone: "777-888-9999"}, {name: "Diana Prince", email: "diana.prince@example.com", phone: "666-555-4444"}, {name: "Ethan Hunt", email: "ethan.hunt@example.com", phone: "333-222-1111"}, {name: "Fiona Apple", email: "fiona.apple@example.com", phone: "999-888-7777"}, {name: "George Washington", email: "george.washington@example.com", phone: "555-444-3333"}, {name: "Helen Johnson", email: "helen.johnson@example.com", phone: "222-333-4444"}];
 
 //html template für Contact_card
 function createCardHTML() {
@@ -66,7 +14,7 @@ function createCardHTML() {
       <img class="empty_user_img" src="./img/empty_user_img.svg" alt="empty_profile picture" />
       <form class="contact_details_collumn" onsubmit="saveContact(event)">
       <div class="input-with-image">
-        <input type="text" id="name" name="name" placeholder="Name" autocomplete="name" required />
+      <input type="text" id="name" name="name" placeholder="Name" autocomplete="name" />
       </div>
       <div class="input-with-image_1">
         <input type="email" id="email" name="email" placeholder="Email" autocomplete="email" required />
@@ -75,14 +23,12 @@ function createCardHTML() {
         <input type="tel" id="phone" name="phone" placeholder="Phone" autocomplete="tel" required />
       </div>
       <div class="button_row">
-      <button type="button" class="cancel_but" onclick="closeCard()">
-      cancel
+      <button type="button" class="cancel_but" onclick="closeCard()">cancel
       <svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M7.001 6.50008L12.244 11.7431M1.758 11.7431L7.001 6.50008L1.758 11.7431ZM12.244 1.25708L7 6.50008L12.244 1.25708ZM7 6.50008L1.758 1.25708L7 6.50008Z" stroke="#2A3647" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
       </svg>
     </button>
-        <button class="create__contact_but" type="submit">
-          Create contact
+        <button class="create__contact_but" type="submit">Create contact
           <img src="./img/create_contact_check.svg" alt="Save_button_img" />
         </button>
       </div>
@@ -141,7 +87,6 @@ function createContactDetails(name, email) {
 
   return details;
 }
-
 // Funktion um das Contact Element zu erstellen und die Badge und Details anzuzeigen
 function createContactElement(contact) {
   let contactElement = document.createElement("div");
@@ -223,7 +168,7 @@ function createLetterElement(name) {
 // diese Funktion erstellt den Grauen Seperator zwischen den Contact Elementen
 function createSeparatorElement() {
   let separator = document.createElement("div");
-  separator.className = "grey_seperator";
+  separator.className = "grey_seperator_1";
   return separator;
 }
 
@@ -260,7 +205,6 @@ function renderContactsInSidePanel() {
       }
     }
     createAndAppendContact(contactContainer, contact);
-    addEditAndDeleteButtonListeners();
   }
 }
 
@@ -321,35 +265,17 @@ async function saveContact(event) {
   let email = document.getElementById('email').value;
   let phone = document.getElementById('phone').value;
   let color = getRandomColor(); // Generate a random color
-
   let data = {
     name: name,
     email: email,
     phone: phone,
     color: color // Save the color
   };
-
-  // Update local contacts array
   contacts.push(data);
-
-  // Push the entire contacts array to the database
   await pushContactsToDatabase();
-
-  // Re-render contacts
   renderContactsInSidePanel();
 }
 
-async function postData(path = "", data = {}) {
-  let response = await fetch(BASE_URL + path, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
-  let responseToJson = await response.json();
-  return responseToJson;
-}
 
 async function getContacts() {
   let response = await fetch(BASE_URL + "/contacts.json");
@@ -380,7 +306,6 @@ async function pushContactsToDatabase() {
 async function loadContacts() {
   // Fetch contacts from the database
   let response = await getContacts();
-  
   // Update the local contacts array
   contacts = response.map((contact) => {
     // If the contact doesn't have a color, assign a random one
@@ -389,7 +314,6 @@ async function loadContacts() {
     }
     return contact;
   });
-  
   // Render the contacts in the side panel
   renderContactsInSidePanel();
 }
@@ -399,14 +323,11 @@ async function removeContact(id) {
   await fetch(BASE_URL + "/contacts/" + id + ".json", {
     method: "DELETE"
   });
-
   // Remove the contact from the local contacts array
   contacts = contacts.filter(contact => contact.id !== id);
-
   // Clear the contact content div
   let contactContent = document.querySelector(".contact_content");
   contactContent.innerHTML = '';
-
   // Re-render the contacts in the side panel
   renderContactsInSidePanel();
 }
@@ -431,7 +352,6 @@ function fillFormWithContactInfo(contact) {
   let nameInput = document.getElementById('name');
   let emailInput = document.getElementById('email');
   let phoneInput = document.getElementById('phone');
-
   nameInput.value = contact.name;
   emailInput.value = contact.email;
   phoneInput.value = contact.phone;
@@ -448,10 +368,8 @@ function setFormSubmitEventToUpdateContact(id) {
 function setButtonActions(contactId) {
   let cancelButton = document.querySelector(CANCEL_BUTTON_SELECTOR);
   let saveButton = document.querySelector(SAVE_BUTTON_SELECTOR);
-
   cancelButton.innerHTML = 'Delete';
   cancelButton.onclick = function() { removeContact(contactId); };
-
   saveButton.innerHTML = 'Save <img src="./img/create_contact_check.svg" alt="Save_button_img" />';
 }
 
@@ -460,19 +378,16 @@ async function updateContact(id) {
   let name = document.getElementById('name').value;
   let email = document.getElementById('email').value;
   let phone = document.getElementById('phone').value;
-
   // Update the contact in the local contacts array
   let contact = contacts.find(contact => contact.id === id);
   contact.name = name;
   contact.email = email;
   contact.phone = phone;
-
   // Update the contact in the database
   await fetch(BASE_URL + "/contacts/" + id + ".json", {
     method: "PUT",
     body: JSON.stringify(contact)
   });
-
   // Re-render the contacts in the side panel
   renderContactsInSidePanel();
 }
@@ -482,23 +397,4 @@ function closeCard() {
   let overlay = document.querySelector('.overlay');
   overlay.remove();
   card.remove();
-}
-
-function addEditAndDeleteButtonListeners() {
-  let editButtons = document.querySelectorAll('.edit_button');
-  let deleteButtons = document.querySelectorAll('.delete_button');
-
-  editButtons.forEach(button => {
-    button.onclick = function() {
-      let id = button.closest('.contact').dataset.id;
-      editContact(id);
-    };
-  });
-
-  deleteButtons.forEach(button => {
-    button.onclick = function() {
-      let id = button.closest('.contact').dataset.id;
-      removeContact(id);
-    };
-  });
 }

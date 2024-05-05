@@ -4,6 +4,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    position: fixed;
+    width: 16%;
 } 
 
 .sidePanelLinks {
@@ -17,6 +19,7 @@
     img {
         width: 24px;
     }
+
 }
 
 .sidePanelLink {
@@ -80,4 +83,7 @@
 
 .sidepanelContainer{
     flex: 16%;
+}
+.padding_container{
+    padding: 0 24px;
 }
