@@ -1,4 +1,4 @@
-const STORAGE_URL = 'https://remote-storage.developerakademie.org/item';
+const BASE_URL = "https://contact-storage-f1196-default-rtdb.europe-west1.firebasedatabase.app/"
 const STORAGE_CONTACTS_PATH = 'contacts';
 const STORAGE_TASK_PATH = 'tasks';
 const STORAGE_USER_PATH = 'users';
@@ -7,6 +7,10 @@ async function getData(path="") {
     let response = await fetch(BASE_URL + path + ".json") ;
     let responseAsJson = await response.json();
     console.log(responseAsJson)
+}
+
+async function getContacts() {
+    getData(STORAGE_CONTACTS_PATH);
 }
 
 async function postData(path="", data={}) {
@@ -40,3 +44,12 @@ async function deleteData(path="") {
     let responseAsJson = await response.json();
     console.log(responseAsJson)
 }
+
+function getUserAlias(username) {
+   return username[0].toUpperCase() + username.split(" ")[1][0].toUpperCase();
+}
+
+
+
+
+
