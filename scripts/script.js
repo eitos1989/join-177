@@ -49,7 +49,3 @@ function getUserAlias(username) {
    return username[0].toUpperCase() + username.split(" ")[1][0].toUpperCase();
 }
 
-
-
-
-

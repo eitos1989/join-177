@@ -14,7 +14,7 @@ function createCardHTML() {
       <img class="empty_user_img" src="./img/empty_user_img.svg" alt="empty_profile picture" />
       <form class="contact_details_collumn" onsubmit="saveContact(event)">
       <div class="input-with-image">
-      <input type="text" id="name" name="name" placeholder="Name" autocomplete="name" />
+      <input type="text" id="name" name="name" placeholder="Name" autocomplete="name" required/>
       </div>
       <div class="input-with-image_1">
         <input type="email" id="email" name="email" placeholder="Email" autocomplete="email" required />
@@ -264,15 +264,25 @@ async function saveContact(event) {
   let name = document.getElementById('name').value;
   let email = document.getElementById('email').value;
   let phone = document.getElementById('phone').value;
-  let color = getRandomColor(); // Generate a random color
-  let data = {
+  let color = getRandomColor(); // Zufällige Farbe generieren
+  let newContact = {
     name: name,
     email: email,
     phone: phone,
-    color: color // Save the color
+    color: color
   };
-  contacts.push(data);
-  await pushContactsToDatabase();
+
+  // Kontakt zur Datenbank hinzufügen und ID erhalten
+  let response = await fetch(BASE_URL + "/contacts.json", {
+    method: "",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(newContact),
+  });
+  let responseData = await response.json();
+  newContact.id = responseData.name;
+  contacts.push(newContact);
   renderContactsInSidePanel();
 }
 
@@ -314,6 +324,7 @@ async function loadContacts() {
     }
     return contact;
   });
+
   // Render the contacts in the side panel
   renderContactsInSidePanel();
 }
