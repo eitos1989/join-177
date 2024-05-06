@@ -1,3 +1,5 @@
+let taskIdCounter = 0; 
+
 function changePriority(color) {
     resetButtons();
     if (color === 'red') {
@@ -58,3 +60,64 @@ function changePriority(color) {
     greenButton.style.color = "black";
     greenButton.querySelector("img").src = "./img/angles-down-solid.svg"; 
   }
+
+
+
+  const BASE_URL = "https://joingroupwork-default-rtdb.europe-west1.firebasedatabase.app/";
+
+  async function putData(path="", data={}) {
+      try {
+          const response = await fetch(BASE_URL + path + ".json", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",  
+              },
+              body: JSON.stringify(data)
+          });
+          const responseAsJson = await response.json();
+          console.log(responseAsJson);
+          return responseAsJson;
+      } catch (error) {
+          console.error('Error putting data: ', error);
+          throw error;
+      }
+  }
+  
+  async function createTask() {
+    const title = document.getElementById('title').value;
+    const description = document.getElementById('description').value;
+    const assignedTo = document.getElementById('AssignedTo').value;
+    const dueDate = document.getElementById('gebdat').value;
+    const priority = document.querySelector('.prioButtons .active').getAttribute('id');
+    const category = document.getElementById('dropdownContent').value;
+
+    const taskData = {
+        title: title,
+        description: description,
+        assignedTo: assignedTo,
+        dueDate: dueDate,
+        priority: priority,
+        category: category
+    };
+
+    try {
+        await putData("tasks", taskData);
+        console.log('Task created successfully.');
+
+        await displayTasks();
+    } catch (error) {
+        console.error('Error creating task: ', error);
+    }
+}
+
+async function getData(path="") {
+  try {
+      const response = await fetch(BASE_URL + path + ".json");
+      const data = await response.json();
+      return data;
+  } catch (error) {
+      console.error('Error getting data: ', error);
+      throw error;
+  }
+}
+

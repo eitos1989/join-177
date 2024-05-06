@@ -263,24 +263,3 @@ body {
     font-size: small;
 }
 
-.input-container {
-    position: relative;
-    display: inline-block; 
-    margin-top: 16px;
-  }
-  
-  #input-field {
-    width: calc(100% - 30px); 
-    padding-right: 30px; 
-  }
-  
-  #clear-btn {
-    position: absolute;
-    top: 0;
-    right: 0;
-    height: 100%;
-    width: 30px; 
-    border: none;
-    background-color: transparent;
-    cursor: pointer;
-  }

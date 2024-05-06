@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Add Task</title>
     <link rel="stylesheet" href="sidepanel.css">
     <link rel="stylesheet" href="addTask.css">
 
     <script src="includeSidepanel.js"></script>
-    <script src="sidepanel.js"></script>
     <script src="addTask.js"></script>
+    <script src="board.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
@@ -17,7 +17,7 @@
 <body onload="includeSidepanelHTML()">
     <div class="container">
         <div class="sidepanelContainer" w3-include-html="./sidepanel.html"></div>
-        <div class="completeRightContainer">
+        <div id="completeRightContainer" class="completeRightContainer">
             <h1 class="headlineAddTask">Add Task</h1>
             <div class="addTaskContainer">
                 <div class="addTaskLeftSide">   
@@ -37,12 +37,12 @@
                 <div class="borderline"></div>
                 <div class="addTaskRightSide">
                     <div class="inputContainerDate">
-                        <label for="datumInput">Due date<span class="required">*</span></label>
+                        <label for="gebdat">Due date<span class="required">*</span></label>
                         <input type="date" id="gebdat">
                     </div>
                     <p class="prioText">Prio</p>
                     <div class="prioButtons">
-                        <button id="redButton" class="prioButton" onclick="changePriority('red')">Urgent <img src="./img/angles-up-solid.svg"></button>
+                        <button id="redButton" class="prioButton active" onclick="changePriority('red')">Urgent <img src="./img/angles-up-solid.svg"></button>
                         <button id="orangeButton" class="prioButton" onclick="changePriority('orange')">Medium <img src="./img/grip-lines-solid.svg"></button>
                         <button id="greenButton" class="prioButton" onclick="changePriority('green')">Low <img src="./img/angles-down-solid.svg"></button>
                     </div>
@@ -53,20 +53,16 @@
                             <option value="Technical Task">Technical Task</option>
                             <option value="User Story">User Story</option>
                         </select>
-                    </div>   
-                    <div class="input-container">
-                        <input type="text" id="input-field" placeholder="Text eingeben...">
-                        <button id="clear-btn">&#10006;</button>
                     </div>
-                    <button id="add-btn">Hinzufügen</button>
-                </div>
+                    
+                </div>    
             </div>
             <section>
                 <div class="createTask">
                     <p class="requiredInfo"><span class="required">*</span>This field is required</p>
                     <div class="createTaskButtons">
                         <button class="clearButton">Clear <img src="./img/VectorBlack.png"></button>
-                        <button onclick="button()" class="createTaskButton">Create Task <img src="./img/check.png"></button>
+                        <button onclick="createTask()" class="createTaskButton">Create Task <img src="./img/check.png"></button>
                     </div>
                 </div>
             </section>

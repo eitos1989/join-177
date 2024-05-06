@@ -5,6 +5,12 @@
     margin-right: 48px;
 }
 
+.completeRightContainerBoard {
+    flex: 83%;
+    margin-top: 96px;
+    margin-left: 72px;
+}
+
 .rightSideHeadlineBoard {
     display: flex;
     justify-content: center;
@@ -181,3 +187,28 @@
     background-color: rgb(231,231,231);
     color: rgb(176,176,176);
 }
+
+.createTasksContainer {
+    border-radius: 32px;
+    background: white;
+    padding: 14px;
+    margin-bottom: 16px;
+}
+
+.createTaskCategory {
+    padding: 4px;
+    padding-left: 16px;
+    padding-right: 16px;
+    display: inline-block;
+    color: white;
+    border-radius: 8px;
+}
+
+.createTaskTitle {
+    margin: 0;
+}
+
+.createTaskDescription {
+    color: rgb(200, 200, 200);
+}
+
