@@ -62,15 +62,14 @@ function changePriority(color) {
   }
 
 
-
   const BASE_URL = "https://joingroupwork-default-rtdb.europe-west1.firebasedatabase.app/";
 
-  async function putData(path="", data={}) {
+  async function putData(path = "", data = {}) {
       try {
           const response = await fetch(BASE_URL + path + ".json", {
               method: "POST",
               headers: {
-                  "Content-Type": "application/json",  
+                  "Content-Type": "application/json",
               },
               body: JSON.stringify(data)
           });
@@ -88,16 +87,20 @@ function changePriority(color) {
     const description = document.getElementById('description').value;
     const assignedTo = document.getElementById('AssignedTo').value;
     const dueDate = document.getElementById('gebdat').value;
-    const priority = document.querySelector('.prioButtons .active').getAttribute('id');
+    const priority = getPriority(); // Hier wird die Priorität direkt abgerufen
     const category = document.getElementById('dropdownContent').value;
 
+    // Generiere eine eindeutige ID
+    const taskId = Date.now().toString();
+
     const taskData = {
+        id: taskId,
         title: title,
         description: description,
         assignedTo: assignedTo,
         dueDate: dueDate,
         priority: priority,
-        category: category
+        category: category,
     };
 
     try {
@@ -110,14 +113,31 @@ function changePriority(color) {
     }
 }
 
-async function getData(path="") {
-  try {
-      const response = await fetch(BASE_URL + path + ".json");
-      const data = await response.json();
-      return data;
-  } catch (error) {
-      console.error('Error getting data: ', error);
-      throw error;
-  }
-}
 
+  
+  async function getData(path = "") {
+      try {
+          const response = await fetch(BASE_URL + path + ".json");
+          const data = await response.json();
+          return data;
+      } catch (error) {
+          console.error('Error getting data: ', error);
+          throw error;
+      }
+  }
+
+  function getPriority() {
+    const redButton = document.getElementById('redButton');
+    const orangeButton = document.getElementById('orangeButton');
+    const greenButton = document.getElementById('greenButton');
+
+    if (redButton.style.backgroundColor === 'red') {
+        return 'urgent';
+    } else if (orangeButton.style.backgroundColor === 'orange') {
+        return 'medium';
+    } else if (greenButton.style.backgroundColor === 'rgb(8, 249, 0)') {
+        return 'low';
+    } else {
+        return ''; 
+    }
+}
