@@ -49,7 +49,7 @@ body {
   align-items: center;
   gap: 16px;
   border: none;
-  padding: 8px 0;
+  padding: 16px 0;
   cursor: pointer;
   margin-bottom: 16px;
   font-family: "Inter", sans-serif;
@@ -272,3 +272,35 @@ a {
   background-color: rgb(42, 54, 71) !important;
   color: white;
 }
+
+.button_succesful{
+  background-color: #2A3647;
+  padding: 24px 8px;
+  color: white;
+  border-radius: 18px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 24px;
+  display: none;
+  animation: slideIn 1.25s forwards, slideOut 1.25s 1.5s forwards;
+  width: 350px;
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(300%);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(300%);
+  }
+}
+

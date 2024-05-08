@@ -28,7 +28,7 @@ function createCardHTML() {
         <path d="M7.001 6.50008L12.244 11.7431M1.758 11.7431L7.001 6.50008L1.758 11.7431ZM12.244 1.25708L7 6.50008L12.244 1.25708ZM7 6.50008L1.758 1.25708L7 6.50008Z" stroke="#2A3647" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
       </svg>
     </button>
-        <button class="create__contact_but" type="submit">Create contact
+        <button class="create__contact_but" type="submit" >Create contact
           <img src="./img/create_contact_check.svg" alt="Save_button_img" />
         </button>
       </div>
@@ -37,6 +37,23 @@ function createCardHTML() {
   `;
 }
 
+// Funktion um die Animation zu erstellen und auszuführen
+function showSuccessAnimation() {
+  let button = document.createElement('div');
+  button.style.display = 'block';
+  button.className = 'button_succesful';
+  button.textContent = 'Created contact successful';
+
+  
+  // Selektiert das 'contact_content' Element und fügt den Button hinzu
+  let contactContent = document.querySelector('.contact_content');
+  contactContent.appendChild(button);
+
+  // Entfernt den Button nach der Animation
+  button.addEventListener('animationend', function() {
+
+  });
+}
 //erstellt overlay für contact_card
 function createOverlay() {
   let overlay = document.createElement("div");
@@ -64,11 +81,26 @@ function addSlideOutAnimation(card, overlay) {
   });
 }
 
-//funktion um die Card zu erstellen
 function createCard() {
   let overlay = createOverlay();
   let card = createCardElement();
   addSlideOutAnimation(card, overlay);
+
+  // Event-Listener für den "Create contact" Button
+  card.querySelector('.contact_details_collumn').addEventListener('submit', function(event) {
+    event.preventDefault();
+    // Führt die Animation aus und entfernt das Overlay und die Karte
+    card.classList.add('slide-out');
+    card.addEventListener('animationend', function() {
+      overlay.remove();
+      card.remove();
+
+      // Zeigt die Erfolgsanimation an
+      showSuccessAnimation();
+      
+
+    });
+  });
 }
 
 //Funktion um die Contact Details zu erstellen und die Namen und Emails anzuzeigen
@@ -393,9 +425,11 @@ async function updateContact(id) {
   });
   // Re-render the contacts in the side panel
   renderContactsInSidePanel();
+  updateContactDetails(contact);
 }
 
 function closeCard() {
+
   let card = document.querySelector('.card_template');
   let overlay = document.querySelector('.overlay');
   overlay.remove();
