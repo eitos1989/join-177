@@ -110,13 +110,13 @@ function changePriority(color) {
         console.log('Task created successfully.');
 
         await displayTasks();
+
+        subtasks.forEach(subtask => addSubtask(subtask));
     } catch (error) {
         console.error('Error creating task: ', error);
     }
 }
 
-
-  
   async function getData(path = "") {
       try {
           const response = await fetch(BASE_URL + path + ".json");
@@ -153,14 +153,39 @@ document.addEventListener("DOMContentLoaded", function() {
       
       if (subtaskValue !== '') {
           addSubtask(subtaskValue);
-          inputField.value = ''; // Clear input field after adding subtask
+          inputField.value = ''; 
       }
   });
-
-  function addSubtask(subtask) {
-      const subtaskList = document.getElementById('subtaskList');
-      const newSubtask = document.createElement('li');
-      newSubtask.textContent = subtask;
-      subtaskList.appendChild(newSubtask);
-  }
 });
+
+function addSubtask(subtask) {
+  const subtaskList = document.getElementById('subtaskList');
+  const newSubtask = document.createElement('li');
+  newSubtask.textContent = subtask;
+  subtaskList.appendChild(newSubtask);
+}
+
+function clearSubtasks() {
+  const inputField = document.getElementById('Subtasks');
+  inputField.value = ''; 
+}
+
+function addSubtaskToList() {
+  const inputField = document.getElementById('Subtasks');
+  const subtaskValue = inputField.value.trim();
+  
+  if (subtaskValue !== '') {
+      addSubtask(subtaskValue);
+      clearSubtasks(); 
+  }
+}
+
+function replaceAddButton() {
+  const inputWithButtonContainer = document.getElementById('inputWithButtonContainer');
+  inputWithButtonContainer.innerHTML = `
+      <input placeholder="Add new subtask" type="text" id="Subtasks" name="Subtasks" class="inputWithButton">
+      <img class="vectorImg1" src="./img/VectorBlack.png" onclick="clearSubtasks()">
+      <div class="divider"></div>
+      <img class="vectorImg2" src="./img/Vector 17.png" onclick="addSubtaskToList()">
+  `;
+}

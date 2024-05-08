@@ -61,8 +61,13 @@
                     </div>
                     <div class="inputContainerSubtask">
                         <label for="Subtask">Subtasks</label>
-                        <input placeholder="Add new subtask" type="text" id="Subtasks" name="Subtasks" class="inputWithButton">
-                        <ul id="subtaskList"></ul> 
+                        <div class="inputWithButtonContainer" id="inputWithButtonContainer">
+                            <input placeholder="Add new subtask" type="text" id="Subtasks" name="Subtasks" class="inputWithButton">
+                            <img class="addButtonSubtask" id="addBlack" src="./img/addBlack.png" onclick="replaceAddButton()">
+                        </div>
+                        <div class="subtaskListContainer">
+                            <ul id="subtaskList"></ul> 
+                        </div>
                     </div>
                 </div>    
             </div>

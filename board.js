@@ -25,8 +25,7 @@ async function displayTasks() {
                 } else {
                     categoryClass = 'default-category';
                 }
-
-                // Erstelle HTML-Code für Subtasks
+                
                 let subtasksHTML = '';
                 if (task.subtasks && task.subtasks.length > 0) {
                     subtasksHTML = '<ul>';
@@ -47,10 +46,10 @@ async function displayTasks() {
                 container.appendChild(taskElement);
             }
         }
+        checkContainers();
     } catch (error) {
         console.error('Error displaying tasks: ', error);
     }
-    checkContainers();
 }
 
 function checkContainers() {

@@ -208,16 +208,37 @@ body {
     margin-bottom: 5px;
 }
 
-.inputWithButton {
+.inputWithButtonContainer {
+    position: relative;
+    display: flex;
     width: 100%;
+}
+
+.inputWithButton {
+    flex: 1;
+    width: calc(100% - 32px); 
     padding: 8px;
     border: unset;
     border-radius: 4px;
     box-sizing: border-box;
     border-radius: 8px;
-    background-image: url('./img/addBlack.png'); /* Hintergrundbild setzen */
-    background-repeat: no-repeat;
-    background-position: right 10px center; /* Bild auf der rechten Seite zentrieren */
+    width: 100%;
+}
+
+.addButtonSubtask {
+    position: absolute;
+    right: 8px; 
+    top: 50%; 
+    transform: translateY(-50%); 
+}
+
+.subtaskListContainer {
+    max-height: 100px; 
+    overflow-y: auto; 
+    position: absolute;
+    top: 100%; 
+    left: 0;
+    width: 100%; 
 }
 
 .inputWithButton:hover {
@@ -278,6 +299,10 @@ body {
     }
 }
 
+.createTaskButton:hover {
+    background-color: rgb(39,171,226);
+}
+
 .requiredInfo {
     font-size: small;
 }
@@ -285,3 +310,33 @@ body {
 .rightContainerWithoutHeadline {
     margin-left: 72px;
 }
+
+.vectorImg1 {
+    width: 16px; /* Breite der neuen Bilder anpassen */
+    height: 16px; /* Höhe der neuen Bilder anpassen */
+    position: absolute;
+    right: 32px; 
+    top: 50%; 
+    transform: translateY(-50%); 
+}
+
+.vectorImg2 {
+    width: 16px; /* Breite der neuen Bilder anpassen */
+    height: 16px; /* Höhe der neuen Bilder anpassen */
+    position: absolute;
+    right: 6px; 
+    top: 50%; 
+    transform: translateY(-50%); 
+}
+
+.divider {
+    width: 1px; /* Breite des Trennstrichs */
+    height: 16px; /* Höhe des Trennstrichs */
+    background-color: #ccc; /* Farbe des Trennstrichs */
+    margin: 0 8px; /* Abstand zwischen den Bildern */
+    position: absolute;
+    right: 18px; 
+    top: 50%; 
+    transform: translateY(-50%); 
+}
+
