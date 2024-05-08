@@ -16,8 +16,6 @@ body {
 
 .completeRightContainer {
     flex: 83%;
-    margin-top: 96px;
-    margin-left: 72px;
 }
 
 .addTaskContainer {
@@ -90,15 +88,6 @@ body {
 
 .inputContainerAssignedTo {
     margin-bottom: 32px;
-}
-
-.inputContainerAssignedTo input[type="text"] {
-    width: 100%;
-    background-image: url('./iconsAddTask/arrow_drop_down.png');
-    background-repeat: no-repeat;
-    background-position: right center;
-    background-size: 8px; 
-    background-origin: content-box
 }
   
 .inputContainerAssignedTo label {
@@ -197,6 +186,7 @@ body {
     border: unset;
     padding: 8px;
     border-radius: 8px;
+    margin-bottom: 32px;
 }
 
 .dropdownContent:hover {
@@ -207,12 +197,41 @@ body {
     color: rgb(148, 36, 36);
 }
 
+.inputContainerSubtask {
+    margin-bottom: 32px;
+    position: relative;
+}
+
+.inputContainerSubtask label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.inputWithButton {
+    width: 100%;
+    padding: 8px;
+    border: unset;
+    border-radius: 4px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    background-image: url('./img/addBlack.png'); /* Hintergrundbild setzen */
+    background-repeat: no-repeat;
+    background-position: right 10px center; /* Bild auf der rechten Seite zentrieren */
+}
+
+.inputWithButton:hover {
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
 .createTask {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-right: 140px;
     margin-top: 88px;
+    margin-left: 72px;
     p {
         margin: 0;
     }
@@ -263,3 +282,6 @@ body {
     font-size: small;
 }
 
+.rightContainerWithoutHeadline {
+    margin-left: 72px;
+}

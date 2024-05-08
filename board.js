@@ -26,11 +26,21 @@ async function displayTasks() {
                     categoryClass = 'default-category';
                 }
 
+                // Erstelle HTML-Code für Subtasks
+                let subtasksHTML = '';
+                if (task.subtasks && task.subtasks.length > 0) {
+                    subtasksHTML = '<ul>';
+                    task.subtasks.forEach(subtask => {
+                        subtasksHTML += `<li>${subtask}</li>`;
+                    });
+                    subtasksHTML += '</ul>';
+                }
+
                 taskElement.innerHTML = `
                     <p class="createTaskCategory ${categoryClass}" style="background-color: ${task.category === 'Technical Task' ? 'rgb(32,215,193)' : (task.category === 'User Story' ? 'rgb(0,56,255)' : 'white')}">${task.category}</p>
                     <h3 class="createTaskTitle">${task.title}</h3>
                     <p class="createTaskDescription">${task.description}</p>
-                    <p>Subtasks</p>
+                    <div class="subtasks">${subtasksHTML}</div>
                     <p>${task.assignedTo}</p>
                 `;
 

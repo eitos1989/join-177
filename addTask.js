@@ -62,7 +62,7 @@ function changePriority(color) {
   }
 
 
-  const BASE_URL = "https://joingroupwork-default-rtdb.europe-west1.firebasedatabase.app/";
+  const BASE_URL = "https://contact-storage-f1196-default-rtdb.europe-west1.firebasedatabase.app/";
 
   async function putData(path = "", data = {}) {
       try {
@@ -87,10 +87,11 @@ function changePriority(color) {
     const description = document.getElementById('description').value;
     const assignedTo = document.getElementById('AssignedTo').value;
     const dueDate = document.getElementById('gebdat').value;
-    const priority = getPriority(); // Hier wird die Priorität direkt abgerufen
+    const priority = getPriority(); 
     const category = document.getElementById('dropdownContent').value;
+    const subtasksInput = document.getElementById('Subtasks');
+    const subtasks = subtasksInput.value.split('\n').filter(task => task.trim() !== ''); 
 
-    // Generiere eine eindeutige ID
     const taskId = Date.now().toString();
 
     const taskData = {
@@ -101,6 +102,7 @@ function changePriority(color) {
         dueDate: dueDate,
         priority: priority,
         category: category,
+        subtasks: subtasks 
     };
 
     try {
@@ -141,3 +143,24 @@ function changePriority(color) {
         return ''; 
     }
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+  const addButton = document.querySelector('.inputWithButton');
+
+  addButton.addEventListener('click', function() {
+      const inputField = document.getElementById('Subtasks');
+      const subtaskValue = inputField.value.trim();
+      
+      if (subtaskValue !== '') {
+          addSubtask(subtaskValue);
+          inputField.value = ''; // Clear input field after adding subtask
+      }
+  });
+
+  function addSubtask(subtask) {
+      const subtaskList = document.getElementById('subtaskList');
+      const newSubtask = document.createElement('li');
+      newSubtask.textContent = subtask;
+      subtaskList.appendChild(newSubtask);
+  }
+});

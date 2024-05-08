@@ -7,8 +7,6 @@
 
 .completeRightContainerBoard {
     flex: 83%;
-    margin-top: 96px;
-    margin-left: 72px;
 }
 
 .rightSideHeadlineBoard {
@@ -212,3 +210,6 @@
     color: rgb(200, 200, 200);
 }
 
+.rightContainerWithoutHeadline {
+    margin-left: 72px;
+}

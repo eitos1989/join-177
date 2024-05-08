@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="sidepanel.css">
     <link rel="stylesheet" href="board.css">
     <link rel="stylesheet" href="addTask.css">
+    <link rel="stylesheet" href="header.css">
     
     
     <script src="includeSidepanel.js"></script>
@@ -20,7 +21,9 @@
 <body onload="includeSidepanelHTML(); displayTasks()">
     <div class="container">
         <div class="sidepanelContainer" w3-include-html="./sidepanel.html"></div>
-        <div id="boardRightContainer" class="completeRightContainerBoard">
+        <div id="boardRightContainer" class="completeRightContainerBoard">  
+            <div class="headerContainer" w3-include-html="./header.html"></div>
+            <div class="rightContainerWithoutHeadline">       
             <div class="headlineBoardSide">
                 <h1 class="headlineBoard">Board</h1>
                 <div class="rightSideHeadlineBoard">
@@ -68,6 +71,7 @@
                     </div>
                 </div>
             </div>
+            </div>    
         </div>  
     </div>
 </body>
