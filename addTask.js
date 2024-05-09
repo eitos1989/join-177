@@ -161,7 +161,29 @@ document.addEventListener("DOMContentLoaded", function() {
 function addSubtask(subtask) {
   const subtaskList = document.getElementById('subtaskList');
   const newSubtask = document.createElement('li');
-  newSubtask.textContent = subtask;
+
+  // Flexbox-Container für den Listenpunkt erstellen
+  const flexContainer = document.createElement('div');
+  flexContainer.style.display = 'flex';
+  flexContainer.style.justifyContent = 'space-between'; // Platz zwischen Elementen
+
+  // Div für den Text erstellen
+  const textDiv = document.createElement('div');
+  textDiv.textContent = subtask;
+
+  // Div für die Bilder erstellen
+  const imagesDiv = document.createElement('div');
+
+  // Bilder über innerHTML hinzufügen
+  imagesDiv.innerHTML += '<img src="./img/delete.png" style="margin-right: 5px; height: 12px;">';
+  imagesDiv.innerHTML += '<img src="./img/edit.png" style="margin-right: 5px; height: 12px;">';
+
+  // Bilder-Div und Text-Div zum Flexbox-Container hinzufügen
+  flexContainer.appendChild(textDiv);
+  flexContainer.appendChild(imagesDiv);
+
+  // Flexbox-Container zum Listenelement hinzufügen
+  newSubtask.appendChild(flexContainer);
   subtaskList.appendChild(newSubtask);
 }
 

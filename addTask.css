@@ -312,8 +312,8 @@ body {
 }
 
 .vectorImg1 {
-    width: 16px; /* Breite der neuen Bilder anpassen */
-    height: 16px; /* Höhe der neuen Bilder anpassen */
+    width: 12px; /* Breite der neuen Bilder anpassen */
+    height: 12px; /* Höhe der neuen Bilder anpassen */
     position: absolute;
     right: 32px; 
     top: 50%; 
@@ -321,8 +321,8 @@ body {
 }
 
 .vectorImg2 {
-    width: 16px; /* Breite der neuen Bilder anpassen */
-    height: 16px; /* Höhe der neuen Bilder anpassen */
+    width: 12px; /* Breite der neuen Bilder anpassen */
+    height: 12px; /* Höhe der neuen Bilder anpassen */
     position: absolute;
     right: 6px; 
     top: 50%; 
@@ -335,7 +335,7 @@ body {
     background-color: #ccc; /* Farbe des Trennstrichs */
     margin: 0 8px; /* Abstand zwischen den Bildern */
     position: absolute;
-    right: 18px; 
+    right: 16px; 
     top: 50%; 
     transform: translateY(-50%); 
 }
