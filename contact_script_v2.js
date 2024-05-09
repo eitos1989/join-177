@@ -1,48 +1,15 @@
-let colors = ["#9747FF", "#FF5EB3", "#6E52FF", "#9327FF", "#00BEE8", "#1FD7C1", "#FF745E", "#FFA35E", "#FC71FF", "#FFC701", "#0038FF", "#C3FF2B", "#FFE62B", "#FF4646", "#FFBB2B",]; 
-let contacts = [{name: "John Doe", email: "john.doe@example.com", phone: "123-456-7890"}, {name: "Jane Smith", email: "jane.smith@example.com", phone: "098-765-4321"}, {name: "Bob Johnson", email: "bob.johnson@example.com", phone: "111-222-3333"}, {name: "Alice Williams", email: "alice.williams@example.com", phone: "444-555-6666"}, {name: "Charlie Brown", email: "charlie.brown@example.com", phone: "777-888-9999"}, {name: "Diana Prince", email: "diana.prince@example.com", phone: "666-555-4444"}, {name: "Ethan Hunt", email: "ethan.hunt@example.com", phone: "333-222-1111"}, {name: "Fiona Apple", email: "fiona.apple@example.com", phone: "999-888-7777"}, {name: "George Washington", email: "george.washington@example.com", phone: "555-444-3333"}, {name: "Helen Johnson", email: "helen.johnson@example.com", phone: "222-333-4444"}];
-
-//html template für Contact_card
-function createCardHTML() {
-  return `
-    <div class="left_collumn">
-      <img src="./img/join_white_logo.svg" alt="Join_logo" />
-      <h1 id="card_headline">Add contact</h1>
-      <h3 id="remove">Tasks are better with a team!</h3>
-      <div class="blue_seperator_card"></div>
-    </div>
-    <div class="flex_row">
-      <img class="empty_user_img" src="./img/empty_user_img.svg" alt="empty_profile picture" />
-      <form class="contact_details_collumn" onsubmit="saveContact(event)">
-      <div class="input-with-image">
-      <input type="text" id="name" name="name" placeholder="Name" autocomplete="name" required/>
-      </div>
-      <div class="input-with-image_1">
-        <input type="email" id="email" name="email" placeholder="Email" autocomplete="email" required />
-      </div>
-      <div class="input-with-image_2">
-        <input type="tel" id="phone" name="phone" placeholder="Phone" autocomplete="tel" required />
-      </div>
-      <div class="button_row">
-      <button type="button" class="cancel_but" onclick="closeCard(), addSlideOutAnimation()">cancel
-      <svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M7.001 6.50008L12.244 11.7431M1.758 11.7431L7.001 6.50008L1.758 11.7431ZM12.244 1.25708L7 6.50008L12.244 1.25708ZM7 6.50008L1.758 1.25708L7 6.50008Z" stroke="#2A3647" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-      </svg>
-    </button>
-        <button class="create__contact_but" type="submit" id="save" >Create contact
-          <img src="./img/create_contact_check.svg" alt="Save_button_img" />
-        </button>
-      </div>
-    </form>
-    </div>
-  `;
-}
 
 // Funktion um die Animation zu erstellen und auszuführen für die Erfolgreiche Erstellung eines Kontakts
 function showSuccessAnimation() {
   let button = document.createElement('div');
   button.style.display = 'block';
   button.className = 'button_succesful';
-  button.textContent = 'Contact list edited successful';
+  if (button.dataset.action === 'create') {
+    button.textContent = 'Create contact successful';
+  } else if (button.dataset.action === 'edit') {
+    button.textContent = 'Edit contact successful';
+  }
+  // Selektiert das 'contact_content' Element und fügt den Button hinzu
   let contactContent = document.querySelector('.contact_content');
   contactContent.appendChild(button);
 
@@ -123,10 +90,13 @@ function createContactElement(contact) {
   let contactElement = document.createElement("div");
   contactElement.className = "contact";
   contactElement.dataset.id = contact.id;
+
   let badge = createContactBadge(contact); // Pass the entire contact object
   contactElement.appendChild(badge);
+
   let details = createContactDetails(contact.name, contact.email);
   contactElement.appendChild(details);
+
   // Event-Listener hinzufügen
   contactElement.addEventListener("click", function() {
     updateContactDetails(contact);
@@ -136,15 +106,9 @@ function createContactElement(contact) {
 }
 //template für die Detailansicht eines Contacts
 function renderContactDetails(contact) {
-  let initials = contact.name[0].toUpperCase();
-  let nameParts = contact.name.split(" ");
-  if (nameParts.length > 1) {
-    initials += nameParts[1][0].toUpperCase();
-  }
-
   return `
     <div class="user_row">
-      <div class="profil_badge_big" style="background-color: ${contact.color};"><h1>${initials}</h1></div>
+      <div class="profil_badge_big" style="background-color: ${contact.color};"><h1>${contact.name[0].toUpperCase() + contact.name.split(" ")[1][0].toUpperCase()}</h1></div>
       <div class="flex_col">
         <h2>${contact.name}</h2>
         <div class="flex_row">
@@ -160,6 +124,7 @@ function renderContactDetails(contact) {
     <a href="tel:${contact.phone}">${contact.phone}</a>
   `;
 }
+
 //überarbeitet den main bereich der angeklickten Contact Details
 function updateContactDetails(contact) {
   let contactContent = document.querySelector(".contact_content");
@@ -241,6 +206,8 @@ function renderContactsInSidePanel() {
   }
 }
 
+
+//generiert zufällige Farbe und returnt sie
 function getRandomColor() {
   let randomIndex = Math.floor(Math.random() * colors.length);
   return colors[randomIndex];
@@ -250,7 +217,7 @@ function getRandomColor() {
 function createContactBadge(contact) {
   let badge = document.createElement("div");
   badge.className = "profil_badge";
-  if (contact && contact.name) { 
+  if (contact && contact.name) { // Überprüfen Sie, ob der Kontakt und sein Name existieren
     let names = contact.name.split(" ");
     if (names.length > 1) {
       badge.textContent = names[0][0].toUpperCase() + names[1][0].toUpperCase();
@@ -299,12 +266,14 @@ async function saveContact(event) {
     phone: document.getElementById('phone').value,
     color: getRandomColor(),
   };
+
+  // Kontakt zur Datenbank hinzufügen und ID erhalten
   let id = await addContactToDatabase(contact);
-  contact.id = id; 
+  contact.id = id; // Fügen Sie die ID dem Kontaktobjekt hinzu
+
+  // Kontakt zum lokalen Array hinzufügen und Ansicht aktualisieren
   contacts.push(contact);
   renderContactsInSidePanel();
-  updateContactDetails(contact);
-  updateActiveContact(contact);
 }
 
 
@@ -335,8 +304,11 @@ async function addContactToDatabase(contact) {
 }
 
 async function loadContacts() {
+  // Fetch contacts from the database
   let response = await getContacts();
+  // Update the local contacts array
   contacts = response.map((contact) => {
+    // If the contact doesn't have a color, assign a random one
     if (!contact.color) {
       contact.color = getRandomColor();
     }
@@ -346,12 +318,16 @@ async function loadContacts() {
 }
 
 async function removeContact(id) {
+  // Remove the contact from the database
   await fetch(BASE_URL + "/contacts/" + id + ".json", {
     method: "DELETE"
   });
+  // Remove the contact from the local contacts array
   contacts = contacts.filter(contact => contact.id !== id);
+  // Clear the contact content div
   let contactContent = document.querySelector(".contact_content");
   contactContent.innerHTML = '';
+  // Re-render the contacts in the side panel
   renderContactsInSidePanel();
 }
 
@@ -364,9 +340,7 @@ async function editContact(id) {
   let contact = findContactById(id);
   fillFormWithContactInfo(contact);
   setFormSubmitEventToUpdateContact(id);
-  changeToEditCard(contact.id);
-  
-
+  setButtonActions(contact.id);
 }
 
 function findContactById(id) {
@@ -390,41 +364,35 @@ function setFormSubmitEventToUpdateContact(id) {
   };
 }
 
-function changeToEditCard(contactId) {
+function setButtonActions(contactId) {
   let cancelButton = document.querySelector(CANCEL_BUTTON_SELECTOR);
   let saveButton = document.querySelector(SAVE_BUTTON_SELECTOR);
   cancelButton.innerHTML = 'Delete';
   cancelButton.onclick = function() { removeContact(contactId); };
   saveButton.innerHTML = 'Save <img src="./img/create_contact_check.svg" alt="Save_button_img" />';
-  let h3text = document.getElementById('remove');
-  h3text.innerHTML = '';
-  let h1text = document.getElementById('card_headline');
-  h1text.innerHTML = 'Edit contact';
-
+  saveButton.addEventListener('click', function(event) {
+    event.target.textContent = 'Contact updated successful';
+  });
 }
 
+
 async function updateContact(id) {
-  // Get the updated contact information from the form
   let name = document.getElementById('name').value;
   let email = document.getElementById('email').value;
   let phone = document.getElementById('phone').value;
-  // Update the contact in the local contacts array
   let contact = contacts.find(contact => contact.id === id);
   contact.name = name;
   contact.email = email;
   contact.phone = phone;
-  // Update the contact in the database
   await fetch(BASE_URL + "/contacts/" + id + ".json", {
     method: "PUT",
     body: JSON.stringify(contact)
   });
-  // Re-render the contacts in the side panel
   renderContactsInSidePanel();
   updateContactDetails(contact);
 }
 
 function closeCard() {
-
   let card = document.querySelector('.card_template');
   let overlay = document.querySelector('.overlay');
   overlay.remove();

@@ -27,10 +27,10 @@
   font-size: 48px;
 }
 .blue_seperator_card {
-  width: 60px;
-  height: 2px;
+  width: 100px;
+  height: 4px;
   background-color: rgb(41, 171, 226);
-  border-radius: 1px;
+  border-radius: 2px;
 }
 
 .right_collumn {
