@@ -83,7 +83,14 @@ function checkContainers() {
     }
 }
 
+function moveContainer() {
+    let container = document.getElementById("containerForBoardSide");
+    container.classList.add("showContainer");
+}
 
-
+function removeIncludetHTML() {
+    let container = document.getElementById("containerForBoardSide");
+    container.classList.remove("showContainer");
+}
 
 

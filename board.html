@@ -11,6 +11,7 @@
     
     
     <script src="includeSidepanel.js"></script>
+    <script src="includeHTMLContainerForBoardSide.js"></script>
     
     <script src="addTask.js"></script>
     <script src="board.js"></script>
@@ -18,11 +19,12 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 </head>
-<body onload="includeSidepanelHTML(); displayTasks()">
+<body onload="includeSidepanelHTML(); displayTasks(); includeHTMLContainerForBoardSide()">
     <div class="container">
         <div class="sidepanelContainer" w3-include-html="./sidepanel.html"></div>
         <div id="boardRightContainer" class="completeRightContainerBoard">  
             <div class="headerContainer" w3-include-html="./header.html"></div>
+            <div class="containerForBoardSide" id="containerForBoardSide" w3-include-html="./containerForBoardSide.html"></div>
             <div class="rightContainerWithoutHeadline">       
             <div class="headlineBoardSide">
                 <h1 class="headlineBoard">Board</h1>
@@ -30,13 +32,13 @@
                     <div class="findTaskInputField">
                         <input class="inputFieldFindTask" placeholder="Find Task"><button class="buttonFindTask"><img src="./img/search.png"></button>
                     </div>
-                    <button class="addTaskButton" onclick="showCompleteRightContainer()">Add Task <img src="./img/add.png"></button>    
+                    <button class="addTaskButton" onclick="moveContainer()">Add Task <img src="./img/add.png"></button>    
                 </div>    
             </div>
             <div class="boradSide">
                 <div class="toDo">
                     <div class="toDoHeadline">
-                        <h2>To do</h2><img src="./img/plus button.png">
+                        <h2>To do</h2><img onclick="moveContainer()" src="./img/plus button.png">
                     </div>    
                     <div class="toDoContainer">
                         <div id="noTasksToDo" class="noTasksToDo">No tasks To do</div>

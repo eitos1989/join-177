@@ -1,0 +1,63 @@
+    <div class="rightContainerWithoutHeadline">
+        <div class="headlineContainerFotBoardSide">    
+            <h1 class="headlineAddTask">Add Task</h1><img class="removeIncludetHTML" onclick="removeIncludetHTML()" src="./img/VectorBlack.png">
+        </div>    
+        <div class="addTaskContainer">
+            <div class="addTaskLeftSide">   
+                <div class="inputContainerTitle">
+                    <label for="title">Title<span class="required">*</span></label>
+                    <input placeholder="Enter a title" type="text" id="title" name="title" required>               
+                </div>
+                <div class="inputContainerDescription">
+                    <label for="description">Description</label>
+                    <input placeholder="Enter a description" type="text" id="description" name="description">
+                </div>
+                <div class="inputContainerAssignedTo">
+                    <label for="AssignedTo">Assigned to</label>
+                    <input placeholder="Select contacts to assign" type="text" id="AssignedTo" name="AssignedTo">
+                </div>
+            </div>
+            <div class="borderline"></div>
+            <div class="addTaskRightSide">
+                <div class="inputContainerDate">
+                    <label for="gebdat">Due date<span class="required">*</span></label>
+                    <input type="date" id="gebdat" required>
+                </div>
+                <p class="prioText">Prio</p>
+                <div class="prioButtons">
+                    <button id="redButton" class="prioButton active" onclick="changePriority('red')">Urgent <img src="./img/angles-up-solid.svg"></button>
+                    <button id="orangeButton" class="prioButton" onclick="changePriority('orange')">Medium <img src="./img/grip-lines-solid.svg"></button>
+                    <button id="greenButton" class="prioButton" onclick="changePriority('green')">Low <img src="./img/angles-down-solid.svg"></button>
+                </div>
+                <p class="categoryText">Category<span class="required">*</span></p>
+                <div>
+                    <select id="dropdownContent" class="dropdownContent" required>
+                        <option value="" disabled selected class="selectedClassDropdown">Select task category</option>
+                        <option value="Technical Task">Technical Task</option>
+                        <option value="User Story">User Story</option>
+                    </select>
+                </div>
+                <div class="inputContainerSubtask">
+                    <label for="Subtask">Subtasks</label>
+                    <div class="inputWithButtonContainer" id="inputWithButtonContainer">
+                        <input placeholder="Add new subtask" type="text" id="Subtasks" name="Subtasks" class="inputWithButton">
+                        <img class="addButtonSubtask" id="addBlack" src="./img/addBlack.png" onclick="replaceAddButton()">
+                    </div>
+                    <div class="subtaskListContainer">
+                        <ul id="subtaskList"></ul> 
+                    </div>
+                </div>
+            </div>    
+        </div>
+    </div>    
+        <section>
+            <div class="createTask">
+                <p class="requiredInfo"><span class="required">*</span>This field is required</p>
+                <div class="createTaskButtons">
+                    <button class="clearButton">Clear <img src="./img/VectorBlack.png"></button>
+                    <button onclick="createTask()" class="createTaskButton">Create Task <img src="./img/check.png"></button>
+                </div>
+            </div>
+        </section>
+    </div>
+  

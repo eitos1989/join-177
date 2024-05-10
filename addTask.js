@@ -162,34 +162,27 @@ function addSubtask(subtask) {
   const subtaskList = document.getElementById('subtaskList');
   const newSubtask = document.createElement('li');
 
-  // Flexbox-Container für den Listenpunkt erstellen
-  const flexContainer = document.createElement('div');
-  flexContainer.style.display = 'flex';
-  flexContainer.style.justifyContent = 'space-between'; // Platz zwischen Elementen
+  newSubtask.innerHTML = `
+    <div style="display: flex; justify-content: space-between;">
+      <div>${subtask}</div>
+      <div>
+        <img src="./img/delete.png" style="margin-right: 5px; height: 12px;">
+        <img src="./img/edit.png" style="margin-right: 5px; height: 12px;">
+      </div>
+    </div>
+  `;
 
-  // Div für den Text erstellen
-  const textDiv = document.createElement('div');
-  textDiv.textContent = subtask;
-
-  // Div für die Bilder erstellen
-  const imagesDiv = document.createElement('div');
-
-  // Bilder über innerHTML hinzufügen
-  imagesDiv.innerHTML += '<img src="./img/delete.png" style="margin-right: 5px; height: 12px;">';
-  imagesDiv.innerHTML += '<img src="./img/edit.png" style="margin-right: 5px; height: 12px;">';
-
-  // Bilder-Div und Text-Div zum Flexbox-Container hinzufügen
-  flexContainer.appendChild(textDiv);
-  flexContainer.appendChild(imagesDiv);
-
-  // Flexbox-Container zum Listenelement hinzufügen
-  newSubtask.appendChild(flexContainer);
   subtaskList.appendChild(newSubtask);
 }
 
-function clearSubtasks() {
-  const inputField = document.getElementById('Subtasks');
-  inputField.value = ''; 
+function replaceAddButton() {
+  const inputWithButtonContainer = document.getElementById('inputWithButtonContainer');
+  inputWithButtonContainer.innerHTML = `
+      <input placeholder="Add new subtask" type="text" id="Subtasks" name="Subtasks" class="inputWithButton">
+      <img class="vectorImg1" src="./img/VectorBlack.png" onclick="clearSubtasks()">
+      <div class="divider"></div>
+      <img class="vectorImg2" src="./img/Vector 17.png" onclick="addSubtaskToList()">
+  `;
 }
 
 function addSubtaskToList() {
@@ -202,12 +195,16 @@ function addSubtaskToList() {
   }
 }
 
-function replaceAddButton() {
+function clearSubtasks() {
+  const inputField = document.getElementById('Subtasks');
+  inputField.value = '';
+  chanceButton();
+}
+
+function chanceButton() {
   const inputWithButtonContainer = document.getElementById('inputWithButtonContainer');
   inputWithButtonContainer.innerHTML = `
-      <input placeholder="Add new subtask" type="text" id="Subtasks" name="Subtasks" class="inputWithButton">
-      <img class="vectorImg1" src="./img/VectorBlack.png" onclick="clearSubtasks()">
-      <div class="divider"></div>
-      <img class="vectorImg2" src="./img/Vector 17.png" onclick="addSubtaskToList()">
+    <input onclick="replaceAddButton()" placeholder="Add new subtask" type="text" id="Subtasks" name="Subtasks" class="inputWithButton">
+    <img class="addButtonSubtask" id="addBlack" src="./img/addBlack.png" onclick="replaceAddButton()">
   `;
 }

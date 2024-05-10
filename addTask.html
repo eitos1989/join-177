@@ -20,15 +20,14 @@
         <div class="sidepanelContainer" w3-include-html="./sidepanel.html"></div>
         <div id="completeRightContainer" class="completeRightContainer">
         <div class="headerContainer" w3-include-html="./header.html"></div>
+        <div id="containerForBoardSide">
         <div class="rightContainerWithoutHeadline">    
             <h1 class="headlineAddTask">Add Task</h1>
             <div class="addTaskContainer">
                 <div class="addTaskLeftSide">   
                     <div class="inputContainerTitle">
-                        <form onsubmit="createTask()">
                         <label for="title">Title<span class="required">*</span></label>
                         <input placeholder="Enter a title" type="text" id="title" name="title" required>
-                        
                     </div>
                     <div class="inputContainerDescription">
                         <label for="description">Description</label>
@@ -62,7 +61,7 @@
                     <div class="inputContainerSubtask">
                         <label for="Subtask">Subtasks</label>
                         <div class="inputWithButtonContainer" id="inputWithButtonContainer">
-                            <input placeholder="Add new subtask" type="text" id="Subtasks" name="Subtasks" class="inputWithButton">
+                            <input onclick="replaceAddButton()" placeholder="Add new subtask" type="text" id="Subtasks" name="Subtasks" class="inputWithButton">
                             <img class="addButtonSubtask" id="addBlack" src="./img/addBlack.png" onclick="replaceAddButton()">
                         </div>
                         <div class="subtaskListContainer">
@@ -71,7 +70,7 @@
                     </div>
                 </div>    
             </div>
-        </div>    
+        </div> 
             <section>
                 <div class="createTask">
                     <p class="requiredInfo"><span class="required">*</span>This field is required</p>
@@ -81,7 +80,7 @@
                     </div>
                 </div>
             </section>
-        </form>
+        </div>
         </div>
     </div>
 </body>

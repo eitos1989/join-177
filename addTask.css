@@ -312,8 +312,8 @@ body {
 }
 
 .vectorImg1 {
-    width: 12px; /* Breite der neuen Bilder anpassen */
-    height: 12px; /* Höhe der neuen Bilder anpassen */
+    width: 12px; 
+    height: 12px; 
     position: absolute;
     right: 32px; 
     top: 50%; 
@@ -321,8 +321,8 @@ body {
 }
 
 .vectorImg2 {
-    width: 12px; /* Breite der neuen Bilder anpassen */
-    height: 12px; /* Höhe der neuen Bilder anpassen */
+    width: 12px; 
+    height: 12px; 
     position: absolute;
     right: 6px; 
     top: 50%; 
@@ -330,10 +330,10 @@ body {
 }
 
 .divider {
-    width: 1px; /* Breite des Trennstrichs */
-    height: 16px; /* Höhe des Trennstrichs */
-    background-color: #ccc; /* Farbe des Trennstrichs */
-    margin: 0 8px; /* Abstand zwischen den Bildern */
+    width: 1px; 
+    height: 16px; 
+    background-color: #ccc; 
+    margin: 0 8px; 
     position: absolute;
     right: 16px; 
     top: 50%; 
