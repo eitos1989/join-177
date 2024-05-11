@@ -85,10 +85,6 @@ body {
     cursor: pointer;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
 }
-
-.inputContainerAssignedTo {
-    margin-bottom: 32px;
-}
   
 .inputContainerAssignedTo label {
     display: block;
@@ -251,7 +247,7 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-right: 140px;
-    margin-top: 88px;
+    margin-top: 40px;
     margin-left: 72px;
     p {
         margin: 0;

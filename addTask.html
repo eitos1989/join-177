@@ -35,7 +35,9 @@
                     </div>
                     <div class="inputContainerAssignedTo">
                         <label for="AssignedTo">Assigned to</label>
-                        <input placeholder="Select contacts to assign" type="text" id="AssignedTo" name="AssignedTo">
+                        <input placeholder="Select contacts to assign" type="text" id="AssignedTo" name="AssignedTo" onclick="showContacts()">
+                        <div id="contactList" style="display: none; max-height: 100px; overflow-y: auto;">
+                        </div>
                     </div>
                 </div>
                 <div class="borderline"></div>
@@ -75,7 +77,7 @@
                 <div class="createTask">
                     <p class="requiredInfo"><span class="required">*</span>This field is required</p>
                     <div class="createTaskButtons">
-                        <button class="clearButton">Clear <img src="./img/VectorBlack.png"></button>
+                        <button onclick="clearTask()" class="clearButton">Clear <img src="./img/VectorBlack.png"></button>
                         <button onclick="createTask()" class="createTaskButton">Create Task <img src="./img/check.png"></button>
                     </div>
                 </div>

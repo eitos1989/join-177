@@ -90,7 +90,7 @@ function changePriority(color) {
     const priority = getPriority(); 
     const category = document.getElementById('dropdownContent').value;
     const subtasksInput = document.getElementById('Subtasks');
-    const subtasks = subtasksInput.value.split('\n').filter(task => task.trim() !== ''); 
+    const subtasks = Array.from(document.querySelectorAll('#subtaskList li')).map(li => li.textContent.trim()).filter(task => task !== ''); 
 
     const taskId = Date.now().toString();
 
@@ -111,7 +111,7 @@ function changePriority(color) {
 
         await displayTasks();
 
-        subtasks.forEach(subtask => addSubtask(subtask));
+        // Keine Notwendigkeit mehr, die Subtasks separat hinzuzufügen, da sie bereits in taskData enthalten sind
     } catch (error) {
         console.error('Error creating task: ', error);
     }
@@ -207,4 +207,49 @@ function chanceButton() {
     <input onclick="replaceAddButton()" placeholder="Add new subtask" type="text" id="Subtasks" name="Subtasks" class="inputWithButton">
     <img class="addButtonSubtask" id="addBlack" src="./img/addBlack.png" onclick="replaceAddButton()">
   `;
+}
+
+function clearTask() {
+  location.reload();
+}
+
+//add contacts to assigned to field
+
+const selectedContacts = [];
+
+function showContacts() {
+    let contactListDiv = document.getElementById("contactList");
+    if (contactListDiv.style.display === "none") {
+        fetch('https://contact-storage-f1196-default-rtdb.europe-west1.firebasedatabase.app/contacts.json')
+            .then(response => response.json())
+            .then(data => {
+                let contactListHTML = "<ul>";
+                for (let key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        let contact = data[key];
+                        contactListHTML += "<li onclick='toggleContact(\"" + contact.name + "\")'>" + contact.name + "</li>";
+                    }
+                }
+                contactListHTML += "</ul>";
+                contactListDiv.innerHTML = contactListHTML;
+                contactListDiv.style.display = "block";
+            })
+            .catch(error => console.error('Error fetching contacts:', error));
+    } else {
+        contactListDiv.style.display = "none";
+    }
+}
+
+function toggleContact(contactName) {
+    let index = selectedContacts.indexOf(contactName);
+    if (index === -1) {
+        selectedContacts.push(contactName);
+    } else {
+        selectedContacts.splice(index, 1);
+    }
+    updateAssignedToInput();
+}
+
+function updateAssignedToInput() {
+    document.getElementById("AssignedTo").value = selectedContacts.join(", ");
 }

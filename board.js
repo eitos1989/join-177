@@ -15,7 +15,7 @@ async function displayTasks() {
                 const taskElement = document.createElement('div');
                 taskElement.classList.add('createTasksContainer');
                 taskElement.id = taskId; 
-                taskElement.setAttribute('draggable', 'true'); 
+                taskElement.setAttribute('draggable', 'true');
 
                 let categoryClass = '';
                 if (task.category === 'Technical Task') {
@@ -40,7 +40,7 @@ async function displayTasks() {
                     <h3 class="createTaskTitle">${task.title}</h3>
                     <p class="createTaskDescription">${task.description}</p>
                     <div class="subtasks">${subtasksHTML}</div>
-                    <p>${task.assignedTo}</p>
+                    <p>${task.assignedTo}</p><img 
                 `;
 
                 container.appendChild(taskElement);
@@ -92,5 +92,4 @@ function removeIncludetHTML() {
     let container = document.getElementById("containerForBoardSide");
     container.classList.remove("showContainer");
 }
-
 
