@@ -1,46 +1,37 @@
-body{
-    margin: 0;
+body {
+  margin: 0;
 }
 
-
-
-p{
-    font-size: 16px;
-    margin-block-start: 0;
-
-
+p {
+  font-size: 16px;
+  margin-block-start: 0;
 }
-h3{
-    font-size: 24px;
-    font-weight: 800;
-    margin-top: 0;
-    margin-block-start: 1em;
+h3 {
+  font-size: 24px;
+  font-weight: 800;
+  margin-top: 0;
+  margin-block-start: 1em;
 
-    font-weight: 900;
+  font-weight: 900;
 }
 
-ol{
-    font-size: 16px;
-
-}
-h1{
-
+ol {
+  font-size: 16px;
 }
 
-.imprint{
-    padding: 0 40px;
-}   
-.diclaimer a{
-
+.imprint {
+  padding: 0 40px;
+}
+.diclaimer a {
 }
 
-a{
-    text-decoration: none;
-    color: rgb(41, 171, 226);
-    transition: color 0.3s ease, opacity 0.3s ease; 
+a {
+  text-decoration: none;
+  color: rgb(41, 171, 226);
+  transition: color 0.3s ease, opacity 0.3s ease;
 }
 
-a:hover{
-    color: rgb(41, 171, 226);
-    opacity: 0.75;
+a:hover {
+  color: rgb(41, 171, 226);
+  opacity: 0.75;
 }
