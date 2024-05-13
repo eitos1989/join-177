@@ -111,7 +111,6 @@ function changePriority(color) {
 
         await displayTasks();
 
-        // Keine Notwendigkeit mehr, die Subtasks separat hinzuzufügen, da sie bereits in taskData enthalten sind
     } catch (error) {
         console.error('Error creating task: ', error);
     }
@@ -227,7 +226,9 @@ function showContacts() {
                 for (let key in data) {
                     if (data.hasOwnProperty(key)) {
                         let contact = data[key];
-                        contactListHTML += "<li onclick='toggleContact(\"" + contact.name + "\")'>" + contact.name + "</li>";
+                        let badge = createContactBadge(contact);
+                        let contactName = contact.name;
+                        contactListHTML += `<li class="contactBadge" onclick='toggleContact("${contactName}")'>${badge.outerHTML}<span>${contactName}</span></li>`
                     }
                 }
                 contactListHTML += "</ul>";
@@ -252,4 +253,19 @@ function toggleContact(contactName) {
 
 function updateAssignedToInput() {
     document.getElementById("AssignedTo").value = selectedContacts.join(", ");
+}
+
+function createContactBadge(contact) {
+    let badge = document.createElement("div");
+    badge.className = "profil_badge";
+    if (contact && contact.name) {
+        let names = contact.name.split(" ");
+        if (names.length > 1) {
+            badge.textContent = names[0][0].toUpperCase() + names[1][0].toUpperCase();
+        } else if (names.length === 1) {
+            badge.textContent = names[0][0].toUpperCase();
+        }
+        badge.style.backgroundColor = contact.color; 
+    }
+    return badge;
 }
