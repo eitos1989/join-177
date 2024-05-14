@@ -103,8 +103,10 @@
 }
 
 .toDoContainer {
-    height: 100vh;
+    overflow-y: auto;
+    max-height: 100vh;
 }
+
 
 .noTasksToDo {
     display: flex;
@@ -131,7 +133,8 @@
 }
 
 .inProgressContainer {
-    height: 100vh;
+    overflow-y: auto;
+    max-height: 100vh;
 }
 
 .noInProgress {
@@ -159,7 +162,8 @@
 }
 
 .awaitFeedbackContainer {
-    height: 100vh;
+    overflow-y: auto;
+    max-height: 100vh;
 }
 
 .noAwaitFeedback {
@@ -187,7 +191,8 @@
 }
 
 .doneContainer {
-    height: 100vh;
+    overflow-y: auto;
+    max-height: 100vh;
 }
 
 .noDone {
@@ -244,4 +249,37 @@
     margin-right: 40px;
     margin-left: 40px;
     margin-top: 40px;
+}
+
+.containerForDetailsTask {
+    display: none; 
+    position: fixed;
+    width: 32%;
+    height: 80%;
+    top: 50%;
+    left: 50%;
+    right: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    z-index: 1;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.categoryLineDetailsTask {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.assignetToDetailsContainer {
+    display: flex;
+    flex-direction: column;
+}
+
+.insideContinerForDetailTask {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
