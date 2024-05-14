@@ -1,6 +1,23 @@
-let colors = ["#9747FF", "#FF5EB3", "#6E52FF", "#9327FF", "#00BEE8", "#1FD7C1", "#FF745E", "#FFA35E", "#FC71FF", "#FFC701", "#0038FF", "#C3FF2B", "#FFE62B", "#FF4646", "#FFBB2B",]; 
-let contacts = [{name: "John Doe", email: "john.doe@example.com", phone: "123-456-7890"}, {name: "Jane Smith", email: "jane.smith@example.com", phone: "098-765-4321"}, {name: "Bob Johnson", email: "bob.johnson@example.com", phone: "111-222-3333"}, {name: "Alice Williams", email: "alice.williams@example.com", phone: "444-555-6666"}, {name: "Charlie Brown", email: "charlie.brown@example.com", phone: "777-888-9999"}, {name: "Diana Prince", email: "diana.prince@example.com", phone: "666-555-4444"}, {name: "Ethan Hunt", email: "ethan.hunt@example.com", phone: "333-222-1111"}, {name: "Fiona Apple", email: "fiona.apple@example.com", phone: "999-888-7777"}, {name: "George Washington", email: "george.washington@example.com", phone: "555-444-3333"}, {name: "Helen Johnson", email: "helen.johnson@example.com", phone: "222-333-4444"}];
-
+let colors = [
+  "#9747FF",
+  "#FF5EB3",
+  "#6E52FF",
+  "#9327FF",
+  "#00BEE8",
+  "#1FD7C1",
+  "#FF745E",
+  "#FFA35E",
+  "#FC71FF",
+  "#FFC701",
+  "#0038FF",
+  "#C3FF2B",
+  "#FFE62B",
+  "#FF4646",
+  "#FFBB2B",
+];
+let contacts = [
+];
+BASE_URL = "https://contact-storage-f1196-default-rtdb.europe-west1.firebasedatabase.app";
 //html template für Contact_card
 function createCardHTML() {
   return `
@@ -39,16 +56,16 @@ function createCardHTML() {
 
 // Funktion um die Animation zu erstellen und auszuführen für die Erfolgreiche Erstellung eines Kontakts
 function showSuccessAnimation() {
-  let button = document.createElement('div');
-  button.style.display = 'block';
-  button.className = 'button_succesful';
-  button.textContent = 'Contact list edited successful';
-  let contactContent = document.querySelector('.contact_content');
+  let button = document.createElement("div");
+  button.style.display = "block";
+  button.className = "button_succesful";
+  button.textContent = "Contact list edited successful";
+  let contactContent = document.querySelector(".contact_content");
   contactContent.appendChild(button);
 
-  button.addEventListener('animationend', function() {
+  button.addEventListener("animationend", function () {
     // Check if the animation name is 'slideOut'
-    if (event.animationName === 'slideOut') {
+    if (event.animationName === "slideOut") {
       button.remove();
     }
   });
@@ -86,20 +103,20 @@ function createCard() {
   addSlideOutAnimation(card, overlay);
 
   // Event-Listener für den "Create contact" Button
-  card.querySelector('.contact_details_collumn').addEventListener('submit', function(event) {
-    event.preventDefault();
-    // Führt die Animation aus und entfernt das Overlay und die Karte
-    card.classList.add('slide-out');
-    card.addEventListener('animationend', function() {
-      overlay.remove();
-      card.remove();
+  card
+    .querySelector(".contact_details_collumn")
+    .addEventListener("submit", function (event) {
+      event.preventDefault();
+      // Führt die Animation aus und entfernt das Overlay und die Karte
+      card.classList.add("slide-out");
+      card.addEventListener("animationend", function () {
+        overlay.remove();
+        card.remove();
 
-      // Zeigt die Erfolgsanimation an
-      showSuccessAnimation();
-      
-
+        // Zeigt die Erfolgsanimation an
+        showSuccessAnimation();
+      });
     });
-  });
 }
 
 //Funktion um die Contact Details zu erstellen und die Namen und Emails anzuzeigen
@@ -128,7 +145,7 @@ function createContactElement(contact) {
   let details = createContactDetails(contact.name, contact.email);
   contactElement.appendChild(details);
   // Event-Listener hinzufügen
-  contactElement.addEventListener("click", function() {
+  contactElement.addEventListener("click", function () {
     updateContactDetails(contact);
   });
 
@@ -165,18 +182,77 @@ function updateContactDetails(contact) {
   let contactContent = document.querySelector(".contact_content");
   contactContent.innerHTML = renderContactDetails(contact);
   updateActiveContact(contact);
+
+  if (window.innerWidth <= 780) {
+    toggleContactView(contact);
+  }
+}
+
+let addnewButton = document.querySelector(".add_button");
+
+//adds event listener to the addnewButton that checks which function should get executed
+addnewButton.addEventListener('click', function() {
+  var imgSrc = this.querySelector('img').getAttribute('src');
+  if (imgSrc.includes('person_add_button.svg')) {
+    createCard();
+  } else if (imgSrc.includes('more_vert.svg')) {
+    toggleDropup();
+  }
+});
+
+function toggleContactView() {
+  let contactContainer = document.querySelector(".contact_sidebar");
+  let contactContent = document.querySelector(".contact_content");
+  let contactHeadline = document.querySelector(".contact_headline");
+  let backButton = document.querySelector(".back_button");
+  
+
+  
+
+  if (window.innerWidth <= 768) {
+    if (!contactContainer.classList.contains("d-none")) {
+      contactContainer.classList.add("d-none");
+      contactContent.classList.add("d-block");
+      contactHeadline.classList.add("d-block");
+      backButton.classList.remove("d-none");
+      addnewButton.innerHTML = '<img src="./img/more_vert.svg" alt="add_contact_img" />';
+
+
+    } else {
+      contactContainer.classList.remove("d-none");
+      contactContent.classList.add("d-none");
+      contactHeadline.classList.add("d-none");
+      backButton.classList.add("d-none");
+      addnewButton.innerHTML = '<img src="./img/person_add_button.svg" alt="add_contact_img" />';
+    }
+  }
+}
+
+function addButtonToContact(contact) {
+  const container = document.getElementById("dropupMenu");
+  const buttonHTML = `
+    <button data-contact-id="${contact}" class="edit-contact-btn">
+      <img src="./img/edit_pen_white.svg" alt="edit_pen_img">
+    </button>
+    <button data-contact-id="${contact}" class="remove-contact-btn">
+      <img src="./img/delete_basket_white.svg" alt="delete_img" />
+    </button>
+  `;
+  container.innerHTML = buttonHTML;
 }
 
 //fügt eine 'active' Klasse zum angeklickten Kontakt hinzu
 function updateActiveContact(contact) {
   // Remove the 'active' class from all contact divs
   let contactElements = document.querySelectorAll(".contact");
-  contactElements.forEach(function(contactElement) {
+  contactElements.forEach(function (contactElement) {
     contactElement.classList.remove("active");
   });
 
   // Add the 'active' class to the selected contact
-  let activeContactElement = document.querySelector(`.contact[data-id="${contact.id}"]`);
+  let activeContactElement = document.querySelector(
+    `.contact[data-id="${contact.id}"]`
+  );
   if (activeContactElement) {
     activeContactElement.classList.add("active");
   }
@@ -250,7 +326,7 @@ function getRandomColor() {
 function createContactBadge(contact) {
   let badge = document.createElement("div");
   badge.className = "profil_badge";
-  if (contact && contact.name) { 
+  if (contact && contact.name) {
     let names = contact.name.split(" ");
     if (names.length > 1) {
       badge.textContent = names[0][0].toUpperCase() + names[1][0].toUpperCase();
@@ -269,9 +345,13 @@ function addHoverEffect(selector, hoverImagePath, originalImagePath) {
     if (event.target.matches(selector)) {
       event.target.src = hoverImagePath;
 
-      event.target.addEventListener("mouseleave", function () {
-        event.target.src = originalImagePath;
-      }, { once: true });
+      event.target.addEventListener(
+        "mouseleave",
+        function () {
+          event.target.src = originalImagePath;
+        },
+        { once: true }
+      );
     }
   });
 }
@@ -288,25 +368,24 @@ addHoverEffect(
 );
 
 //Kommunikation mit Backend
-const BASE_URL = "https://contact-storage-f1196-default-rtdb.europe-west1.firebasedatabase.app/"
+
 
 async function saveContact(event) {
   event.preventDefault();
   // Kontaktinformationen sammeln
   let contact = {
-    name: document.getElementById('name').value,
-    email: document.getElementById('email').value,
-    phone: document.getElementById('phone').value,
+    name: document.getElementById("name").value,
+    email: document.getElementById("email").value,
+    phone: document.getElementById("phone").value,
     color: getRandomColor(),
   };
   let id = await addContactToDatabase(contact);
-  contact.id = id; 
+  contact.id = id;
   contacts.push(contact);
   renderContactsInSidePanel();
   updateContactDetails(contact);
   updateActiveContact(contact);
 }
-
 
 async function getContacts() {
   let response = await fetch(BASE_URL + "/contacts.json");
@@ -314,8 +393,8 @@ async function getContacts() {
   let contacts = [];
   for (let id in data) {
     let contact = data[id];
-    if (contact) { // Überprüfen Sie, ob der Kontakt existiert
-      contact.id = id; // Add the ID to the contact object
+    if (contact) {
+      contact.id = id; 
       contacts.push(contact);
     }
   }
@@ -347,17 +426,17 @@ async function loadContacts() {
 
 async function removeContact(id) {
   await fetch(BASE_URL + "/contacts/" + id + ".json", {
-    method: "DELETE"
+    method: "DELETE",
   });
-  contacts = contacts.filter(contact => contact.id !== id);
+  contacts = contacts.filter((contact) => contact.id !== id);
   let contactContent = document.querySelector(".contact_content");
-  contactContent.innerHTML = '';
+  contactContent.innerHTML = "";
   renderContactsInSidePanel();
 }
 
-const FORM_SELECTOR = '.contact_details_collumn';
-const CANCEL_BUTTON_SELECTOR = '.cancel_but';
-const SAVE_BUTTON_SELECTOR = '.create__contact_but';
+const FORM_SELECTOR = ".contact_details_collumn";
+const CANCEL_BUTTON_SELECTOR = ".cancel_but";
+const SAVE_BUTTON_SELECTOR = ".create__contact_but";
 
 async function editContact(id) {
   await createCard();
@@ -365,18 +444,16 @@ async function editContact(id) {
   fillFormWithContactInfo(contact);
   setFormSubmitEventToUpdateContact(id);
   changeToEditCard(contact.id);
-  
-
 }
 
 function findContactById(id) {
-  return contacts.find(contact => contact.id === id);
+  return contacts.find((contact) => contact.id === id);
 }
 
 function fillFormWithContactInfo(contact) {
-  let nameInput = document.getElementById('name');
-  let emailInput = document.getElementById('email');
-  let phoneInput = document.getElementById('phone');
+  let nameInput = document.getElementById("name");
+  let emailInput = document.getElementById("email");
+  let phoneInput = document.getElementById("phone");
   nameInput.value = contact.name;
   emailInput.value = contact.email;
   phoneInput.value = contact.phone;
@@ -384,7 +461,7 @@ function fillFormWithContactInfo(contact) {
 
 function setFormSubmitEventToUpdateContact(id) {
   let form = document.querySelector(FORM_SELECTOR);
-  form.onsubmit = function(event) {
+  form.onsubmit = function (event) {
     event.preventDefault();
     updateContact(id);
   };
@@ -393,30 +470,32 @@ function setFormSubmitEventToUpdateContact(id) {
 function changeToEditCard(contactId) {
   let cancelButton = document.querySelector(CANCEL_BUTTON_SELECTOR);
   let saveButton = document.querySelector(SAVE_BUTTON_SELECTOR);
-  cancelButton.innerHTML = 'Delete';
-  cancelButton.onclick = function() { removeContact(contactId); };
-  saveButton.innerHTML = 'Save <img src="./img/create_contact_check.svg" alt="Save_button_img" />';
-  let h3text = document.getElementById('remove');
-  h3text.innerHTML = '';
-  let h1text = document.getElementById('card_headline');
-  h1text.innerHTML = 'Edit contact';
-
+  cancelButton.innerHTML = "Delete";
+  cancelButton.onclick = function () {
+    removeContact(contactId);
+  };
+  saveButton.innerHTML =
+    'Save <img src="./img/create_contact_check.svg" alt="Save_button_img" />';
+  let h3text = document.getElementById("remove");
+  h3text.innerHTML = "";
+  let h1text = document.getElementById("card_headline");
+  h1text.innerHTML = "Edit contact";
 }
 
 async function updateContact(id) {
   // Get the updated contact information from the form
-  let name = document.getElementById('name').value;
-  let email = document.getElementById('email').value;
-  let phone = document.getElementById('phone').value;
+  let name = document.getElementById("name").value;
+  let email = document.getElementById("email").value;
+  let phone = document.getElementById("phone").value;
   // Update the contact in the local contacts array
-  let contact = contacts.find(contact => contact.id === id);
+  let contact = contacts.find((contact) => contact.id === id);
   contact.name = name;
   contact.email = email;
   contact.phone = phone;
   // Update the contact in the database
   await fetch(BASE_URL + "/contacts/" + id + ".json", {
     method: "PUT",
-    body: JSON.stringify(contact)
+    body: JSON.stringify(contact),
   });
   // Re-render the contacts in the side panel
   renderContactsInSidePanel();
@@ -424,9 +503,8 @@ async function updateContact(id) {
 }
 
 function closeCard() {
-
-  let card = document.querySelector('.card_template');
-  let overlay = document.querySelector('.overlay');
+  let card = document.querySelector(".card_template");
+  let overlay = document.querySelector(".overlay");
   overlay.remove();
   card.remove();
 }

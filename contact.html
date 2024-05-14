@@ -4,19 +4,19 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Contacts</title>
-    
+
     <link rel="stylesheet" href="contact_styles.css" />
     <link rel="stylesheet" href="./fonts/inter_font.css" />
     <link rel="stylesheet" href="contact_card.css" />
     <link rel="stylesheet" href="styles/style.css" />
-    <link rel="stylesheet" href="contact_responsive.css">
+    <link rel="stylesheet" href="contact_responsive.css" />
     <link
       rel="shortcut icon"
       href="./img/favicon_join.svg"
       type="image/x-icon"
     />
   </head>
-  <body onload="loadContacts(),includeSidepanelHTML()">
+  <body onload="loadContacts(), includeSidepanelHTML()">
     <div class="container">
       <div class="sidepanelContainer" w3-include-html="./sidepanel.html"></div>
 
@@ -38,15 +38,30 @@
             <h1>Contacts</h1>
             <div class="blue_seperator"></div>
             <h2>Better with a team</h2>
+            <div class="back_button d-none">
+              <img
+                onclick="toggleContactView()"
+                src="./img/back_button.svg"
+                alt="back_button"
+              />
+            </div>
           </div>
         </div>
-        <div class="contact_content">
-
+        <div class="add_button d-none">
+          <img src="./img/person_add_button.svg" alt="add_contact_img" />
         </div>
+        <div id="dropupMenu" class="dropup-content">
+          <div onclick="editContact('${contact.id}')">
+            <img src="./img/edit_pen_white.svg" alt="edit_pen_img" />
+          </div>
+          <div onclick="removeContact('${contact.id}')">
+            <img src="./img/delete_basket_white.svg" alt="delete_img" />
+          </div>
+        </div>
+        <div class="contact_content"></div>
       </div>
     </div>
     <script src="includeSidepanel.js"></script>
     <script src="contact_script.js"></script>
-    <script src="scripts/script.js"></script>
   </body>
 </html>

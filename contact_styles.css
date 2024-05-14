@@ -176,6 +176,7 @@ body {
   flex-direction: column;
   padding: 40px;
   overflow-x: hidden;
+
 }
 
 
@@ -308,5 +309,35 @@ a {
   }
 }
 
+.d-none{
+  display: none !important;
+}
 
+.d-block {
+  display: block !important;
+
+}
+
+.back_button {
+  position: absolute;
+  right: 20px;
+  top: 194px;
+  cursor: pointer;
+
+}
+
+.dropup-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  position: absolute;
+  bottom: 200px; /* Adjust based on your button's position */
+  right: 0;
+  background-color: #f9f9f9;
+  box-shadow: 8px 8px 16px 8px rgba(0,0,0,0.2);
+  z-index: 1;
+  border-radius: 20px 20px 0 20px;
+  padding: 20px 32px;
+}
 

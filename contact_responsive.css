@@ -1,4 +1,4 @@
-@media (max-width: 1270px) {
+@media (max-width: 1300px) {
   .contact_headline {
     display: flex;
     flex-direction: column;
@@ -10,7 +10,6 @@
     border-radius: 2px;
   }
 }
-
 
 @media (max-width: 1100px) {
   .contact_sidebar {
@@ -24,7 +23,7 @@
   .side-panel {
     display: flex;
     flex-direction: row;
-    height: 10%;
+    height: 130px;
     width: 100%;
     position: absolute;
     bottom: 0;
@@ -57,7 +56,7 @@
     flex-direction: column;
   }
   .contact_sidebar {
-    height: calc(100% - 13% - 100px);
+    height: calc(100% - 270px);
     overflow-x: hidden;
   }
 
@@ -86,54 +85,125 @@
   }
 }
 
-@media (max-width: 780px) {
-    .contact_headline {
-        display: none;
-    }
+@media (max-width: 810px) {
 
-    .contact_content {
-        display: none;
-    }
+  .user_row .flex_row{
+    display: none;
+  }
 
-    .contact_sidebar{
-        width: calc(100% - 40px);
-    }
-    .contact_container{
-        width: calc(100% - 40px);
-    }
-    .contact {
-        width: 100%;
-    }
+  .add_button{
+    display: flex !important; 
+  }
+
+  .add_new_contact {
+    display: none;
+  }
+  
+  .contact_headline {
+    display: none;
+    margin-left: 0;
+  }
+
+  .contact_content {
+    display: none;
+    margin: 0;
+  }
+
+  .contact_sidebar {
+    width: calc(100% - 40px);
+  }
+  .contact_container {
+    width: calc(100% - 40px);
+  }
+  .contact {
+    width: 100%;
+  }
 }
-
 
 @media (max-width: 450px) {
-    .contact_sidebar {
-        padding: 10px 10px;
-    }
-    .contact {
-        padding: 10px 10px;
-    }
+  .contact_sidebar {
+    padding: 10px 10px;
+  }
+  .contact {
+    padding: 10px 10px;
+  }
 
-    .contact_sidebar{
-        width: calc(100% - 20px);
-    }
-    .contact_container{
-        width: calc(100% - 20px);
+  .contact_sidebar {
+    width: calc(100% - 20px);
+    height: calc(100% - 250px);
+  }
+  .contact_container {
+    width: calc(100% - 20px);
+  }
+  .side-panel {
+    height: 10%;
+  }
+
+  .contact h2 {
+    font-size: 1.2em;
+  }
+  .profil_badge {
+    min-width: 42px;
+    min-height: 42px;
+  }
+
+  .contact a {
+    font-size: 0.8em;
+  }
 }
-    .side-panel {
-        height: 10%;
-    }
 
-    .contact h2{
-        font-size: 1.2em;
-    }
-    .profil_badge {
-        min-width: 42px;
-        min-height: 42px;
-    }
+/*responsiveness für die add Contact Card*/
+@media (max-width: 950px) {
+  .card_template {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 12% - 100px);
+    width: 90%;
+  }
 
-    .contact a{
-        font-size: 0.8em;
-    }
+  .left_collumn {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    background-color: rgb(42, 54, 71);
+    padding: 100px 32px;
+    border-radius: 20px 0 0 20px;
+    justify-content: center;
+    width: auto;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .card_template .flex_row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .empty_user_img {
+    margin-top: -60px;
+  }
+
+  .contact_details_collumn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
 }
+
+.add_button {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgb(42, 54, 71);
+  min-width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  position: fixed;
+  right: 20px;
+  bottom: 150px;
+  width: 46px;
+  z-index: 1;
+}
+
