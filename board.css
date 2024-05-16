@@ -238,7 +238,7 @@
     position: fixed;
     right: -5000px; 
     width: 80%; 
-    height: 60%; 
+    height: 650px; 
     background-color: white; 
     transition: right 0.8s ease; 
     z-index: 9999; 
@@ -254,7 +254,7 @@
 .containerForDetailsTask {
     display: none; 
     position: fixed;
-    width: 32%;
+    width: 325px;
     height: 80%;
     top: 50%;
     left: 50%;
@@ -276,10 +276,118 @@
 .assignetToDetailsContainer {
     display: flex;
     flex-direction: column;
+    align-items: flex-start;
+    margin: 0;
+    margin-top: 8px;
+    gap: 8px;
+    p {
+        margin: 0;
+    }
 }
 
 .insideContinerForDetailTask {
     display: flex;
     flex-direction: column;
     gap: 8px;
+    height: 100%;
+}
+
+.textAssignetToDetails {
+    color: rgb(42,54,71);
+}
+
+.createTasksContainer:hover {
+    cursor: pointer;
+} 
+
+.createTaskTitleDetails {
+    font-size: xxx-large;
+    font-weight: 700;
+    margin: 0;
+}
+
+.createTaskDescriptionDetails {
+    margin: 0;
+    margin-top: 8px;
+}
+
+.dueDateDetails {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 16px;
+    margin: 0;
+    margin-top: 8px;
+    p {
+        margin: 0;
+    }
+}
+
+.textDueDateDetails {
+    color: rgb(42,54,71);
+}
+
+.priorityDetails {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 32px;
+    margin: 0;
+    margin-top: 8px;
+    p {
+        margin: 0;
+    }
+}
+
+.testPriorityDetails {
+    color: rgb(42,54,71);
+}
+
+.subtasksDetails {
+    margin-top: 16px;
+}
+
+.subtaskTextDetails {
+    color: rgb(42,54,71);
+}
+
+.deleteAndEditContainer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+    img {
+        height: 14px;
+    }
+}
+
+.ContainerImgAndText {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    p {
+        color: rgb(42,54,71);
+    }
+}
+
+.middleLine {
+    width: 1px;
+    height: 14px;
+    box-shadow: 0 0 10px rgba(42, 54, 71, 0.2);
+    background-color: rgb(209,209,209);
+}
+
+.progress-bar-container {
+    width: 100%;
+    background-color: #e0e0e0;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.progress-bar {
+    height: 20px;
+    background-color: #76c7c0;
+    border-radius: 5px;
+    transition: width 0.3s;
 }

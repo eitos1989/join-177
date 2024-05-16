@@ -90,7 +90,12 @@ function changePriority(color) {
     const priority = getPriority(); 
     const category = document.getElementById('dropdownContent').value;
     const subtasksInput = document.getElementById('Subtasks');
-    const subtasks = Array.from(document.querySelectorAll('#subtaskList li')).map(li => li.textContent.trim()).filter(task => task !== ''); 
+    
+    // Subtasks in das erforderliche Format umwandeln
+    const subtasks = Array.from(document.querySelectorAll('#subtaskList li')).map(li => ({
+        name: li.textContent.trim(),
+        completed: false
+    })).filter(subtask => subtask.name !== '');
 
     const taskId = Date.now().toString();
 

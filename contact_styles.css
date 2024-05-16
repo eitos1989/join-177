@@ -272,11 +272,6 @@ a {
   animation: slide-out 125ms forwards;
 }
 
-.active {
-  background-color: rgb(42, 54, 71); 
-  color: white;
-}
-
 .button_succesful{
   background-color: #2A3647;
   padding: 24px 8px;
