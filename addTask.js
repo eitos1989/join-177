@@ -1,101 +1,101 @@
-let taskIdCounter = 0; 
+let taskIdCounter = 0;
 
 function changePriority(color) {
     resetButtons();
     if (color === 'red') {
-      ifColorRed();
+        ifColorRed();
     } else if (color === 'orange') {
-      ifColorOrange();
+        ifColorOrange();
     } else if (color === 'green') {
-      ifColorGreen();
+        ifColorGreen();
     }
-  }
-  
-  function ifColorRed() {
+}
+
+function ifColorRed() {
     let redButton = document.getElementById('redButton');
     redButton.style.backgroundColor = "red";
     redButton.style.color = "white";
-    redButton.querySelector("img").src = "./img/angles-up-solid-2.svg"; 
-  }
-  
-  function ifColorOrange() {
+    redButton.querySelector("img").src = "./img/angles-up-solid-2.svg";
+}
+
+function ifColorOrange() {
     let orangeButton = document.getElementById('orangeButton');
     orangeButton.style.backgroundColor = "orange";
     orangeButton.style.color = "white";
-    orangeButton.querySelector("img").src = "./img/grip-lines-solid-2.svg"; 
-  }
-  
-  function ifColorGreen() {
+    orangeButton.querySelector("img").src = "./img/grip-lines-solid-2.svg";
+}
+
+function ifColorGreen() {
     let greenButton = document.getElementById('greenButton');
     greenButton.style.backgroundColor = "rgb(8,249,0)";
     greenButton.style.color = "white";
-    greenButton.querySelector("img").src = "./img/angles-down-solid-2.svg"; 
-  }
-  
-  function resetButtons() {
+    greenButton.querySelector("img").src = "./img/angles-down-solid-2.svg";
+}
+
+function resetButtons() {
     resetRedButton();
-  
     resetOrangeButton();
-  
     resetGreenButton();
-  }
-  
-  function resetRedButton() {
+}
+
+function resetRedButton() {
     let redButton = document.getElementById('redButton');
     redButton.style.backgroundColor = "";
     redButton.style.color = "black";
-    redButton.querySelector("img").src = "./img/angles-up-solid.svg"; 
-  }
-  
-  function resetOrangeButton() {
+    redButton.querySelector("img").src = "./img/angles-up-solid.svg";
+}
+
+function resetOrangeButton() {
     let orangeButton = document.getElementById('orangeButton');
     orangeButton.style.backgroundColor = "";
     orangeButton.style.color = "black";
-    orangeButton.querySelector("img").src = "./img/grip-lines-solid.svg"; 
-  }
-  
-  function resetGreenButton() {
+    orangeButton.querySelector("img").src = "./img/grip-lines-solid.svg";
+}
+
+function resetGreenButton() {
     let greenButton = document.getElementById('greenButton');
     greenButton.style.backgroundColor = "";
     greenButton.style.color = "black";
-    greenButton.querySelector("img").src = "./img/angles-down-solid.svg"; 
-  }
+    greenButton.querySelector("img").src = "./img/angles-down-solid.svg";
+}
 
+const BASE_URL = "https://contact-storage-f1196-default-rtdb.europe-west1.firebasedatabase.app/";
 
-  const BASE_URL = "https://contact-storage-f1196-default-rtdb.europe-west1.firebasedatabase.app/";
+async function putData(path = "", data = {}) {
+    try {
+        const response = await fetch(BASE_URL + path + ".json", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data)
+        });
+        const responseAsJson = await response.json();
+        console.log(responseAsJson);
+        return responseAsJson;
+    } catch (error) {
+        console.error('Error putting data: ', error);
+        throw error;
+    }
+}
 
-  async function putData(path = "", data = {}) {
-      try {
-          const response = await fetch(BASE_URL + path + ".json", {
-              method: "POST",
-              headers: {
-                  "Content-Type": "application/json",
-              },
-              body: JSON.stringify(data)
-          });
-          const responseAsJson = await response.json();
-          console.log(responseAsJson);
-          return responseAsJson;
-      } catch (error) {
-          console.error('Error putting data: ', error);
-          throw error;
-      }
-  }
-  
-  async function createTask() {
+async function createTask() {
     const title = document.getElementById('title').value;
     const description = document.getElementById('description').value;
     const assignedTo = document.getElementById('AssignedTo').value;
     const dueDate = document.getElementById('gebdat').value;
-    const priority = getPriority(); 
+    const priority = getPriority();
     const category = document.getElementById('dropdownContent').value;
-    const subtasksInput = document.getElementById('Subtasks');
     
-    // Subtasks in das erforderliche Format umwandeln
     const subtasks = Array.from(document.querySelectorAll('#subtaskList li')).map(li => ({
         name: li.textContent.trim(),
         completed: false
     })).filter(subtask => subtask.name !== '');
+
+    const assignedContacts = selectedContacts.map(contact => ({
+        name: contact.name,
+        color: contact.color
+    }));
 
     const taskId = Date.now().toString();
 
@@ -107,7 +107,8 @@ function changePriority(color) {
         dueDate: dueDate,
         priority: priority,
         category: category,
-        subtasks: subtasks 
+        subtasks: subtasks,
+        assignedContacts: assignedContacts 
     };
 
     try {
@@ -121,18 +122,18 @@ function changePriority(color) {
     }
 }
 
-  async function getData(path = "") {
-      try {
-          const response = await fetch(BASE_URL + path + ".json");
-          const data = await response.json();
-          return data;
-      } catch (error) {
-          console.error('Error getting data: ', error);
-          throw error;
-      }
-  }
+async function getData(path = "") {
+    try {
+        const response = await fetch(BASE_URL + path + ".json");
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error getting data: ', error);
+        throw error;
+    }
+}
 
-  function getPriority() {
+function getPriority() {
     const redButton = document.getElementById('redButton');
     const orangeButton = document.getElementById('orangeButton');
     const greenButton = document.getElementById('greenButton');
@@ -144,80 +145,78 @@ function changePriority(color) {
     } else if (greenButton.style.backgroundColor === 'rgb(8, 249, 0)') {
         return 'low';
     } else {
-        return ''; 
+        return '';
     }
 }
 
 document.addEventListener("DOMContentLoaded", function() {
-  const addButton = document.querySelector('.inputWithButton');
+    const addButton = document.querySelector('.inputWithButton');
 
-  addButton.addEventListener('click', function() {
-      const inputField = document.getElementById('Subtasks');
-      const subtaskValue = inputField.value.trim();
-      
-      if (subtaskValue !== '') {
-          addSubtask(subtaskValue);
-          inputField.value = ''; 
-      }
-  });
+    addButton.addEventListener('click', function() {
+        const inputField = document.getElementById('Subtasks');
+        const subtaskValue = inputField.value.trim();
+        
+        if (subtaskValue !== '') {
+            addSubtask(subtaskValue);
+            inputField.value = '';
+        }
+    });
 });
 
 function addSubtask(subtask) {
-  const subtaskList = document.getElementById('subtaskList');
-  const newSubtask = document.createElement('li');
+    const subtaskList = document.getElementById('subtaskList');
+    const newSubtask = document.createElement('li');
 
-  newSubtask.innerHTML = `
-    <div style="display: flex; justify-content: space-between;">
-      <div>${subtask}</div>
-      <div>
-        <img src="./img/delete.png" style="margin-right: 5px; height: 12px;">
-        <img src="./img/edit.png" style="margin-right: 5px; height: 12px;">
-      </div>
-    </div>
-  `;
+    newSubtask.innerHTML = `
+        <div style="display: flex; justify-content: space-between;">
+            <div>${subtask}</div>
+            <div>
+                <img src="./img/delete.png" style="margin-right: 5px; height: 12px;">
+                <img src="./img/edit.png" style="margin-right: 5px; height: 12px;">
+            </div>
+        </div>
+    `;
 
-  subtaskList.appendChild(newSubtask);
+    subtaskList.appendChild(newSubtask);
 }
 
 function replaceAddButton() {
-  const inputWithButtonContainer = document.getElementById('inputWithButtonContainer');
-  inputWithButtonContainer.innerHTML = `
-      <input placeholder="Add new subtask" type="text" id="Subtasks" name="Subtasks" class="inputWithButton">
-      <img class="vectorImg1" src="./img/VectorBlack.png" onclick="clearSubtasks()">
-      <div class="divider"></div>
-      <img class="vectorImg2" src="./img/Vector 17.png" onclick="addSubtaskToList()">
-  `;
+    const inputWithButtonContainer = document.getElementById('inputWithButtonContainer');
+    inputWithButtonContainer.innerHTML = `
+        <input placeholder="Add new subtask" type="text" id="Subtasks" name="Subtasks" class="inputWithButton">
+        <img class="vectorImg1" src="./img/VectorBlack.png" onclick="clearSubtasks()">
+        <div class="divider"></div>
+        <img class="vectorImg2" src="./img/Vector 17.png" onclick="addSubtaskToList()">
+    `;
 }
 
 function addSubtaskToList() {
-  const inputField = document.getElementById('Subtasks');
-  const subtaskValue = inputField.value.trim();
-  
-  if (subtaskValue !== '') {
-      addSubtask(subtaskValue);
-      clearSubtasks(); 
-  }
+    const inputField = document.getElementById('Subtasks');
+    const subtaskValue = inputField.value.trim();
+    
+    if (subtaskValue !== '') {
+        addSubtask(subtaskValue);
+        clearSubtasks();
+    }
 }
 
 function clearSubtasks() {
-  const inputField = document.getElementById('Subtasks');
-  inputField.value = '';
-  chanceButton();
+    const inputField = document.getElementById('Subtasks');
+    inputField.value = '';
+    chanceButton();
 }
 
 function chanceButton() {
-  const inputWithButtonContainer = document.getElementById('inputWithButtonContainer');
-  inputWithButtonContainer.innerHTML = `
-    <input onclick="replaceAddButton()" placeholder="Add new subtask" type="text" id="Subtasks" name="Subtasks" class="inputWithButton">
-    <img class="addButtonSubtask" id="addBlack" src="./img/addBlack.png" onclick="replaceAddButton()">
-  `;
+    const inputWithButtonContainer = document.getElementById('inputWithButtonContainer');
+    inputWithButtonContainer.innerHTML = `
+        <input onclick="replaceAddButton()" placeholder="Add new subtask" type="text" id="Subtasks" name="Subtasks" class="inputWithButton">
+        <img class="addButtonSubtask" id="addBlack" src="./img/addBlack.png" onclick="replaceAddButton()">
+    `;
 }
 
 function clearTask() {
-  location.reload();
+    location.reload();
 }
-
-//add contacts to assigned to field
 
 const selectedContacts = [];
 
@@ -233,7 +232,7 @@ function showContacts() {
                         let contact = data[key];
                         let badge = createContactBadge(contact);
                         let contactName = contact.name;
-                        contactListHTML += `<li class="contactBadge" onclick='toggleContact("${contactName}")'>${badge.outerHTML}<span>${contactName}</span></li>`
+                        contactListHTML += `<li class="contactBadge" onclick='toggleContact("${contactName}", "${contact.color}")'>${badge.outerHTML}<span>${contactName}</span></li>`
                     }
                 }
                 contactListHTML += "</ul>";
@@ -246,10 +245,10 @@ function showContacts() {
     }
 }
 
-function toggleContact(contactName) {
-    let index = selectedContacts.indexOf(contactName);
+function toggleContact(contactName, contactColor) {
+    let index = selectedContacts.findIndex(contact => contact.name === contactName);
     if (index === -1) {
-        selectedContacts.push(contactName);
+        selectedContacts.push({ name: contactName, color: contactColor });
     } else {
         selectedContacts.splice(index, 1);
     }
@@ -257,7 +256,8 @@ function toggleContact(contactName) {
 }
 
 function updateAssignedToInput() {
-    document.getElementById("AssignedTo").value = selectedContacts.join(", ");
+    const contactNames = selectedContacts.map(contact => contact.name);
+    document.getElementById("AssignedTo").value = contactNames.join(", ");
 }
 
 function createContactBadge(contact) {
@@ -270,7 +270,22 @@ function createContactBadge(contact) {
         } else if (names.length === 1) {
             badge.textContent = names[0][0].toUpperCase();
         }
-        badge.style.backgroundColor = contact.color; 
+        badge.style.backgroundColor = contact.color;
     }
     return badge;
+}
+
+function checkFormValidity() {
+    const form = document.getElementById('addTaskForm');
+    const createTaskButton = document.getElementById('createTaskButton');
+
+    form.addEventListener('input', () => {
+        createTaskButton.disabled = !form.checkValidity();
+    });
+}
+
+function clearTask() {
+    const form = document.getElementById('addTaskForm');
+    form.reset();
+    document.getElementById('createTaskButton').disabled = true;
 }

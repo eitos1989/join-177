@@ -18,7 +18,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 </head>
-<body onload="includeSidepanelHTML()">
+<body onload="includeSidepanelHTML(); checkFormValidity()">
     <div class="container">
         <div class="sidepanelContainer" w3-include-html="./sidepanel.html"></div>
         <div id="completeRightContainer" class="completeRightContainer">
@@ -26,7 +26,7 @@
         <div id="containerForBoardSide">
         <div class="rightContainerWithoutHeadline">    
             <h1 class="headlineAddTask">Add Task</h1>
-            <div class="addTaskContainer">
+            <fomr class="addTaskContainer">
                 <div class="addTaskLeftSide">   
                     <div class="inputContainerTitle">
                         <label for="title">Title<span class="required">*</span></label>
@@ -80,12 +80,12 @@
                 <div class="createTask">
                     <p class="requiredInfo"><span class="required">*</span>This field is required</p>
                     <div class="createTaskButtons">
-                        <button onclick="clearTask()" class="clearButton">Clear <img src="./img/VectorBlack.png"></button>
-                        <button onclick="createTask()" class="createTaskButton">Create Task <img src="./img/check.png"></button>
+                        <button type="button" onclick="clearTask()" class="clearButton">Clear <img src="./img/VectorBlack.png"></button>
+                        <button type="submit" onclick="createTask()" class="createTaskButton">Create Task <img src="./img/check.png"></button>
                     </div>
                 </div>
             </section>
-        </div>
+        </form>    
         </div>
     </div>
 </body>

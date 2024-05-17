@@ -41,12 +41,24 @@ async function displayTasks() {
                     `;
                 }
 
+                let assignedContactsHTML = '';
+                if (task.assignedContacts && task.assignedContacts.length > 0) {
+                    assignedContactsHTML = task.assignedContacts.map(contact => `
+                        <div class="profil_badge" style="background-color: ${contact.color};">
+                            ${getInitials(contact.name)}
+                        </div>
+                    `).join('');
+                }
+
                 taskElement.innerHTML = `
                     <p class="createTaskCategory ${categoryClass}" style="background-color: ${task.category === 'Technical Task' ? 'rgb(32,215,193)' : (task.category === 'User Story' ? 'rgb(0,56,255)' : 'white')}">${task.category}</p>
                     <h3 class="createTaskTitle">${task.title}</h3>
                     <p class="createTaskDescription">${task.description}</p>
                     <div class="subtasks">${progressBarHTML}</div>
-                    <p>${task.assignedTo}</p>
+                    <div class="contactsAndPriority">
+                        <div class="assignedContacts">${assignedContactsHTML}</div>
+                        <div class="priorityImage"></div>
+                    <div>    
                     <div class="taskID" id="${taskId}"></div>
                 `;
                 taskElement.dataset.task = JSON.stringify(task); 
@@ -57,6 +69,16 @@ async function displayTasks() {
     } catch (error) {
         console.error('Fehler beim Anzeigen der Aufgaben: ', error);
     }
+}
+
+function getInitials(name) {
+    const names = name.split(" ");
+    if (names.length > 1) {
+        return names[0][0].toUpperCase() + names[1][0].toUpperCase();
+    } else if (names.length === 1) {
+        return names[0][0].toUpperCase();
+    }
+    return "";
 }
 
 function checkContainers() {
@@ -129,6 +151,18 @@ function detailsFromTask(index) {
         subtasksHTML += '</ul>';
     }
 
+    let assignedContactsHTML = '';
+    if (task.assignedContacts && task.assignedContacts.length > 0) {
+        assignedContactsHTML = task.assignedContacts.map(contact => `
+            <div class="contact-details">
+                <div class="profil_badge" style="background-color: ${contact.color};">
+                    ${getInitials(contact.name)}
+                </div>
+                <span class="contact-name">${contact.name}</span>
+            </div>
+        `).join('');
+    }
+
     containerForDetailsTask.innerHTML = `
         <div class="insideContinerForDetailTask">
             <div class="categoryLineDetailsTask">
@@ -147,7 +181,7 @@ function detailsFromTask(index) {
             </div>
             <div class="assignetToDetailsContainer">
                 <p class="textAssignetToDetails">Assigned To:</p>
-                <div>${task.assignedTo}</div>
+                <div class="assignedContactsDetails">${assignedContactsHTML}</div>
             </div>
             <div class="subtasksDetails">
                 <p class="subtaskTextDetails">Subtasks</p>
@@ -155,18 +189,28 @@ function detailsFromTask(index) {
             </div>
             <div class="taskID" id="${task.taskId}"></div>
             <div class="deleteAndEditContainer">
-                <div class="ContainerImgAndText">
+                <button class="containerImgAndText" onclick="deleteTask('${task.id}')">
                     <img src="./img/delete.png">
                     <p>Delete</p>
-                </div>
+                </button>
                 <div class="middleLine"></div>
-                <div class="ContainerImgAndText">
+                <button class="containerImgAndText">
                     <img src="./img/edit.png">
                     <p>Edit</p>
-                </div>
+                </button>
             </div>
         </div>
     `;
+}
+
+function getInitials(name) {
+    const names = name.split(" ");
+    if (names.length > 1) {
+        return names[0][0].toUpperCase() + names[1][0].toUpperCase();
+    } else if (names.length === 1) {
+        return names[0][0].toUpperCase();
+    }
+    return "";
 }
 
 async function toggleSubtask(taskIndex, subtaskIndex) {
@@ -175,12 +219,11 @@ async function toggleSubtask(taskIndex, subtaskIndex) {
 
     task.subtasks[subtaskIndex].completed = !task.subtasks[subtaskIndex].completed;
 
-    // Aktualisiere die Daten in der API
     await updateTask(task.id, task);
 
     taskElement.dataset.task = JSON.stringify(task);
-    updateSubtasksInDetails(taskIndex, task.subtasks); // Aktualisiert nur die Liste der Subaufgaben in der Detailansicht
-    await displayTasks(); // Aktualisiert die Hauptaufgabenliste
+    updateSubtasksInDetails(taskIndex, task.subtasks); 
+    await displayTasks(); 
 }
 
 function updateSubtasksInDetails(taskIndex, subtasks) {
@@ -208,4 +251,30 @@ function updateSubtasksInDetails(taskIndex, subtasks) {
 function removeDetailsFromTask() {
     let containerForDetailsTask = document.getElementById('containerForDetailsTask');
     containerForDetailsTask.style.display = 'none';
+}
+
+async function deleteData(path = "") {
+    try {
+        const response = await fetch(BASE_URL + path + ".json", {
+            method: 'DELETE'
+        });
+        if (response.ok) {
+            console.log('Data deleted successfully.');
+        } else {
+            throw new Error('Failed to delete data.');
+        }
+    } catch (error) {
+        console.error('Error deleting data: ', error);
+        throw error;
+    }
+}
+
+async function deleteTask(taskId) {
+    try {
+        await deleteData("tasks/" + taskId);
+        console.log('Task deleted successfully.');
+        // Hier kannst du weitere Aktionen ausführen, z.B. die Ansicht aktualisieren
+    } catch (error) {
+        console.error('Error deleting task: ', error);
+    }
 }
