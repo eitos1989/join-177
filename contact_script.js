@@ -183,7 +183,7 @@ function updateContactDetails(contact) {
   contactContent.innerHTML = renderContactDetails(contact);
   updateActiveContact(contact);
 
-  if (window.innerWidth <= 780) {
+  if (window.innerWidth <= 810) {
     toggleContactView(contact);
   }
 }
@@ -209,7 +209,7 @@ function toggleContactView() {
 
   
 
-  if (window.innerWidth <= 768) {
+  if (window.innerWidth <= 810) {
     if (!contactContainer.classList.contains("d-none")) {
       contactContainer.classList.add("d-none");
       contactContent.classList.add("d-block");

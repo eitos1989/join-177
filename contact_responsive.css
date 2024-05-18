@@ -8,6 +8,12 @@
     width: 200px;
     height: 4px;
     border-radius: 2px;
+    margin: 10px 0;
+  }
+  .empty_user_img {
+    width: 100px;
+    height: 100px;
+    margin: 0 10px;
   }
 }
 
@@ -80,33 +86,77 @@
     margin-left: 390px;
     display: flex;
     flex-direction: column;
-    padding: 40px;
+    padding: 20px 40px;
     overflow-x: hidden;
   }
 }
 
-@media (max-width: 810px) {
-
-  .user_row .flex_row{
-    display: none;
+/*responsiveness für die add Contact Card*/
+@media (max-width: 950px) {
+  .card_template {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 12% - 100px);
+    width: 90%;
   }
 
-  .add_button{
-    display: flex !important; 
+  .left_collumn {
+    display: flex;
+    flex-direction: column;
+    color: white;
+    background-color: rgb(42, 54, 71);
+    padding: 80px 32px;
+    border-radius: 20px 0 0 20px;
+    justify-content: center;
+    width: auto;
+    border-radius: 20px 20px 0 0;
+  }
+
+  .card_template .flex_row {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0px;
+  }
+  .empty_user_img {
+    margin-top: -50px;
+  }
+
+  .contact_details_collumn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+}
+
+@media (max-width: 810px) {
+  .user_row {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+  }
+
+  .add_button {
+    display: flex !important;
   }
 
   .add_new_contact {
     display: none;
   }
-  
+
   .contact_headline {
     display: none;
     margin-left: 0;
+    max-width: 200px;
   }
 
   .contact_content {
     display: none;
     margin: 0;
+    overflow-y: hidden;
   }
 
   .contact_sidebar {
@@ -117,6 +167,62 @@
   }
   .contact {
     width: 100%;
+  }
+  /* animation for succesfull button*/
+  .button_succesful {
+    animation: slideIn 1.25s forwards, slideOut 0.5s 1.5s forwards;
+    width: 280px;
+    margin-top: -100px;
+    margin-bottom: 200px;
+  }
+
+  @keyframes slideIn {
+    0% {
+      transform: translateY(200vh) scale(0.5); /* Start from below and scaled down */
+      opacity: 0;
+    }
+    100% {
+      transform: translateY(0) scale(1); /* End at the top and scale to normal */
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideOut {
+    0% {
+      transform: translateY(0) scale(1); /* Start at the top and normal scale */
+      opacity: 1;
+    }
+    100% {
+      transform: translateY(200vh) scale(0.5); /* End below and scaled down */
+      opacity: 0;
+    }
+  }
+
+  .add_button {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgb(42, 54, 71);
+    min-width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    position: fixed;
+    right: 20px;
+    bottom: 150px;
+    width: 46px;
+    z-index: 1;
+    border: 1px solid white;
+  }
+}
+
+@media (max-width: 550px) {
+  .contact_headline {
+    padding: 12px 12px;
+  }
+
+  .contact_content {
+    padding: 0 12px;
   }
 }
 
@@ -150,60 +256,27 @@
   .contact a {
     font-size: 0.8em;
   }
-}
-
-/*responsiveness für die add Contact Card*/
-@media (max-width: 950px) {
-  .card_template {
-    display: flex;
-    flex-direction: column;
-    height: calc(100% - 12% - 100px);
-    width: 90%;
+  .left_collumn img {
+    height: 44px;
+    width: 28px;
+  }
+  .left_collumn h1 {
+    margin: 0;
+    font-size: 32px;
   }
 
-  .left_collumn {
-    display: flex;
-    flex-direction: column;
-    color: white;
-    background-color: rgb(42, 54, 71);
-    padding: 100px 32px;
-    border-radius: 20px 0 0 20px;
-    justify-content: center;
-    width: auto;
-    border-radius: 20px 20px 0 0;
+  .left_collumn h3 {
+    margin: 0.5em 0;
+    font-size: 20px;
   }
 
-  .card_template .flex_row {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-  }
   .empty_user_img {
-    margin-top: -60px;
+    width: 100px;
+    height: 100px;
   }
 
-  .contact_details_collumn {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
+  .contact_headline {
+    margin-top: 0;
+
   }
 }
-
-.add_button {
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: rgb(42, 54, 71);
-  min-width: 46px;
-  height: 46px;
-  border-radius: 50%;
-  position: fixed;
-  right: 20px;
-  bottom: 150px;
-  width: 46px;
-  z-index: 1;
-}
-

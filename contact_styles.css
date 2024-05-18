@@ -176,7 +176,7 @@ body {
   flex-direction: column;
   padding: 40px;
   overflow-x: hidden;
-
+  border: none !important;
 }
 
 

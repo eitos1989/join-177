@@ -49,7 +49,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 95%;
+
 }
 .contact_details_collumn input {
   font-size: 16px;
@@ -142,7 +142,7 @@ form {
 }
 
 .input-with-image input {
-  width: 80%;
+  min-width: 250px;
   padding-right: 24px; /* Make room for the image */
   position: relative;
   z-index: 1;
@@ -152,7 +152,7 @@ form {
   content: '';
   position: absolute;
   top: 50%;
-  right: calc(20% + 8px); /* 20% ist der verbleibende Platz, 24px ist die Breite des Bildes */
+  right: calc(8px); /* 20% ist der verbleibende Platz, 24px ist die Breite des Bildes */
   width: 24px;
   height: 24px;
   background: url('./img/person_input.svg') no-repeat;
@@ -166,7 +166,7 @@ form {
 }
 
 .input-with-image_1 input {
-  width: 80%;
+  min-width: 250px;
   padding-right: 24px; /* Make room for the image */
   position: relative;
   z-index: 1;
@@ -176,7 +176,7 @@ form {
   content: '';
   position: absolute;
   top: 50%;
-  right: calc(20% + 8px); /* 20% ist der verbleibende Platz, 24px ist die Breite des Bildes */
+  right: calc(8px); 
   width: 24px;
   height: 24px;
   background: url('./img/mail.svg') no-repeat;
@@ -190,8 +190,8 @@ form {
 }
 
 .input-with-image_2 input {
-  width: 80%;
-  padding-right: 24px; /* Make room for the image */
+  min-width: 250px;
+  padding-right: 24px; 
   position: relative;
   z-index: 1;
 }
@@ -200,7 +200,7 @@ form {
   content: '';
   position: absolute;
   top: 50%;
-  right: calc(20% + 8px); /* 20% ist der verbleibende Platz, 24px ist die Breite des Bildes */
+  right: calc(8px); 
   width: 24px;
   height: 24px;
   background: url('./img/call.svg') no-repeat;
