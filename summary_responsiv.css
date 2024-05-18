@@ -126,8 +126,12 @@
   .middle_card img {
     width: 45px;
     height: 45px;
-  
   }
+
+  .upper_card img {
+    width: 40px;
+    height: 40px;
+}
 }
 
 @media (max-width: 420px) {

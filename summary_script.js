@@ -37,3 +37,24 @@ function greetUser() {
 
 document.getElementById("greet").innerHTML = greeting;
 }
+
+function checkViewportWidth() {
+  if (window.innerWidth < 1440) {
+    showGreetingAnimation();
+    console.log("Viewport width is less than 768px");
+  } else {
+    let hideoverlay = document.getElementById("greetingOverlay");
+    hideoverlay.classList.add("d-none");
+    console.log("works");
+  }
+}
+
+function showGreetingAnimation() {
+
+  const overlay = document.getElementById('greetingOverlay');
+  overlay.style.display = 'flex'; 
+  overlay.classList.add('fade-out-animation');
+  overlay.addEventListener('animationend', () => {
+    overlay.style.display = 'none';
+  });
+}

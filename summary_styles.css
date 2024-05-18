@@ -187,13 +187,13 @@ h2 {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* Add your greeting styles here */
+
 }
 
 .mid_flex {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start; /* Add this to align the middle card and the greeting at the top */
+  align-items: flex-start; 
 }
 
 #greet {
@@ -205,3 +205,33 @@ h2 {
   color: rgb(41, 171, 226);
 }
 
+/*Usergreeting*/
+
+#greetingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeOutAnimation 1s forwards; 
+  animation-delay: 0.8s;
+}
+
+#greetingText {
+  font-size: 24px; 
+}
+
+@keyframes fadeOutAnimation {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+.d-none {
+  display: none !important;
+}
