@@ -55,7 +55,7 @@ function updateSubtasksInDetails(taskIndex, subtasks) {
         ${subtasksHTML}
     `;
 
-    updateProgressBar(taskElement, subtasks); 
+    updateProgressBar(taskElement, subtasks);
 }
 
 function updateProgressBar(taskElement, subtasks) {
@@ -81,7 +81,7 @@ function updateProgressBar(taskElement, subtasks) {
 
 async function displayTasks() {
     try {
-        tasks = await getData("tasks"); // Daten in tasks speichern
+        tasks = await getData("tasks"); 
         console.log("Tasks from database:", tasks);
         const container = document.getElementById('newTask');
         
@@ -126,7 +126,28 @@ function createTaskElement(task, taskId, index) {
     `;
 
     taskElement.dataset.task = JSON.stringify(task);
+
+    taskElement.addEventListener('dragstart', function(event) {
+        event.dataTransfer.setData('text/plain', taskId);
+    });
+
     return taskElement;
+}
+
+function drag(event) {
+    event.dataTransfer.setData('text', event.target.id);
+}
+
+function drop(event, containerId) {
+    event.preventDefault();
+    var data = event.dataTransfer.getData('text');
+    var draggableElement = document.getElementById(data);
+    var container = document.getElementById(containerId);
+    container.appendChild(draggableElement);
+}
+
+function allowDrop(event) {
+    event.preventDefault();
 }
 
 function getPriorityImageSrc(priority) {
@@ -191,44 +212,61 @@ function detailsFromTask(index) {
     const subtasksHTML = generateSubtasksHTML(task.subtasks, index);
     const assignedContactsHTML = getAssignedContactsHTML(task.assignedContacts);
 
+    function getAssignedContactsHTML(assignedContacts) {
+        if (assignedContacts && assignedContacts.length > 0) {
+            return assignedContacts.map(contact => `
+                <div class="profil_badge_container">
+                    <div class="profil_badge" style="background-color: ${contact.color};">
+                        ${getInitials(contact.name)}
+                    </div>
+                    <div class="contact_name">${contact.name}</div>
+                </div>
+            `).join('');
+        }
+        return '';
+    }
+
     const taskDetailsHTML = `
-        <div class="insideContinerForDetailTask" id="task-${task.taskId}">
-            <div class="categoryLineDetailsTask">
-                <p class="createTaskCategory ${categoryClass}" style="background-color: ${categoryColor}">${task.category}</p>
-                <img class="removeIncludetHTML" onclick="removeDetailsFromTask()" src="./img/VectorBlack.png">
-            </div>
-            <h3 class="createTaskTitleDetails">${task.title}</h3>
-            <p class="createTaskDescriptionDetails">${task.description}</p>
-            <div class="dueDateDetails">
-                <p class="textDueDateDetails">Due date:</p>
-                <p>${task.dueDate}</p>
-            </div>
-            <div class="priorityDetails">
-                <p class="testPriorityDetails">Priority:</p>
-                <div>${task.priority}</div>
-            </div>
-            <div class="assignetToDetailsContainer">
-                <p class="textAssignetToDetails">Assigned To:</p>
-                <div class="assignedContactsDetails">${assignedContactsHTML}</div>
-            </div>
-            <div class="subtasksDetails">
-                <p class="subtaskTextDetails">Subtasks</p>
-                ${subtasksHTML}
-            </div>
-            <div class="taskID" id="${task.taskId}"></div>
-            <div class="deleteAndEditContainer">
-                <button class="containerImgAndText" onclick="deleteTask('${task.id}')">
-                    <img src="./img/delete.png">
-                    <p>Delete</p>
-                </button>
-                <div class="middleLine"></div>
-                <button class="containerImgAndText">
-                    <img src="./img/edit.png">
-                    <p>Edit</p>
-                </button>
+    <div class="insideContinerForDetailTask" id="task-${task.taskId}">
+        <div class="categoryLineDetailsTask">
+            <p class="createTaskCategory ${categoryClass}" style="background-color: ${categoryColor}">${task.category}</p>
+            <img class="removeIncludetHTML" onclick="removeDetailsFromTask()" src="./img/VectorBlack.png">
+        </div>
+        <h3 class="createTaskTitleDetails">${task.title}</h3>
+        <p class="createTaskDescriptionDetails">${task.description}</p>
+        <div class="dueDateDetails">
+            <p class="textDueDateDetails">Due date:</p>
+            <p>${task.dueDate}</p>
+        </div>
+        <div class="priorityDetails">
+            <p class="testPriorityDetails">Priority:</p>
+            <div class="priorityInDetails">
+                <img src="${getPriorityImageSrc(task.priority)}">
+                ${task.priority}
             </div>
         </div>
-    `;
+        <div class="assignetToDetailsContainer">
+            <p class="textAssignetToDetails">Assigned To:</p>
+            <div class="assignedContactsDetails">${assignedContactsHTML}</div>
+        </div>
+        <div class="subtasksDetails">
+            <p class="subtaskTextDetails">Subtasks</p>
+            ${subtasksHTML}
+        </div>
+        <div class="taskID" id="${task.taskId}"></div>
+        <div class="deleteAndEditContainer">
+            <button class="containerImgAndText" onclick="deleteTask('${task.id}')">
+                <img src="./img/delete.png">
+                <p>Delete</p>
+            </button>
+            <div class="middleLine"></div>
+            <button class="containerImgAndText">
+                <img src="./img/edit.png">
+                <p>Edit</p>
+            </button>
+        </div>
+    </div>
+`;
 
     const existingTaskDetails = containerForDetailsTask.querySelector(`#task-${task.taskId}`);
     if (!existingTaskDetails) {

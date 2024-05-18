@@ -299,7 +299,5 @@ function checkFormValidity() {
 }
 
 function clearTask() {
-    const form = document.getElementById('addTaskForm');
-    form.reset();
-    document.getElementById('createTaskButton').disabled = true;
+    location.reload();
 }

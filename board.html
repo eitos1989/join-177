@@ -27,53 +27,53 @@
             <div class="headerContainer" w3-include-html="./header.html"></div>
             <div class="containerForBoardSide" id="containerForBoardSide" w3-include-html="./containerForBoardSide.html"></div>
             <div class="rightContainerWithoutHeadline">       
-            <div class="headlineBoardSide">
-                <h1 class="headlineBoard">Board</h1>
-                <div class="rightSideHeadlineBoard">
-                    <div class="findTaskInputField">
-                        <input class="inputFieldFindTask" placeholder="Find Task"><button class="buttonFindTask"><img src="./img/search.png"></button>
-                    </div>
-                    <button class="addTaskButton" onclick="moveContainer()">Add Task <img src="./img/add.png"></button>    
-                </div>    
-            </div>
-            <div class="boradSide">
-                <div class="toDo">
-                    <div class="toDoHeadline">
-                        <h2>To do</h2><img onclick="moveContainer()" src="./img/plus button.png">
+                <div class="headlineBoardSide">
+                    <h1 class="headlineBoard">Board</h1>
+                    <div class="rightSideHeadlineBoard">
+                        <div class="findTaskInputField">
+                            <input class="inputFieldFindTask" placeholder="Find Task"><button class="buttonFindTask"><img src="./img/search.png"></button>
+                        </div>
+                        <button class="addTaskButton" onclick="moveContainer()">Add Task <img src="./img/add.png"></button>    
                     </div>    
-                    <div class="toDoContainer" id="toDoContainer">
-                        <div id="noTasksToDo" class="noTasksToDo">No tasks To do</div>
-                        <div id="newTask"></div>
+                </div>
+                <div class="boradSide">
+                    <div class="toDo">
+                        <div class="toDoHeadline">
+                            <h2>To do</h2><img onclick="moveContainer()" src="./img/plus button.png">
+                        </div>    
+                        <div class="toDoContainer" id="toDoContainer" ondrop="drop(event, 'toDoContainer')" ondragover="allowDrop(event)">
+                            <div id="noTasksToDo" class="noTasksToDo">No tasks To do</div>
+                            <div id="newTask" class="createTasksContainer" draggable="true" ondragstart="drag(event)">New Task</div>
+                        </div>
+                    </div>
+                    <div class="inProgress">
+                        <div class="inProgressHeadline">
+                            <h2>In progress</h2><img src="./img/plus button.png">
+                        </div>
+                        <div class="inProgressContainer" id="inProgressContainer" ondrop="drop(event, 'inProgressContainer')" ondragover="allowDrop(event)">
+                            <div id="noInProgress" class="noInProgress">No tasks in progress</div>
+                            <div id="newInProgress" class="createTasksContainer" draggable="true" ondragstart="drag(event)">New Task</div>
+                        </div>
+                    </div>
+                    <div class="awaitFeedback">
+                        <div class="awaitFeedbackHeadline">
+                            <h2>Await feedback</h2><img src="./img/plus button.png">
+                        </div>
+                        <div class="awaitFeedbackContainer" id="awaitFeedbackContainer" ondrop="drop(event, 'awaitFeedbackContainer')" ondragover="allowDrop(event)">
+                            <div id="noAwaitFeedback" class="noAwaitFeedback">No tasks await feedback</div>
+                            <div id="newAwaitFeedback" class="createTasksContainer" draggable="true" ondragstart="drag(event)">New Task</div>
+                        </div>
+                    </div>
+                    <div class="done">
+                        <div class="doneHeadline">
+                            <h2>Done</h2>
+                        </div>
+                        <div class="doneContainer" id="doneContainer" ondrop="drop(event, 'doneContainer')" ondragover="allowDrop(event)">
+                            <div id="noDone" class="noDone">No tasks done</div>
+                            <div id="newDone" class="createTasksContainer" draggable="true" ondragstart="drag(event)">New Task</div>
+                        </div>
                     </div>
                 </div>
-                <div class="inProgress">
-                    <div class="inProgressHeadline">
-                        <h2>In progress</h2><img src="./img/plus button.png">
-                    </div>
-                    <div class="inProgressContainer" id="inProgressContainer">
-                        <div id="noInProgress" class="noInProgress">No tasks in progress</div>
-                        <div id="newInProgress"></div>
-                    </div>
-                </div>
-                <div class="awaitFeedback">
-                    <div class="awaitFeedbackHeadline">
-                        <h2>Await feedback</h2><img src="./img/plus button.png">
-                    </div>
-                    <div class="awaitFeedbackContainer" id="awaitFeedbackContainer">
-                        <div id="noAwaitFeedback" class="noAwaitFeedback">No tasks await feedback</div>
-                        <div id="newAwaitFeedback"></div>
-                    </div>
-                </div>
-                <div class="done">
-                    <div class="doneHeadline">
-                        <h2>Done</h2>
-                    </div>
-                    <div class="doneContainer" id="doneContainer">
-                        <div id="noDone" class="noDone">No tasks done</div>
-                        <div id="newDone"></div>
-                    </div>
-                </div>
-            </div>
             </div>    
         </div>  
     </div>
