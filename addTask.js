@@ -115,7 +115,21 @@ async function createTask() {
         await putData("tasks", taskData);
         console.log('Task created successfully.');
 
-        await displayTasks();
+        const img = document.createElement('img');
+        img.src = './img/Added to back log V1.png';
+        img.id = 'addedToBacklogImg';
+        document.body.appendChild(img);
+
+        // Trigger layout-Berechnung
+        img.offsetHeight;
+
+        // Bewege das Bild von unten in die Mitte
+        img.style.bottom = '50%';
+
+        // Leite zur Seite board.html weiter
+        setTimeout(() => {
+            window.location.href = 'board.html';
+        }, 2000); // Ändere die Zeit nach Bedarf
 
     } catch (error) {
         console.error('Error creating task: ', error);

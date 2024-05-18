@@ -232,6 +232,7 @@
 
 .rightContainerWithoutHeadline {
     margin-left: 72px;
+    background-color: rgb(246,247,248);
 }
 
 .containerForBoardSide {
@@ -241,7 +242,8 @@
     height: 650px; 
     background-color: white; 
     transition: right 0.8s ease; 
-    z-index: 9999; 
+    z-index: 9999;
+    background-color: rgb(246,247,248); 
 }
 
 .showContainer {
@@ -432,4 +434,16 @@
     align-items: center;
     margin-bottom: 5px; 
     gap: 4px;
+}
+
+.contactsAndPriority {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+}
+
+.priorityImage {
+    img {
+        height: 20px;
+    }
 }
