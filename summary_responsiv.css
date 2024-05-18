@@ -1,0 +1,154 @@
+@media (min-width: 1800px) {
+  .content_container {
+    width: 50%;
+  }
+}
+
+@media (min-width: 1440px) {
+  .content_container {
+    width: 65%;
+  }
+}
+
+@media (max-width: 1440px) {
+  .headline {
+    padding: 0 20px;
+  }
+  .main_container {
+    padding-left: 20px;
+  }
+  .greeting {
+    display: none;
+  }
+  .content_container {
+    min-width: 830px;
+  }
+}
+
+@media (max-width: 1140px) {
+  .side-panel {
+    display: flex;
+    flex-direction: row;
+    height: 130px;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    align-items: center;
+  }
+
+  .side-panel .logo {
+    display: none;
+  }
+
+  .side-panel .privacyPoliceLinks {
+    display: none;
+    margin-top: 0;
+  }
+  .side-panel .sidePanelLinks {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    padding-left: 0;
+    margin: 0;
+    gap: 0;
+  }
+  .completeRightContainer {
+    margin-left: 0;
+  }
+  .sidePanelLink {
+    padding-left: 0;
+    flex-direction: column;
+  }
+  .contact_sidebar {
+    height: calc(100% - 270px);
+    overflow-x: hidden;
+  }
+  .headline {
+    flex-direction: column;
+    gap: 12px;
+    align-items: flex-start;
+  }
+  .headline h1 {
+    margin: 0;
+    margin-top: 40px;
+  }
+  .headline h2 {
+    margin: 0;
+    margin-bottom: 12px;
+  }
+  .blue_seperator {
+    height: 4px;
+    width: 150px;
+  }
+}
+
+@media (max-width: 890px) {
+  .content_container {
+    width: 95%;
+    min-width: unset;
+  }
+
+  .flex_space {
+    gap: 20px;
+  }
+
+  .upper_card {
+    padding: 30px;
+  }
+  .middle_card {
+    padding: 30px;
+  }
+
+  .lower_card {
+    padding: 30px;
+  }
+}
+
+@media (max-width: 500px) {
+  .upper_card {
+    padding: 20px;
+  }
+
+  .lower_card {
+    padding: 20px;
+  }
+  .flex_space {
+    gap: 12px;
+  }
+
+  .middle_card {
+    gap: 8px;
+    padding: 20px;
+    margin-bottom: 40px;
+  }
+  .middle_card img {
+    width: 45px;
+    height: 45px;
+  
+  }
+}
+
+@media (max-width: 420px) {
+  .upper_card {
+    padding: 10px;
+  }
+  .middle_card {
+    padding: 10px;
+  }
+
+  .lower_card {
+    padding: 10px;
+  }
+  .flex_space {
+    gap: 8px;
+  }
+  .flex_collumn h1{
+    font-size: 40px;
+  }
+
+  .flex_collumn h3{
+    font-size: 16px;
+  }
+}
