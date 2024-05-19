@@ -1,6 +1,6 @@
 const BASE_URL = "https://contact-storage-f1196-default-rtdb.europe-west1.firebasedatabase.app/";
 let tasks = []; 
-taskElement.dataset.task = JSON.stringify(task);
+
 
 async function updateTask(taskId, updatedTask) {
     try {
@@ -204,7 +204,7 @@ function detailsFromTask(index) {
     const containerForDetailsTask = document.getElementById('containerForDetailsTask');
     containerForDetailsTask.style.display = 'block';
 
-    const taskElement = document.getElementById('newTask').children[index];
+    const taskElement = document.getElementById('toDoContainer').children[index];
     const task = JSON.parse(taskElement.dataset.task);
 
     const categoryClass = getCategoryClass(task.category);
@@ -330,9 +330,9 @@ function checkContainers() {
     }
 
     if (inProgressContainer.children.length > 0) {
-        document.querySelector('.noInProgress').style.display = 'none';
+       inProgressContainer.classList.add = 'd-none';
     } else {
-        document.querySelector('.noInProgress').style.display = 'flex';
+        document.getElementsByClassName('.noInProgress').style.display = 'flex';
     }
 
     if (awaitFeedbackContainer.children.length > 0) {

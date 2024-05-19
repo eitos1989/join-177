@@ -496,3 +496,11 @@
     height: 20px;
     cursor: pointer;
 }
+
+.d-none {
+    display: none !important;
+}
+
+.d-flex {
+    display: flex !important;
+}
