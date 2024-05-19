@@ -34,7 +34,16 @@ function getInitials(name) {
 
 function updateSubtasksInDetails(taskIndex, subtasks) {
     const containerForDetailsTask = document.getElementById('containerForDetailsTask');
-    const taskContainer = containerForDetailsTask.querySelector(`#task-${taskIndex}`);
+    if (!containerForDetailsTask) {
+        console.error('Container for details task not found');
+        return;
+    }
+
+    const taskElement = containerForDetailsTask.querySelector(`#task-${taskIndex}`);
+    if (!taskElement) {
+        console.error(`Task element with ID task-${taskIndex} not found`);
+        return;
+    }
 
     let subtasksHTML = '';
 
@@ -50,7 +59,7 @@ function updateSubtasksInDetails(taskIndex, subtasks) {
         subtasksHTML += '</ul>';
     }
 
-    taskContainer.querySelector('.subtasksDetails').innerHTML = `
+    taskElement.querySelector('.subtasksDetails').innerHTML = `
         <p class="subtaskTextDetails">Subtasks</p>
         ${subtasksHTML}
     `;
@@ -66,9 +75,9 @@ function updateProgressBar(taskElement, subtasks) {
             const totalSubtasks = subtasks.length;
             const progressPercentage = (completedSubtasks / totalSubtasks) * 100;
 
-            const progressBar = progressBarContainer.querySelector('.progress-bar');
+            let progressBar = progressBarContainer.querySelector('.progress-bar');
             if (!progressBar) {
-                progressBarContainer.innerHTML = getProgressBarHTML(subtasks);
+                progressBarContainer.innerHTML = `<div class="progress-bar" style="width: ${progressPercentage}%;"></div>`;
             } else {
                 progressBar.style.width = `${progressPercentage}%`;
             }
@@ -78,14 +87,14 @@ function updateProgressBar(taskElement, subtasks) {
     }
 }
 
-
 async function displayTasks() {
     try {
-        tasks = await getData("tasks"); 
+        const tasks = await getData("tasks");
         console.log("Tasks from database:", tasks);
-        const container = document.getElementById('newTask');
-        
-        container.innerHTML = "";
+
+        const toDoContainer = document.getElementById('toDoContainer');
+
+        toDoContainer.innerHTML = "";
 
         let index = 0;
 
@@ -93,12 +102,16 @@ async function displayTasks() {
             if (Object.hasOwnProperty.call(tasks, taskId)) {
                 const task = tasks[taskId];
                 const taskElement = createTaskElement(task, taskId, index);
+
+                // Überprüfen, welcher Container verwendet werden soll
+                const container = task.containerId ? document.getElementById(task.containerId) : toDoContainer;
                 container.appendChild(taskElement);
-                updateProgressBar(taskElement, task.subtasks); 
+
+                updateProgressBar(taskElement, task.subtasks);
                 index++;
             }
         }
-        checkContainers();
+
     } catch (error) {
         console.error('Fehler beim Anzeigen der Aufgaben: ', error);
     }
@@ -110,6 +123,7 @@ function createTaskElement(task, taskId, index) {
     taskElement.id = taskId;
     taskElement.setAttribute('draggable', 'true');
     taskElement.setAttribute('onclick', `detailsFromTask(${index})`);
+    taskElement.setAttribute('ondragstart', 'drag(event)');
 
     taskElement.innerHTML = `
         <p class="createTaskCategory ${getCategoryClass(task.category)}" style="background-color: ${getCategoryColor(task.category)}">${task.category}</p>
@@ -127,27 +141,27 @@ function createTaskElement(task, taskId, index) {
 
     taskElement.dataset.task = JSON.stringify(task);
 
-    taskElement.addEventListener('dragstart', function(event) {
-        event.dataTransfer.setData('text/plain', taskId);
-    });
-
     return taskElement;
-}
-
-function drag(event) {
-    event.dataTransfer.setData('text', event.target.id);
-}
-
-function drop(event, containerId) {
-    event.preventDefault();
-    var data = event.dataTransfer.getData('text');
-    var draggableElement = document.getElementById(data);
-    var container = document.getElementById(containerId);
-    container.appendChild(draggableElement);
 }
 
 function allowDrop(event) {
     event.preventDefault();
+}
+
+function drag(event) {
+    event.dataTransfer.setData("text", event.target.id);
+}
+
+function drop(event, containerId) {
+    event.preventDefault();
+    const taskId = event.dataTransfer.getData("text");
+    const taskElement = document.getElementById(taskId);
+    const container = document.getElementById(containerId);
+    container.appendChild(taskElement);
+
+    const task = JSON.parse(taskElement.dataset.task);
+    task.containerId = containerId;
+    updateTask(taskId, task);
 }
 
 function getPriorityImageSrc(priority) {
@@ -204,7 +218,7 @@ function detailsFromTask(index) {
     const containerForDetailsTask = document.getElementById('containerForDetailsTask');
     containerForDetailsTask.style.display = 'block';
 
-    const taskElement = document.getElementById('newTask').children[index];
+    const taskElement = document.getElementById('toDoContainer').children[index];
     const task = JSON.parse(taskElement.dataset.task);
 
     const categoryClass = getCategoryClass(task.category);
@@ -299,8 +313,20 @@ function getAssignedContactsHTML(assignedContacts) {
 
 async function toggleSubtask(taskIndex, subtaskIndex) {
     try {
-        let taskElement = document.getElementById('newTask').children[taskIndex];
+        const taskContainer = document.getElementById('toDoContainer'); // Verwenden Sie die richtige Container-ID hier
+        if (!taskContainer) {
+            throw new Error('Task container not found');
+        }
+
+        const taskElement = taskContainer.children[taskIndex];
+        if (!taskElement) {
+            throw new Error(`Task element at index ${taskIndex} not found`);
+        }
+
         let task = JSON.parse(taskElement.dataset.task);
+        if (!task || !task.subtasks) {
+            throw new Error('Invalid task or subtasks data');
+        }
 
         task.subtasks[subtaskIndex].completed = !task.subtasks[subtaskIndex].completed;
 
@@ -313,38 +339,7 @@ async function toggleSubtask(taskIndex, subtaskIndex) {
         await displayTasks();
         
     } catch (error) {
-        console.error('Error in toggleSubtask:', error);  // Error log
-    }
-}
-
-function checkContainers() {
-    let todoContainer = document.getElementById("newTask");
-    let inProgressContainer = document.getElementById("newInProgress");
-    let awaitFeedbackContainer = document.getElementById("newAwaitFeedback");
-    let doneContainer = document.getElementById("newDone");
-
-    if (todoContainer.children.length > 0) {
-        document.querySelector('.noTasksToDo').style.display = 'none';
-    } else {
-        document.querySelector('.noTasksToDo').style.display = 'flex';
-    }
-
-    if (inProgressContainer.children.length > 0) {
-        document.querySelector('.noInProgress').style.display = 'none';
-    } else {
-        document.querySelector('.noInProgress').style.display = 'flex';
-    }
-
-    if (awaitFeedbackContainer.children.length > 0) {
-        document.querySelector('.noAwaitFeedback').style.display = 'none';
-    } else {
-        document.querySelector('.noAwaitFeedback').style.display = 'flex';
-    }
-
-    if (doneContainer.children.length > 0) {
-        document.querySelector('.noDone').style.display = 'none';
-    } else {
-        document.querySelector('.noDone').style.display = 'flex';
+        console.error('Error in toggleSubtask:', error);  
     }
 }
 
@@ -383,15 +378,13 @@ async function deleteTask(taskId) {
             method: 'DELETE'
         });
 
-        // Überprüfen, ob tasks ein Objekt ist
         if (typeof tasks === 'object' && tasks !== null) {
-            // Löschen des Tasks aus dem tasks-Objekt
             delete tasks[taskId];
 
             let taskContainer = document.getElementById('newTask');
             taskContainer.innerHTML = '';
 
-            displayTasks(); // Anzeigen der aktualisierten Aufgabenliste
+            displayTasks(); 
 
             console.log('Task erfolgreich gelöscht.');
         } else {
