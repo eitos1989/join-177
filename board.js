@@ -83,7 +83,7 @@ async function displayTasks() {
     try {
         tasks = await getData("tasks"); 
         console.log("Tasks from database:", tasks);
-        const container = document.getElementById('newTask');
+        const container = document.getElementById('toDoContainer');
         
         container.innerHTML = "";
 
@@ -140,9 +140,9 @@ function drag(event) {
 
 function drop(event, containerId) {
     event.preventDefault();
-    var data = event.dataTransfer.getData('text');
-    var draggableElement = document.getElementById(data);
-    var container = document.getElementById(containerId);
+    let data = event.dataTransfer.getData('text');
+    let draggableElement = document.getElementById(data);
+    let container = document.getElementById(containerId);
     container.appendChild(draggableElement);
 }
 
