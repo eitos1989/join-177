@@ -313,7 +313,7 @@ function getAssignedContactsHTML(assignedContacts) {
 
 async function toggleSubtask(taskIndex, subtaskIndex) {
     try {
-        const taskContainer = document.getElementById('toDoContainer'); // Verwenden Sie die richtige Container-ID hier
+        const taskContainer = document.getElementById('toDoContainer'); 
         if (!taskContainer) {
             throw new Error('Task container not found');
         }

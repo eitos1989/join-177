@@ -467,10 +467,20 @@
 .awaitFeedbackContainer,
 .doneContainer {
     width: 100%;
-    border: 2px solid #ccc;
+    height: 100vh;
+    border: none;
     padding: 10px;
     margin: 10px;
 }
+
+.toDoContainer:hover,
+.inProgressContainer:hover,
+.awaitFeedbackContainer:hover,
+.doneContainer:hover {
+    border: dotted;
+    border-color: rgb(231, 231, 231);
+}
+
 
 .createTasksContainer {
     border: 1px solid #ccc;
