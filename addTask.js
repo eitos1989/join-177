@@ -120,16 +120,13 @@ async function createTask() {
         img.id = 'addedToBacklogImg';
         document.body.appendChild(img);
 
-        // Trigger layout-Berechnung
         img.offsetHeight;
 
-        // Bewege das Bild von unten in die Mitte
         img.style.bottom = '50%';
 
-        // Leite zur Seite board.html weiter
         setTimeout(() => {
             window.location.href = 'board.html';
-        }, 2000); // Ändere die Zeit nach Bedarf
+        }, 2000); 
 
     } catch (error) {
         console.error('Error creating task: ', error);
