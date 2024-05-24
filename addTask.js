@@ -1,4 +1,4 @@
-let taskIdCounter = 0;
+let taskIdCounter = parseInt(localStorage.getItem('taskIdCounter')) || 0;
 
 function changePriority(color) {
     resetButtons();
@@ -97,7 +97,9 @@ async function createTask() {
         color: contact.color
     }));
 
-    const taskId = Date.now().toString();
+    taskIdCounter++; // Inkrementiere die ID
+
+    const taskId = taskIdCounter.toString();
 
     const taskData = {
         id: taskId,
@@ -108,7 +110,7 @@ async function createTask() {
         priority: priority,
         category: category,
         subtasks: subtasks,
-        assignedContacts: assignedContacts 
+        assignedContacts: assignedContacts,
     };
 
     try {
@@ -131,6 +133,9 @@ async function createTask() {
     } catch (error) {
         console.error('Error creating task: ', error);
     }
+    
+    // Speichern der taskIdCounter in localStorage
+    localStorage.setItem('taskIdCounter', taskIdCounter);
 }
 
 async function getData(path = "") {
