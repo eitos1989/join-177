@@ -3,12 +3,12 @@ let tasks = [];
 
 async function updateTask(taskId, updatedTask) {
     try {
-        const response = await fetch(`${BASE_URL}tasks.json`, {
+        const response = await fetch(`${BASE_URL}tasks/${taskId}.json`, {
             method: 'PATCH',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ [taskId]: updatedTask }),
+            body: JSON.stringify(updatedTask),
         });
 
         if (!response.ok) {
@@ -73,7 +73,6 @@ function createTaskElement(task, taskId, index) {
     taskElement.setAttribute('onclick', `detailsFromTask(${index}); updateProgressBar(${calculateProgress(task.subtasks)})`);
     taskElement.setAttribute('ondragstart', 'drag(event)');
 
-    // Calculate progress based on completed subtasks
     const progress = calculateProgress(task.subtasks);
 
     taskElement.innerHTML = `
@@ -187,7 +186,7 @@ function detailsFromTask(index) {
                     <p>Delete</p>
                 </button>
                 <div class="middleLine"></div>
-                <button class="containerImgAndText">
+                <button class="containerImgAndText" onclick="enableEditMode('${task.id}', ${index})">
                     <img src="./img/edit.png">
                     <p>Edit</p>
                 </button>
@@ -205,6 +204,107 @@ function detailsFromTask(index) {
     updateProgressBar(task.id, progress);
 }
 
+function enableEditMode(taskId, index) {
+    const taskElement = document.getElementById('toDoContainer').children[index];
+    const task = JSON.parse(taskElement.dataset.task);
+
+    const editFormHTML = `
+        <div class="insideContinerForDetailTask" id="task-${task.id}">
+            <div class="categoryLineDetailsTask">
+                <input type="text" id="editCategory" value="${task.category}" class="createTaskCategory ${getCategoryClass(task.category)}" style="background-color: ${getCategoryColor(task.category)}">
+                <img class="removeIncludetHTML" onclick="removeDetailsFromTask()" src="./img/VectorBlack.png">
+            </div>
+            <input type="text" id="editTitle" value="${task.title}" class="createTaskTitleDetails">
+            <textarea id="editDescription" class="createTaskDescriptionDetails">${task.description}</textarea>
+            <div class="dueDateDetails">
+                <p class="textDueDateDetails">Due date:</p>
+                <input type="date" id="editDueDate" value="${task.dueDate}">
+            </div>
+            <div class="priorityDetails">
+                <p class="testPriorityDetails">Priority:</p>
+                <select id="editPriority" class="priorityInDetails">
+                    <option value="high" ${task.priority === 'high' ? 'selected' : ''}>High</option>
+                    <option value="medium" ${task.priority === 'medium' ? 'selected' : ''}>Medium</option>
+                    <option value="low" ${task.priority === 'low' ? 'selected' : ''}>Low</option>
+                </select>
+            </div>
+            <div class="assignetToDetailsContainer">
+                <p class="textAssignetToDetails">Assigned To:</p>
+                <div class="assignedContactsDetails">${getEditableAssignedContactsHTML(task.assignedContacts)}</div>
+            </div>
+            <div class="subtasksDetailsContainer">
+                <p class="textSubtasksDetails">Subtasks:</p>
+                <div class="subtasksDetails">${getEditableSubtasksHTML(task.subtasks)}</div>
+            </div>
+            <div class="taskID" id="${task.id}"></div>
+            <div class="deleteAndEditContainer">
+                <button class="containerImgAndText" onclick="saveTaskChanges('${task.id}', ${index})">
+                    <img src="./img/save.png">
+                    <p>Save</p>
+                </button>
+                <div class="middleLine"></div>
+                <button class="containerImgAndText" onclick="detailsFromTask(${index})">
+                    <img src="./img/cancel.png">
+                    <p>Cancel</p>
+                </button>
+            </div>
+        </div>
+    `;
+
+    const containerForDetailsTask = document.getElementById('containerForDetailsTask');
+    containerForDetailsTask.innerHTML = editFormHTML;
+}
+
+function saveTaskChanges(taskId, index) {
+    const editedTask = {
+        category: document.getElementById('editCategory').value,
+        title: document.getElementById('editTitle').value,
+        description: document.getElementById('editDescription').value,
+        dueDate: document.getElementById('editDueDate').value,
+        priority: document.getElementById('editPriority').value,
+        assignedContacts: getEditedAssignedContacts(),
+        subtasks: getEditedSubtasks()
+    };
+
+    console.log("Saving task:", editedTask);
+
+    // Update the task in Firebase
+    const taskRef = firebase.database().ref('tasks/' + taskId);
+    taskRef.set(editedTask, (error) => {
+        if (error) {
+            console.error("Error updating task:", error.message);
+            alert("Error updating task: " + error.message);
+        } else {
+            console.log("Task updated successfully");
+            alert("Task updated successfully");
+            document.getElementById('toDoContainer').children[index].dataset.task = JSON.stringify(editedTask);
+            detailsFromTask(index);
+        }
+    });
+}
+
+function getEditableAssignedContactsHTML(assignedContacts) {
+    // Generate HTML for editing assigned contacts (this is just a placeholder)
+    return assignedContacts.map(contact => `<input type="text" value="${contact}">`).join('');
+}
+
+function getEditableSubtasksHTML(subtasks) {
+    // Generate HTML for editing subtasks (this is just a placeholder)
+    return subtasks.map(subtask => `<input type="text" value="${subtask.title}">`).join('');
+}
+
+function getEditedAssignedContacts() {
+    // Retrieve the edited assigned contacts (this is just a placeholder)
+    const assignedContactsInputs = document.querySelectorAll('.assignedContactsDetails input');
+    return Array.from(assignedContactsInputs).map(input => input.value);
+}
+
+function getEditedSubtasks() {
+    // Retrieve the edited subtasks (this is just a placeholder)
+    const subtaskInputs = document.querySelectorAll('.subtasksDetails input');
+    return Array.from(subtaskInputs).map(input => ({ title: input.value }));
+}
+
 async function updateSubtaskProgress(checkbox) {
     const taskId = checkbox.getAttribute("data-taskid");
     const subtaskIndex = checkbox.getAttribute("data-subtaskindex");
@@ -213,17 +313,13 @@ async function updateSubtaskProgress(checkbox) {
     const taskElement = document.getElementById(taskId);
     const task = JSON.parse(taskElement.dataset.task);
 
-    // Mark the subtask as completed or incomplete
     task.subtasks[subtaskIndex].completed = isChecked;
 
-    // Update the progress bar
     const progress = calculateProgress(task.subtasks);
     updateProgressBar(taskId, progress);
 
-    // Update the task in the database
     await updateTask(taskId, task);
 
-    // Update the subtask in the API
     await updateSubtaskInAPI(taskId, subtaskIndex, isChecked);
 }
 
