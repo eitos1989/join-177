@@ -20,22 +20,23 @@
                 </a>
             </div>
             <div class="loginHeadline mb-32">Sign up</div>
-            <form action="#; false;" validate>
+            <form action="javascript:void(0)" novalidate>
                 <div class="formCenter">
-                    <input type="name" id="registerName" placeholder="name" required minlength="3" class="mb-32 person">
-                    <input type="email" id="registerEmail" placeholder="Email" required class="mb-32 mail" autocomplete="username">
-                    <input type="password" id="registerPassword" minlength="8" placeholder="Password" autocomplete="new-password" required class="mb-32 lock" onchange="validatePassword()">
-                    <input type="password" id="registerConfirmPassword" minlength="8" placeholder="Confirm Password" autocomplete="new-password" required class="mb-32 lock" onkeyup="validatePassword()">
-                    <label class="mb-20 dFlexJC">
-                        <input type="checkbox" id="accept" required > I accept the <a href="privacy_policy.html" target="_blank"> privacy policy</a>
-                    </label>
+                  <input type="text" id="registerName" placeholder="Name" required minlength="3" class="mb-32 person" oninput="validateForm()">
+                  <input type="email" id="registerEmail" placeholder="Email" required class="mb-32 mail" autocomplete="username" oninput="validateForm()">
+                  <input type="password" id="registerPassword" minlength="8" placeholder="Password" autocomplete="new-password" required class="mb-32 lock" oninput="validateForm()">
+                  <input type="password" id="registerConfirmPassword" minlength="8" placeholder="Confirm Password" autocomplete="new-password" required class="mb-32 lock" oninput="validateForm()">
+                  <label class="mb-20 dFlexJC">
+                    <input type="checkbox" id="accept" required oninput="validateForm()"> I accept the <a href="privacy_policy.html" target="_blank"> Privacy policy</a>
+                  </label>
                 </div>
                 <div class="dFlexJC">
-                    <button type="submit" id="registerSubmit" disabled=true class="btn-dark text-middle btn-disabled">Sign up</button>
+                  <button onclick="registerUser(event)" type="submit" id="registerSubmit" class="btn-dark text-middle btn-disabled">Sign up</button>
                 </div>
-            </form>
+              </form>
             <div class="error-msg" id="error-msg"></div>
         </div>
+        <div  id="signup_success" class="sign_up_succesful hide">You Signed Up succesfuly</div>
     </div>
     <div class="footer">
         <a href="privacy_policy.html">Privacy Policy</a>

@@ -52,7 +52,7 @@ body{
 .loginContainer {
     position: relative;
     border-radius: 30px;
-    padding: 48px 115px 48px 115px;
+    padding: 48px 180px 48px 180px;
     background-color: #fff;
     box-shadow: 5px 5px 5px 5px rgba(255, 255, 255, .4);
     display: flex;
@@ -231,7 +231,35 @@ a {
     }
 }
 
+a{
+    padding-left: 6px;
+}
 
 
+.btn-dark a{
+    padding: 0;
+}
 
+@keyframes moveUp {
+    0% {
+      bottom: 100px;
+    }
+    100% {
+      bottom: 50%; /* Bewegt das Element in die vertikale Mitte des Bildschirms */
+    }
+  }
   
+  .sign_up_succesful {
+    position: absolute;
+    bottom: 100px;
+    color: white;
+    padding: 30px 50px;
+    background-color: #2A3647;
+    border-radius: 20px;
+    font-size: 24px;
+    animation: moveUp 1s forwards; /* Fügt die Animation hinzu */
+  }
+
+  .hide{
+    display: none;
+  }

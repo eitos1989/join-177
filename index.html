@@ -19,18 +19,18 @@
     <img class="cornerImg" src="img/join_logo.svg" />
     <div class="mainWrapper">
         <div class="loginContainer">
-            <div class="loginHeadline mb-32">Login</div>
+            <div class="loginHeadline mb-32">Log in</div>
             <form action="/#; false;">
                 <div class="formCenter">
-                    <input type="email" placeholder="Email" required class="mb-32 mail" autocomplete="username">
-                    <input type="password" placeholder="Password" required class="mb-32 lock" autocomplete="current-password">
+                    <input id="email" type="email" placeholder="Email" required class="mb-32 mail" autocomplete="username">
+                    <input id="password" type="password" placeholder="Password" required class="mb-32 lock" autocomplete="current-password">
                     <label class="checkContainer mb-20">
                         <input type="checkbox"> Remember me
                     </label>
                 </div>
                 <div class="dFlexJC">
-                    <button type="submit" class="btn-dark text-middle mr-35">Login</button>
-                    <button type="reset" class="btn-light text-middle">Guest Log in</button>
+                    <button onclick="checkUserInDatabase(document.getElementById('email').value, document.getElementById('password').value)" class="btn-dark text-middle mr-35">Log in</button>
+                    <button type="reset" class="btn-light text-middle" onclick="location.href='summary.html'">Guest Log in</button>
                 </div>
             </form>
             <div class="error-msg" id="error-msg"></div>

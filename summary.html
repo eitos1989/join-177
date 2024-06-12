@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="summary_styles.css">
     <link rel="stylesheet" href="summary_responsiv.css">
   </head>
-  <body onload="includeSidepanelHTML(), checkViewportWidth()">
+  <body onload="includeSidepanelHTML(), checkViewportWidth(), greetUser()">
     <div class="container">
       <div class="sidepanelContainer" w3-include-html="./sidepanel.html"></div>
       
@@ -83,7 +83,6 @@
       <div class="greeting">
         <div class="flex_collumn">
           <div id="greet">Good Morning,</div>
-          <div id="username">Sofia Müller</div>
         </div>
       </div>
     </div>

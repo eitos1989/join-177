@@ -5,6 +5,7 @@
     flex-direction: column;
     justify-content: space-between;
     width: 250px;
+    position: fixed;
 } 
 
 .sidePanelLinks {
@@ -79,6 +80,7 @@
 
 .completeRightContainer {
     width: 100%;
+    margin-left: 250px;
 }
 
 .padding_container{

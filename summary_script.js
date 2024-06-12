@@ -21,22 +21,25 @@ document
     this.querySelector("img").src = "./img/done_summary.svg";
   });
 
-function greetUser() {
-  // Get the current hour
-  const currentHour = new Date().getHours();
+  function greetUser() {
+    const currentHour = new Date().getHours();
+    const username = localStorage.getItem('username');
+  
+    // Determine the greeting based on the current hour
+    let greeting;
+    if (currentHour < 12) {
+      greeting = "Guten Morgen, " + username;
+    } else if (currentHour < 18) {
+      greeting = "Guten Nachmittag, " + username;
+    } else {
+      greeting = "Guten Abend, " + username;
+    }
 
-  // Determine the greeting based on the current hour
-  let greeting;
-  if (currentHour < 12) {
-    greeting = "Good Morning";
-  } else if (currentHour < 18) {
-    greeting = "Good Afternoon";
-  } else {
-    greeting = "Good Evening";
+    const greetingTextElement = document.getElementById('greetingText');
+    greetingTextElement.innerHTML = greeting;
+    let greetUser = document.getElementById('greet');
+    greetUser.innerHTML = greeting;
   }
-
-document.getElementById("greet").innerHTML = greeting;
-}
 
 function checkViewportWidth() {
   if (window.innerWidth < 1440) {
