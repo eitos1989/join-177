@@ -4,7 +4,7 @@
     align-items: center;
     justify-content: space-between;  
     background-color: #fff;
-    padding: 0px 40px 0px 120px;
+    padding: 0px 40px 0px 80px;
 }
 
 .header-right {
@@ -20,8 +20,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: var(--font-size-t6);
-    color: var(--color-light-blue);
+    font-size: 24px;
+    color: #29abe2;
 }
 
 .user_badge:hover {

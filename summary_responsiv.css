@@ -31,10 +31,11 @@
     flex-direction: row;
     height: 130px;
     width: 100%;
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     align-items: center;
+
   }
 
   .side-panel .logo {
@@ -58,6 +59,7 @@
     margin-left: 0;
   }
   .sidePanelLink {
+
     padding-left: 0;
     flex-direction: column;
   }
@@ -155,4 +157,11 @@
   .flex_collumn h3{
     font-size: 16px;
   }
+}
+
+@media (max-height: 950px){
+.content_container {
+  margin-bottom: 170px;
+}  
+
 }

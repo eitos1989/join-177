@@ -18,7 +18,8 @@
 }
 
 .completeRightContainerBoard {
-    flex: 83%;
+    margin-left: 250px;
+    width: 100%;
 }
 
 .rightSideHeadlineBoard {

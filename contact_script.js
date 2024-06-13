@@ -508,3 +508,5 @@ function closeCard() {
   overlay.remove();
   card.remove();
 }
+
+

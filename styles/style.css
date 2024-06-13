@@ -231,13 +231,11 @@ a {
     }
 }
 
-a{
-    padding-left: 6px;
-}
+
 
 
 .btn-dark a{
-    padding: 0;
+    padding: 0; 
 }
 
 @keyframes moveUp {

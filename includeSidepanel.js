@@ -10,4 +10,11 @@ async function includeSidepanelHTML() {
             element.innerHTML = 'Page not found';
         }
     }
+    changeHeaderBadge()
 }
+
+function changeHeaderBadge() {
+    let usernameAlias = localStorage.getItem('usernameAlias');
+    document.getElementById('user_badge').textContent = usernameAlias;
+  }
+  

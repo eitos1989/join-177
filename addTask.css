@@ -24,6 +24,7 @@ body {
     margin-bottom: 40px;
 }
 
+
 .addTaskLeftSide {
     flex: 1;
     margin-right: 72px;
@@ -303,9 +304,7 @@ textarea:hover {
     font-size: small;
 }
 
-.rightContainerWithoutHeadline {
-    margin-left: 72px;
-}
+
 
 .vectorImg1 {
     width: 12px; 

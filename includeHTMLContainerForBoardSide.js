@@ -10,4 +10,6 @@ async function includeContainerForBoardSidelHTML() {
             element.innerHTML = 'Page not found';
         }
     }
+
 }
+
