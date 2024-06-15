@@ -37,6 +37,7 @@ async function fetchAndDisplayTasks() {
     }
 }
 
+
 // Funktion zum Erstellen eines Task-Elements
 function createTaskElement(task, taskId) {
     const taskElement = document.createElement('div');
@@ -59,7 +60,6 @@ function createTaskElement(task, taskId) {
     `;
     return taskElement;
 }
-
 
 
 function showTaskDetails(taskId) {
@@ -92,10 +92,10 @@ function showTaskDetails(taskId) {
             </div>
             <div class="subtasksDetailsContainer">
                 <p class="textSubtasksDetails">Subtasks:</p>
-                <div class="subtasksDetails">${task.subtasks}</div>
+                <div class="subtasksDetails">${getSubtasksHTML(task)}</div>
             </div>
             <div class="deleteAndEditContainer">
-                <button class="containerImgAndText>
+                <button class="containerImgAndText">
                     <img src="./img/delete.png">
                     <p>Delete</p>
                 </button>
@@ -107,6 +107,40 @@ function showTaskDetails(taskId) {
             </div>
         </div>
     `;
+}
+
+function getSubtasksHTML(task) {
+    if (task.subtasks && task.subtasks.length > 0) {
+        return task.subtasks.map((subtask, index) => `
+            <div class="subtask" id="subtask-${index}">
+                <input type="checkbox" ${subtask.completed ? 'checked' : ''} onchange="toggleSubtaskCompletion('${task.id}', ${index}, this.checked)">
+                <label>${subtask.name}</label>
+            </div>
+        `).join('');
+    }
+    return '';
+}
+
+// Funktion zum Aktualisieren des Abschlussstatus eines Subtasks
+async function toggleSubtaskCompletion(taskId, subtaskIndex, completed) {
+    const task = tasks[taskId];
+    if (task && task.subtasks && task.subtasks[subtaskIndex]) {
+        task.subtasks[subtaskIndex].completed = completed;
+
+        try {
+            // Aktualisiere den Subtask in Firebase
+            await fetch(`${BASE_URL}/tasks/${taskId}/subtasks/${subtaskIndex}.json`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ completed })
+            });
+            console.log(`Subtask ${subtaskIndex} status updated: ${completed}`);
+        } catch (error) {
+            console.error('Fehler beim Aktualisieren des Subtask-Status:', error);
+        }
+    }
 }
 
 function removeDetailsFromTask() {
