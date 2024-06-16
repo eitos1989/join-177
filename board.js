@@ -47,10 +47,21 @@ function createTaskElement(task, taskId) {
     taskElement.setAttribute('ondragstart', 'startDragging(event)');
     taskElement.setAttribute('onclick', `showTaskDetails('${taskId}')`); 
    
+    // Berechne den Fortschritt für die Progressbar
+    const progress = calculateProgress(task);
+    const completedSubtasks = task.subtasks ? task.subtasks.filter(subtask => subtask.completed).length : 0;
+    const totalSubtasks = task.subtasks ? task.subtasks.length : 0;
+
     taskElement.innerHTML = `
         <p class="createTaskCategory ${getCategoryClass(task.category)}" style="background-color: ${getCategoryColor(task.category)}">${task.category}</p>
         <h3 class="createTaskTitle">${task.title}</h3>
         <p class="createTaskDescription">${task.description}</p>
+        <div class="progressbarAndQuantity">
+            <div class="progressbarContainer">
+                <div class="progressbar" style="width: ${progress}%"></div>
+            </div>
+            <div class="progressText">${completedSubtasks}/${totalSubtasks}</div>
+        </div>    
         <div class="contactsAndPriority">
             <div class="assignedContacts">${getAssignedContactsHTML(task.assignedContacts)}</div>
             <div class="priorityImage">
@@ -59,6 +70,15 @@ function createTaskElement(task, taskId) {
         </div>
     `;
     return taskElement;
+}
+
+// Funktion zur Berechnung des Fortschritts
+function calculateProgress(task) {
+    if (!task.subtasks || task.subtasks.length === 0) {
+        return 0;
+    }
+    const completedSubtasks = task.subtasks.filter(subtask => subtask.completed).length;
+    return (completedSubtasks / task.subtasks.length) * 100;
 }
 
 
@@ -92,7 +112,7 @@ function showTaskDetails(taskId) {
             </div>
             <div class="subtasksDetailsContainer">
                 <p class="textSubtasksDetails">Subtasks:</p>
-                <div class="subtasksDetails">${getSubtasksHTML(task)}</div>
+                <div class="subtasksDetails">${getSubtasksHTML(taskId, task)}</div>
             </div>
             <div class="deleteAndEditContainer">
                 <button class="containerImgAndText">
@@ -109,11 +129,11 @@ function showTaskDetails(taskId) {
     `;
 }
 
-function getSubtasksHTML(task) {
+function getSubtasksHTML(taskId, task) {
     if (task.subtasks && task.subtasks.length > 0) {
         return task.subtasks.map((subtask, index) => `
             <div class="subtask" id="subtask-${index}">
-                <input type="checkbox" ${subtask.completed ? 'checked' : ''} onchange="toggleSubtaskCompletion('${task.id}', ${index}, this.checked)">
+                <input type="checkbox" ${subtask.completed ? 'checked' : ''} onchange="toggleSubtaskCompletion('${taskId}', ${index}, this.checked)">
                 <label>${subtask.name}</label>
             </div>
         `).join('');
@@ -137,10 +157,39 @@ async function toggleSubtaskCompletion(taskId, subtaskIndex, completed) {
                 body: JSON.stringify({ completed })
             });
             console.log(`Subtask ${subtaskIndex} status updated: ${completed}`);
+
+            // Aktualisiere die Progressbar und die Subtask-Zählung
+            updateProgressbar(taskId);
+
         } catch (error) {
             console.error('Fehler beim Aktualisieren des Subtask-Status:', error);
         }
     }
+}
+
+// Funktion zur Aktualisierung der Progressbar
+function updateProgressbar(taskId) {
+    const task = tasks[taskId];
+    const progress = calculateProgress(task);
+    const completedSubtasks = task.subtasks ? task.subtasks.filter(subtask => subtask.completed).length : 0;
+    const totalSubtasks = task.subtasks ? task.subtasks.length : 0;
+    const taskElement = document.getElementById(`task-${taskId}`);
+    const progressbar = taskElement.querySelector('.progressbar');
+    const progressText = taskElement.querySelector('.progressText');
+    if (progressbar) {
+        progressbar.style.width = `${progress}%`;
+    }
+    if (progressText) {
+        progressText.textContent = `${completedSubtasks}/${totalSubtasks}`;
+    }
+}
+
+function calculateProgress(task) {
+    if (!task.subtasks || task.subtasks.length === 0) {
+        return 0;
+    }
+    const completedSubtasks = task.subtasks.filter(subtask => subtask.completed).length;
+    return (completedSubtasks / task.subtasks.length) * 100;
 }
 
 function removeDetailsFromTask() {
