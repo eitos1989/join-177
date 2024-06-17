@@ -19,7 +19,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 </head>
-<body onload="includeSidepanelHTML(); displayTasks(); includeHTMLContainerForBoardSide()">
+<body onload="includeSidepanelHTML(); fetchAndDisplayTasks(); includeHTMLContainerForBoardSide()">
     <div class="container">
         <div class="sidepanelContainer" w3-include-html="./sidepanel.html"></div>
         <div id="boardRightContainer" class="completeRightContainerBoard">
@@ -31,7 +31,8 @@
                     <h1 class="headlineBoard">Board</h1>
                     <div class="rightSideHeadlineBoard">
                         <div class="findTaskInputField">
-                            <input class="inputFieldFindTask" placeholder="Find Task"><button class="buttonFindTask"><img src="./img/search.png"></button>
+                            <input class="inputFieldFindTask" placeholder="Find Task">
+                            <button class="buttonFindTask"><img src="./img/search.png"></button>
                         </div>
                         <button class="addTaskButton" onclick="moveContainer()">Add Task <img src="./img/add.png"></button>    
                     </div>    
@@ -41,7 +42,7 @@
                         <div class="toDoHeadline">
                             <h2>To do</h2><img onclick="moveContainer()" src="./img/plus button.png">
                         </div>    
-                        <div class="toDoContainer" id="toDoContainer" ondrop="drop(event, 'toDoContainer')" ondragover="allowDrop(event)">
+                        <div class="toDoContainer" id="toDoContainer" ondrop="moveTo('toDoContainer', event, 'toDoContainer')" ondragleave="removeHighlight('toDoContainer')" ondragover="allowDrop(event); highlight('toDoContainer')">
                             <div id="noTasksToDo" class="noTasksToDo">No tasks To do</div>
                         </div>
                     </div>
@@ -49,7 +50,7 @@
                         <div class="inProgressHeadline">
                             <h2>In progress</h2><img src="./img/plus button.png">
                         </div>
-                        <div class="inProgressContainer" id="inProgressContainer" ondrop="drop(event, 'inProgressContainer')" ondragover="allowDrop(event)">
+                        <div class="inProgressContainer" id="inProgressContainer" ondrop="moveTo('inProgressContainer', event, 'in progress')" ondragleave="removeHighlight('inProgressContainer')" ondragover="allowDrop(event); highlight('inProgressContainer')">
                             <div id="noInProgress" class="noInProgress">No tasks in progress</div>
                         </div>
                     </div>
@@ -57,7 +58,7 @@
                         <div class="awaitFeedbackHeadline">
                             <h2>Await feedback</h2><img src="./img/plus button.png">
                         </div>
-                        <div class="awaitFeedbackContainer" id="awaitFeedbackContainer" ondrop="drop(event, 'awaitFeedbackContainer')" ondragover="allowDrop(event)">
+                        <div class="awaitFeedbackContainer" id="awaitFeedbackContainer" ondrop="moveTo('awaitFeedbackContainer', event, 'await feedback')" ondragleave="removeHighlight('awaitFeedbackContainer')" ondragover="allowDrop(event); highlight('awaitFeedbackContainer')">
                             <div id="noAwaitFeedback" class="noAwaitFeedback">No tasks await feedback</div>
                         </div>
                     </div>
@@ -65,7 +66,7 @@
                         <div class="doneHeadline">
                             <h2>Done</h2>
                         </div>
-                        <div class="doneContainer" id="doneContainer" ondrop="drop(event, 'doneContainer')" ondragover="allowDrop(event)">
+                        <div class="doneContainer" id="doneContainer" ondrop="moveTo('doneContainer', event, 'done')" ondragleave="removeHighlight('doneContainer')" ondragover="allowDrop(event); highlight('doneContainer')">
                             <div id="noDone" class="noDone">No tasks done</div>
                         </div>
                     </div>

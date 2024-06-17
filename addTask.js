@@ -86,6 +86,7 @@ async function createTask() {
     const dueDate = document.getElementById('gebdat').value;
     const priority = getPriority();
     const category = document.getElementById('dropdownContent').value;
+    const status = "toDoContainer";
     
     const subtasks = Array.from(document.querySelectorAll('#subtaskList li')).map(li => ({
         name: li.textContent.trim(),
@@ -97,12 +98,7 @@ async function createTask() {
         color: contact.color
     }));
 
-    taskIdCounter++; // Inkrementiere die ID
-
-    const taskId = taskIdCounter.toString();
-
     const taskData = {
-        id: taskId,
         title: title,
         description: description,
         assignedTo: assignedTo,
@@ -111,6 +107,7 @@ async function createTask() {
         category: category,
         subtasks: subtasks,
         assignedContacts: assignedContacts,
+        status: status
     };
 
     try {
@@ -134,8 +131,6 @@ async function createTask() {
         console.error('Error creating task: ', error);
     }
     
-    // Speichern der taskIdCounter in localStorage
-    localStorage.setItem('taskIdCounter', taskIdCounter);
 }
 
 async function getData(path = "") {

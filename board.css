@@ -387,15 +387,22 @@
     background-color: rgb(209,209,209);
 }
 
-.progress-bar-container {
+.progressbarAndQuantity {
+    display: flex;
+    justify-content: baseline;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.progressbarContainer {
     width: 100%;
     background-color: #e0e0e0;
     border-radius: 5px;
     margin-bottom: 10px;
 }
 
-.progress-bar {
-    height: 20px;
+.progressbar {
+    height: 16px;
     background-color: #76c7c0;
     border-radius: 5px;
     transition: width 0.3s;
@@ -525,3 +532,4 @@
     background-color: #007bff;
     transition: width 0.3s ease-in-out;
 }
+
