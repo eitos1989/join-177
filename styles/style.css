@@ -220,38 +220,23 @@ a {
   bottom: 0; /* Stellt sicher, dass es sich nach unten erstreckt */
   width: 100%;
   height: 100%;
-  z-index: 9999; /* Stellen Sie sicher, dass dieser Wert hoch genug ist */
-  background-color: rgba(0, 0, 0, 0.5); /* Optional: Hintergrundfarbe mit Transparenz */
+  z-index: 1; /* Stellen Sie sicher, dass dieser Wert hoch genug ist */
+  background-color: rgb(255, 255, 255); /* Optional: Hintergrundfarbe mit Transparenz */
+  animation: fadeOutWhiteBackground 0.75s forwards;
 }
 
-.overlay::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: white;
-  animation: fadeOutWhiteBackground 0.8s forwards;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 2; /* Stellen Sie sicher, dass das Overlay hinter dem Bild liegt */
-}
 
-.overlay::after {
-  z-index: 2; /* Stellen Sie sicher, dass das Overlay hinter dem Bild liegt */
-}
+
 
 .logo-container {
   position: absolute;
-  animation: moveAndResizeImage 0.8s forwards;
-  z-index: 2; /* Höherer z-index, um sicherzustellen, dass es über dem Overlay liegt */
+  animation: moveAndResizeImage 0.75s forwards;
+  z-index: 10; /* Höherer z-index, um sicherzustellen, dass es über dem Overlay liegt */
 }
 
 .logo-container img {
-  animation: shrinkLogo 0.8s forwards;
-  opacity: 1;
+  animation: shrinkLogo 0.75s forwards;
+  opacity: 1 !important;
 }
 
 @keyframes shrinkLogo {
@@ -281,11 +266,10 @@ a {
 @keyframes fadeOutWhiteBackground {
   from {
     opacity: 1;
-    background-color: #F6F7F8;
   }
   to {
-    opacity: 0.5;
-    pointer-events: none; /* Ermöglicht Klicks auf darunter liegende Elemente */
+    opacity: 0.1;
+    display: none;
   }
 }
 

@@ -28,11 +28,11 @@ document
     // Determine the greeting based on the current hour
     let greeting;
     if (currentHour < 12) {
-      greeting = "Guten Morgen, " + username;
+      greeting = "Guten Morgen, <br>" + username;
     } else if (currentHour < 18) {
-      greeting = "Guten Nachmittag, " + username;
+      greeting = "Guten Nachmittag, <br>" + username;
     } else {
-      greeting = "Guten Abend, " + username;
+      greeting = "Guten Abend, <br>" + username;
     }
 
     const greetingTextElement = document.getElementById('greetingText');

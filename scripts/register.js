@@ -71,7 +71,7 @@ async function registerUser(event) {
 
 
 async function addUserToDatabase(user) {
-  let response = await fetch(BASE_URL + "/users.json", {
+  let response = await fetch(URL + "/users.json", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
