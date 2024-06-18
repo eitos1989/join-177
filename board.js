@@ -94,17 +94,17 @@ function showTaskDetails(taskId) {
                 <p class="createTaskCategory ${getCategoryClass(task.category)}" style="background-color: ${getCategoryColor(task.category)}">${task.category}</p>
                 <img class="removeIncludedHTML" onclick="removeDetailsFromTask()" src="./img/VectorBlack.png">
             </div>
-            <h3 class="createTaskTitleDetails">${task.title}</h3>
-            <p class="createTaskDescriptionDetails">${task.description}</p>
+            <h3 class="createTaskTitleDetails" id="taskTitle">${task.title}</h3>
+            <p class="createTaskDescriptionDetails" id="taskDescription">${task.description}</p>
             <div class="dueDateDetails">
                 <p class="textDueDateDetails">Due date:</p>
-                <p>${task.dueDate}</p>
+                <p id="taskDueDate">${task.dueDate}</p>
             </div>
             <div class="priorityDetails">
                 <p class="testPriorityDetails">Priority:</p>
                 <div class="priorityInDetails">
                     <img src="${getPriorityImageSrc(task.priority)}">
-                    ${task.priority}
+                    <span id="taskPriority">${task.priority}</span>
                 </div>
             </div>
             <div class="assignetToDetailsContainer">
@@ -116,18 +116,78 @@ function showTaskDetails(taskId) {
                 <div class="subtasksDetails">${getSubtasksHTML(taskId, task)}</div>
             </div>
             <div class="deleteAndEditContainer">
-                <button class="containerImgAndText">
+                <button class="containerImgAndText" onclick="deleteTask('${taskId}')">
                     <img src="./img/delete.png">
                     <p>Delete</p>
                 </button>
                 <div class="middleLine"></div>
-                <button class="containerImgAndText">
+                <button class="containerImgAndText" onclick="editTaskDetails('${taskId}')">
                     <img src="./img/edit.png">
                     <p>Edit</p>
                 </button>
             </div>
         </div>
     `;
+}
+
+function editTaskDetails(taskId) {
+    const task = tasks[taskId];
+
+    document.getElementById('taskTitle').innerHTML = `<input type="text" id="editTitle" value="${task.title}">`;
+    document.getElementById('taskDescription').innerHTML = `<textarea id="editDescription">${task.description}</textarea>`;
+    document.getElementById('taskDueDate').innerHTML = `<input type="date" id="editDueDate" value="${task.dueDate}">`;
+    document.getElementById('taskPriority').innerHTML = `
+        <select id="editPriority">
+            <option value="low" ${task.priority === 'low' ? 'selected' : ''}>Low</option>
+            <option value="medium" ${task.priority === 'medium' ? 'selected' : ''}>Medium</option>
+            <option value="urgent" ${task.priority === 'urgent' ? 'selected' : ''}>Urgent</option>
+        </select>
+    `;
+
+    const saveButton = `
+        <button class="containerImgAndText" onclick="saveTaskDetails('${taskId}')">
+            <img src="./img/save.png">
+            <p>Save</p>
+        </button>
+    `;
+
+    const editContainer = document.querySelector('.deleteAndEditContainer');
+    editContainer.innerHTML = saveButton;
+}
+
+function saveTaskDetails(taskId) {
+    const updatedTask = {
+        title: document.getElementById('editTitle').value,
+        description: document.getElementById('editDescription').value,
+        dueDate: document.getElementById('editDueDate').value,
+        priority: document.getElementById('editPriority').value,
+        // Füge hier ggf. weitere Felder hinzu, die bearbeitet werden können
+    };
+
+    // Sende die aktualisierten Daten an die API
+    fetch(`${BASE_URL}/tasks/${taskId}.json`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(updatedTask),
+    })
+    .then(response => response.json())
+    .then(data => {
+        // Aktualisiere die lokale Task-Liste
+        tasks[taskId] = data;
+        // Aktualisiere die Anzeige
+        showTaskDetails(taskId);
+        fetchAndDisplayTasks();
+
+    })
+    .catch(error => {
+        console.error('Error:', error);
+    });
+}
+
+function removeDetailsFromTask() {
+    document.getElementById('containerForDetailsTask').style.display = 'none';
 }
 
 function getSubtasksHTML(taskId, task) {
@@ -310,4 +370,32 @@ function getInitials(name) {
         return names[0][0].toUpperCase();
     }
     return "";
+}
+
+function deleteTask(taskId) {
+    // Bestätigungsnachricht vor dem Löschen
+    if (!confirm('Are you sure you want to delete this task?')) {
+        return;
+    }
+
+    const url = `${BASE_URL}/tasks/${taskId}.json`;
+
+    // Anfrage an die API senden
+    fetch(url, {
+        method: 'DELETE',
+    })
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Network response was not ok');
+        }
+        // Task lokal löschen
+        delete tasks[taskId];
+        // Details Container ausblenden
+        document.getElementById('containerForDetailsTask').style.display = 'none';
+        // Alle Container neu laden
+        fetchAndDisplayTasks();
+    })
+    .catch(error => {
+        console.error('Error deleting task:', error);
+    });
 }
