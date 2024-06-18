@@ -63,10 +63,7 @@
     padding-left: 0;
     flex-direction: column;
   }
-  .contact_sidebar {
-    height: calc(100% - 270px);
-    overflow-x: hidden;
-  }
+  
   .headline {
     flex-direction: column;
     gap: 12px;

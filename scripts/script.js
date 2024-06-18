@@ -1,4 +1,4 @@
-const BASE_URL = "https://contact-storage-f1196-default-rtdb.europe-west1.firebasedatabase.app/"
+const FIREBASE_URL= "https://contact-storage-f1196-default-rtdb.europe-west1.firebasedatabase.app/"
 
 function getUserAlias(username) {
   let nameParts = username.split(" ");
@@ -11,7 +11,7 @@ function getUserAlias(username) {
 
 async function checkUserInDatabase(email, password) {
   try {
-    let response = await fetch(BASE_URL + "/users.json");
+    let response = await fetch(FIREBASE_URL + "/users.json");
     let users = await response.json();
 
     for (let userId in users) {
@@ -60,3 +60,4 @@ function changeHeaderBadge() {
   let usernameAlias = localStorage.getItem('usernameAlias');
   document.getElementById('user_badge').textContent = usernameAlias;
 }
+

@@ -6,108 +6,125 @@
     <title>Document</title>
     <link rel="stylesheet" href="help_styles.css" />
     <link rel="stylesheet" href="./fonts/inter_font.css" />
+    <link rel="stylesheet" href="styles/style.css" />
+    <link rel="icon" href="img/favicon_join.svg" type="image/x-icon" />
+    <link rel="stylesheet" href="header.css">
+    <link rel="stylesheet" href="contact_responsive.css">
   </head>
-  <body>
-    <div class="content_wrapper">
-      <div class="headline">
-        <h1>Help</h1>
-        <img src="./img/Vector.svg" alt="Vector">
-      </div>
-      <p>
-        Welcome to the help page for <a href="index.html">Join</a>, your guide
-        using our kanban project managment tool. Here, we'll provide an overview
-        of what <a href="index.html">Join</a>is, how it can benefit you and how
-        to use it
-      </p>
-      <h2>What is Join?</h2>
-      <p>
-        <a href="index.html">Join</a> is a kanban project management tool
-        designed and built by a group of dedicated students as part of theri web
-        development bootcamp at the Developer Akademie.
-      </p>
 
-      <p>
-        Kanban, a Japanese term meaning "billboard", is a highly effective
-        method to visualize work, limit work-in-progress, and maximize
-        efficiency (or flow). <a href="index.html">Join</a> is designed as an
-        educational exercise and is not intended for extensive business usage.
-        While we strive to ensure the best possible user experience, we cannot
-        guarantee consistend availability,reliability, accuracy or other aspects
-        of quality regarding <a href="index.html">Join</a>.
-      </p>
+  <body onload="includeSidepanelHTML()">
+    <div class="container">
+      <div class="sidepanelContainer" w3-include-html="./sidepanel.html"></div>
 
-      <h2>How to use it</h2>
-      <p>
-        here is a step-by-step guide on how to use
-        <a href="index.html">Join</a>:
-      </p>
-      <div class="counter">
-        <h2>1.</h2>
-        <div class="counter_text">
-          <h3>Exploring the Board</h3>
+      <div class="completeRightContainer">
+        <div class="headerContainer" w3-include-html="./header.html"></div>
+        <div class="content_wrapper">
+          <div class="headline">
+            <h1>Help</h1>
+            <img src="./img/Vector.svg" alt="Vector" />
+          </div>
           <p>
-            when you log in to <a href="index.html">Join</a>, you'll find a
-            default board. This board represents your project and contains four
-            default lists:"To Do", "In Progress", "Await Feedback" and "Done".
+            Welcome to the help page for <a href="index.html">Join</a>, your
+            guide using our kanban project managment tool. Here, we'll provide
+            an overview of what <a href="index.html">Join</a>is, how it can
+            benefit you and how to use it
           </p>
-        </div>
-      </div>
-      <div class="counter">
-        <h2>2.</h2>
-        <div class="counter_text">
-          <h3>Creating Contacts</h3>
+          <h2>What is Join?</h2>
           <p>
-            in <a href="index.html">Join</a>, you can add contacts ti
-            collaborate on your projects. Go to the "Contacts" section, click on
-            "New contact", and fill in the required information. Once added,
-            these contacts can be assigned tasks and they can interact with the
-            asks on the board
+            <a href="index.html">Join</a> is a kanban project management tool
+            designed and built by a group of dedicated students as part of theri
+            web development bootcamp at the Developer Akademie.
           </p>
-        </div>
-      </div>
-      <div class="counter">
-        <h2>3.</h2>
-        <div class="counter_text">
-          <h3>Adding Cards</h3>
+
           <p>
-            Now that you've added your contacts, you can start adding cards.
-            Cards represent individual tasks. Click the "+" button under the
-            appropriate list to create a new card. Fill in the task details in
-            the card, like task name, description, due date, assigness, etc.
+            Kanban, a Japanese term meaning "billboard", is a highly effective
+            method to visualize work, limit work-in-progress, and maximize
+            efficiency (or flow). <a href="index.html">Join</a> is designed as
+            an educational exercise and is not intended for extensive business
+            usage. While we strive to ensure the best possible user experience,
+            we cannot guarantee consistend availability,reliability, accuracy or
+            other aspects of quality regarding <a href="index.html">Join</a>.
           </p>
-        </div>
-      </div>
-      <div class="counter">
-        <h2>4.</h2>
-        <div class="counter_text">
-          <h3>Moving Cards</h3>
+
+          <h2>How to use it</h2>
           <p>
-            As the task moves from one stage to another, you can reflect that on
-            the board by dragging and dropping the card form one list to
-            another.
+            here is a step-by-step guide on how to use
+            <a href="index.html">Join</a>:
           </p>
-        </div>
-      </div>
-      <div class="counter">
-        <h2>5.</h2>
-        <div class="counter_text">
-          <h3>Deleting Cards</h3>
-          <p>
-            Once a task is completed, you can either move it to the "Done" list
-            or delete it. Deleting a card will permanently remove it from the
-            board. please exercise caution when deleting cards, as this action
-            is irreversible <br />
-            Remember that using <a href="index.html">Join</a> effectively
-            requires consistent updates from you and your team to ensure the
-            board reflects the current state of your project. <br />
-            Have more questions about <a href="index.html">Join</a>? Feel free
-            to contact us
-            <a href="mailto:elias.esterbauer@gmail.com"
-              >@elias.esterbauer@gmail.com</a
-            >
-          </p>
+          <div class="counter">
+            <h2>1.</h2>
+            <div class="counter_text">
+              <h3>Exploring the Board</h3>
+              <p>
+                when you log in to <a href="index.html">Join</a>, you'll find a
+                default board. This board represents your project and contains
+                four default lists:"To Do", "In Progress", "Await Feedback" and
+                "Done".
+              </p>
+            </div>
+          </div>
+          <div class="counter">
+            <h2>2.</h2>
+            <div class="counter_text">
+              <h3>Creating Contacts</h3>
+              <p>
+                in <a href="index.html">Join</a>, you can add contacts ti
+                collaborate on your projects. Go to the "Contacts" section,
+                click on "New contact", and fill in the required information.
+                Once added, these contacts can be assigned tasks and they can
+                interact with the asks on the board
+              </p>
+            </div>
+          </div>
+          <div class="counter">
+            <h2>3.</h2>
+            <div class="counter_text">
+              <h3>Adding Cards</h3>
+              <p>
+                Now that you've added your contacts, you can start adding cards.
+                Cards represent individual tasks. Click the "+" button under the
+                appropriate list to create a new card. Fill in the task details
+                in the card, like task name, description, due date, assigness,
+                etc.
+              </p>
+            </div>
+          </div>
+          <div class="counter">
+            <h2>4.</h2>
+            <div class="counter_text">
+              <h3>Moving Cards</h3>
+              <p>
+                As the task moves from one stage to another, you can reflect
+                that on the board by dragging and dropping the card form one
+                list to another.
+              </p>
+            </div>
+          </div>
+          <div class="counter">
+            <h2>5.</h2>
+            <div class="counter_text">
+              <h3>Deleting Cards</h3>
+              <p>
+                Once a task is completed, you can either move it to the "Done"
+                list or delete it. Deleting a card will permanently remove it
+                from the board. please exercise caution when deleting cards, as
+                this action is irreversible <br />
+                Remember that using <a href="index.html">Join</a> effectively
+                requires consistent updates from you and your team to ensure the
+                board reflects the current state of your project. <br />
+                Have more questions about <a href="index.html">Join</a>? Feel
+                free to contact us
+                <a href="mailto:elias.esterbauer@gmail.com"
+                  >@elias.esterbauer@gmail.com</a
+                >
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
+    <!-- script section START -->
+    <script src="scripts/script.js"></script>
+    <script src="includeSidepanel.js"></script>
   </body>
 </html>

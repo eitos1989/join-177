@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  font-family: 'Inter';
+  font-family: "Inter";
   font-style: normal;
 }
 
@@ -13,7 +13,7 @@ a {
   display: flex;
   align-items: flex-start;
   gap: 24px;
-  padding: 12px 0 ;
+  padding: 12px 0;
 }
 
 .counter h3 {
@@ -29,35 +29,33 @@ a {
 }
 
 .counter p {
-    font-size: 16px;
-    margin: 0;
-  }
-
-.content_wrapper{
-    max-width: 1440px;
-    margin: 0 auto;
-    padding: 0 40px;
+  font-size: 16px;
+  margin: 0;
 }
 
-h2{
-    font-size: 32px;
-    font-weight: 700;
-
+.content_wrapper {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 40px;
 }
 
-h1{
-    font-size: 48px;
-    font-weight: 900;
-    text-shadow: 1px 0px 0px #000, -1px 0px 0px #000;
+h2 {
+  font-size: 32px;
+  font-weight: 700;
+}
+
+h1 {
+  font-size: 48px;
 }
 
 @media (max-width: 400px) {
-    .content_wrapper{
-        padding: 0 20px;
-    }
+  .content_wrapper {
+    padding: 0 20px;
+  }
 }
 
-.headline{
-    display: flex;
-    justify-content: space-between;
+.headline {
+  display: flex;
+  justify-content: space-between;
 }
+

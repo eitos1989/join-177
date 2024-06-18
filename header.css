@@ -28,3 +28,36 @@
     background-color: rgba(0, 0, 0, 0.05);
     cursor: pointer;
 }
+
+  /* Dropdown Menu for header*/
+  .dropdownMenu {
+    display: none;
+    background-color: #2A3647;
+  position: absolute;;
+
+  flex-direction: column;
+  top: 100px;
+  right: 40px;
+  border-radius: 16px 0 16px 16px;
+  z-index: 2;
+  padding: 10px;
+}
+
+.dropdownMenu a{
+    color: white;
+    padding: 20px 40px;
+    text-decoration: none;
+}
+
+.dropdownMenu a:hover{
+    background-color: #3d5f8d;
+    border-radius: 12px;
+}
+
+.show { 
+    display: flex !important;
+  }
+
+  .header-right img {
+    cursor: pointer;
+}

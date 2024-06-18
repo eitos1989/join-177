@@ -1,7 +1,15 @@
 <div class="header">
-    <div>Kanban Project Management Tool</div>
-    <div class="header-right">
-        <img src="img/help.svg">
-        <div id="user_badge" class="user_badge">G</div>
-    </div>
+  <div>Kanban Project Management Tool</div>
+  <div class="header-right">
+    <a id="question_mark" href="help.html"><img  src="img/help.svg" /></a>
+    <div onclick="createDropdownMenu()" class="dropdownContainer">
+      <div id="user_badge" class="user_badge">G</div>
+
+  </div>
+</div>
+<div id="dropdownMenu" class="dropdownMenu">
+    <a id="help_big_screen" href="help.html">Help</a>
+    <a href="legal_notice.html">Legal Notice</a>
+    <a href="privacy_policy.html">Privacy Policy</a>
+    <a onclick="Logout()" href="index.html">Logout</a>
 </div>
