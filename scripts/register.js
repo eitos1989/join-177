@@ -129,7 +129,7 @@ document.addEventListener("DOMContentLoaded", function () {
     switch (field.id) {
       case "registerName":
         isValid = validateName(field.value);
-        break;
+        break;0
       case "registerEmail":
         isValid = validateEmail(field.value);
         break;
