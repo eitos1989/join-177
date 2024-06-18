@@ -16,7 +16,7 @@ async function checkUserInDatabase(email, password) {
       }
     }
   } catch (error) {
-    console.error('Error checking user in database:', error);
+
   }
   return false;
 }
@@ -25,7 +25,8 @@ async function locateUserToJoin(email, password) {
   try {
     let userExists = await checkUserInDatabase(email, password);
     if (!userExists) {
-      showNotification('User not found or password is incorrect');
+      const errorMsg = document.getElementById('error-msg');
+      errorMsg.classList.remove('hide');
     }
   } catch (error) {
     console.error('Error locating user to join:', error);

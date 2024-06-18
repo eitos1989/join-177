@@ -61,6 +61,7 @@ body {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
 }
 
 .arrowleft {
@@ -148,6 +149,7 @@ body {
   border-radius: 10px;
   padding: 12px 21px 12px 21px;
   font-size: var(--font-size-t6);
+  cursor: pointer;
 }
 
 .mail {
@@ -296,3 +298,10 @@ a {
 .hide {
   display: none;
 }
+
+.error-msg{
+  color: red;
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+

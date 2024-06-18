@@ -28,6 +28,7 @@
                 <div class="formCenter">
                     <input id="email" type="email" placeholder="Email" required class="mb-32 mail" autocomplete="username">
                     <input id="password" type="password" placeholder="Password" required class="mb-32 lock" autocomplete="current-password">
+                    <div class="error-msg hide" id="error-msg">username or password is invalid <br> please try again</div>
                     <label class="checkContainer mb-20">
                         <input type="checkbox"> Remember me
                     </label>
@@ -37,7 +38,7 @@
                     <button type="reset" class="btn-light text-middle" onclick="location.href='summary.html'; assignGuestLogIn()">Guest Log in</button>
                 </div>
             </form>
-            <div class="error-msg" id="error-msg"></div>
+       
         </div>
     </div>
     <div class="footer">
