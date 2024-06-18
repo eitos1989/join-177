@@ -12,7 +12,8 @@ body {
 }
 
 .completeRightContainer {
-    flex: 83%;
+    width: 100%;
+    margin-left: 250px;
 }
 
 .addTaskContainer {
@@ -348,4 +349,8 @@ textarea:hover {
     left: 50%;
     transform: translateX(-50%);
     transition: bottom 0.5s ease-in-out;
+}
+
+#containerForBoardSide{
+    padding: 0 20px;
 }
