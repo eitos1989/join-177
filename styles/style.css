@@ -42,6 +42,8 @@ body {
   position: absolute;
   top: 80px;
   left: 80px;
+  height: 150px;
+  width: 100px;
 }
 
 .formCenter {
@@ -210,37 +212,90 @@ a {
   opacity: 50%;
 }
 
-.start-logo {
-  position: absolute;
-  animation: moveAndResize 1s ease-in-out forwards;
-  animation-delay: 0.3s;
-  background: url("../img/JoinLogo_mainPage.svg") no-repeat;
-  background-position: center;
-  z-index: 2;
-  background-color: #f6f7f8;
-  height: calc(100vh - 80px);
-  width: calc(100vw - 80px);
+.overlay {
+  position: fixed; /* Ändern zu fixed, um sicherzustellen, dass es den gesamten Bildschirm abdeckt */
+  top: 0;
+  left: 0;
+  right: 0; /* Stellt sicher, dass es sich nach rechts erstreckt */
+  bottom: 0; /* Stellt sicher, dass es sich nach unten erstreckt */
+  width: 100%;
+  height: 100%;
+  z-index: 9999; /* Stellen Sie sicher, dass dieser Wert hoch genug ist */
+  background-color: rgba(0, 0, 0, 0.5); /* Optional: Hintergrundfarbe mit Transparenz */
 }
 
-@keyframes moveAndResize {
-  100% {
-    background-position: 0 0;
-    z-index: -1;
-    opacity: 0;
+.overlay::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  animation: fadeOutWhiteBackground 0.8s forwards;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2; /* Stellen Sie sicher, dass das Overlay hinter dem Bild liegt */
+}
+
+.overlay::after {
+  z-index: 2; /* Stellen Sie sicher, dass das Overlay hinter dem Bild liegt */
+}
+
+.logo-container {
+  position: absolute;
+  animation: moveAndResizeImage 0.8s forwards;
+  z-index: 2; /* Höherer z-index, um sicherzustellen, dass es über dem Overlay liegt */
+}
+
+.logo-container img {
+  animation: shrinkLogo 0.8s forwards;
+  opacity: 1;
+}
+
+@keyframes shrinkLogo {
+  from {
+    width: 750px;
+    height: 500px;
   }
+  to {
+    width: 100px;
+    height: 150px;
+  }
+}
+
+@keyframes moveAndResizeImage {
+  from {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  to {
+    top: 80px;
+    left: 80px;
+    transform: translate(0, 0);
+  }
+}
+
+@keyframes fadeOutWhiteBackground {
+  from {
+    opacity: 1;
+    background-color: #F6F7F8;
+  }
+  to {
+    opacity: 0.5;
+    pointer-events: none; /* Ermöglicht Klicks auf darunter liegende Elemente */
+  }
+}
+
+#login-img {
+  animation: background-switch 1.5s ease forwards; /* Verlängert die Dauer auf 1.5 Sekunden */
+  animation-delay: 0.5s;
 }
 
 .btn-dark a {
   padding: 0;
-}
-
-@keyframes moveUp {
-  0% {
-    bottom: 100px;
-  }
-  100% {
-    bottom: 50%; /* Bewegt das Element in die vertikale Mitte des Bildschirms */
-  }
 }
 
 .sign_up_succesful {
@@ -257,4 +312,3 @@ a {
 .hide {
   display: none;
 }
-

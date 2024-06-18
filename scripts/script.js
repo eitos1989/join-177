@@ -61,3 +61,15 @@ function changeHeaderBadge() {
   document.getElementById('user_badge').textContent = usernameAlias;
 }
 
+function assignGuestLogIn(){
+  localStorage.setItem('username', 'Guest');
+  localStorage.setItem('usernameAlias', 'G');
+  window.location.href = 'summary.html';
+}
+//damit 
+document.addEventListener('DOMContentLoaded', () => {
+  const overlay = document.querySelector('.overlay'); // Ersetzen Sie '.overlay' mit dem tatsächlichen Klassennamen Ihres Overlay-Elements
+  overlay.addEventListener('animationend', () => {
+    overlay.remove(); // Entfernt das Overlay-Element aus dem DOM
+  });
+});
