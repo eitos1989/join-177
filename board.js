@@ -354,7 +354,7 @@ function getAssignedContactsHTML(assignedContacts) {
     if (assignedContacts && assignedContacts.length > 0) {
         return assignedContacts.map(contact => `
             <div class="profil_badge" style="background-color: ${contact.color};">
-                ${getInitials(contact.name)}
+                ${getInitials(contact.name)} 
             </div>
         `).join('');
     }
