@@ -56,7 +56,7 @@
 }
 
 .buttonFindTask {
-    padding: 8px;
+    padding: 7px;
     border: unset;
     border-radius: 8px;
     background-color: white;
@@ -82,6 +82,10 @@
 
 .addTaskButton:hover {
     cursor: pointer
+}
+
+.plusButton:hover {
+    cursor: pointer;
 }
 
 .boradSide {
@@ -516,4 +520,11 @@
     cursor: pointer;
 }
 
+.removeIncludedHTML:hover {
+    cursor: pointer;
+}
+
+.subtaskCheck:hover {
+    cursor: pointer;
+}
 

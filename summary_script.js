@@ -61,3 +61,48 @@ function showGreetingAnimation() {
     overlay.style.display = 'none';
   });
 }
+
+const url = "https://contact-storage-f1196-default-rtdb.europe-west1.firebasedatabase.app/tasks.json";
+
+fetch(url)
+.then(response => response.json())
+.then(tasks => {
+  let totalCounter = 0;
+  let toDoCounter = 0;
+  let doneCounter = 0;
+  let awaitFeedbackCounter = 0;
+  let inProgressCounter = 0;
+  let urgentCounter = 0;
+
+  for (const taskId in tasks) {
+    if (tasks.hasOwnProperty(taskId)) {
+      const task = tasks[taskId];
+      totalCounter++; 
+      if (task.priority === 'urgent') {
+        urgentCounter++; 
+      }
+      switch (task.status) {
+        case 'toDoContainer':
+          toDoCounter++;
+          break;
+        case 'done':
+          doneCounter++;
+          break;
+        case 'awaitFeedback':
+          awaitFeedbackCounter++;
+          break;
+        case 'inProgress':
+          inProgressCounter++;
+          break;
+      }
+    }
+  }
+  document.getElementById('allTasks').innerHTML = `${totalCounter}`;
+  document.getElementById('toDoTasks').innerHTML = `${toDoCounter}`;
+  document.getElementById('doneTasks').innerHTML = `${doneCounter}`;
+  document.getElementById('awaitFeedbackTasks').innerHTML = `${awaitFeedbackCounter}`;
+  document.getElementById('inProgressTasks').innerHTML = `${inProgressCounter}`;
+  document.getElementById('urgentTasks').innerHTML = `${urgentCounter}`;
+  })
+    .catch(error => {
+});

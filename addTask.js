@@ -183,7 +183,6 @@ function addSubtask(subtask) {
             <div>${subtask}</div>
             <div>
                 <img src="./img/delete.png" style="margin-right: 5px; height: 12px;">
-                <img src="./img/edit.png" style="margin-right: 5px; height: 12px;">
             </div>
         </div>
     `;

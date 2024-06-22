@@ -257,7 +257,7 @@ function getSubtasksHTML(taskId, task) {
     if (task.subtasks && task.subtasks.length > 0) {
         return task.subtasks.map((subtask, index) => `
             <div class="subtask" id="subtask-${index}">
-                <input type="checkbox" ${subtask.completed ? 'checked' : ''} onchange="toggleSubtaskCompletion('${taskId}', ${index}, this.checked)">
+                <input class="subtaskCheck" type="checkbox" ${subtask.completed ? 'checked' : ''} onchange="toggleSubtaskCompletion('${taskId}', ${index}, this.checked)">
                 <label>${subtask.name}</label>
             </div>
         `).join('');
@@ -461,4 +461,234 @@ function deleteTask(taskId) {
     .catch(error => {
         console.error('Error deleting task:', error);
     });
+}
+
+function moveContainer() {
+    let container = document.getElementById("containerForBoardSide");
+    container.classList.add("showContainer");
+}
+
+function removeIncludetHTML() {
+    let container = document.getElementById("containerForBoardSide");
+    container.classList.remove("showContainer");
+}
+
+function removeDetailsFromTask() {
+    let containerForDetailsTask = document.getElementById('containerForDetailsTask');
+    containerForDetailsTask.style.display = 'none';
+}
+
+async function createTask2() {
+    const title = document.getElementById('title').value;
+    const description = document.getElementById('description').value;
+    const assignedTo = document.getElementById('AssignedTo').value;
+    const dueDate = document.getElementById('gebdat').value;
+    const priority = getPriority();
+    const category = document.getElementById('dropdownContent').value;
+    const status = "toDoContainer";
+    
+    const subtasks = Array.from(document.querySelectorAll('#subtaskList li')).map(li => ({
+        name: li.textContent.trim(),
+        completed: false
+    })).filter(subtask => subtask.name !== '');
+
+    const assignedContacts = selectedContacts.map(contact => ({
+        name: contact.name,
+        color: contact.color
+    }));
+
+    const taskData = {
+        title: title,
+        description: description,
+        assignedTo: assignedTo,
+        dueDate: dueDate,
+        priority: priority,
+        category: category,
+        subtasks: subtasks,
+        assignedContacts: assignedContacts,
+        status: status
+    };
+
+    try {
+        await putData("tasks", taskData);
+        console.log('Task created successfully.');
+
+        const img = document.createElement('img');
+        img.src = './img/Added to back log V1.png';
+        img.id = 'addedToBacklogImg';
+        document.body.appendChild(img);
+
+        img.offsetHeight;
+
+        img.style.bottom = '50%';
+
+        setTimeout(() => {
+            window.location.href = 'board.html';
+        }, 2000); 
+
+    } catch (error) {
+        console.error('Error creating task: ', error);
+    }
+    
+}
+
+function getPriority() {
+    const redButton = document.getElementById('redButton');
+    const orangeButton = document.getElementById('orangeButton');
+    const greenButton = document.getElementById('greenButton');
+
+    if (redButton.style.backgroundColor === 'red') {
+        return 'urgent';
+    } else if (orangeButton.style.backgroundColor === 'orange') {
+        return 'medium';
+    } else if (greenButton.style.backgroundColor === 'rgb(8, 249, 0)') {
+        return 'low';
+    } else {
+        return '';
+    }
+}
+
+async function putData(path = "", data = {}) {
+    try {
+        const response = await fetch(BASE_URL + path + ".json", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data)
+        });
+        const responseAsJson = await response.json();
+        console.log(responseAsJson);
+        return responseAsJson;
+    } catch (error) {
+        console.error('Error putting data: ', error);
+        throw error;
+    }
+}
+
+function clearTask() {
+    location.reload();
+}
+
+function changePriority(color) {
+    resetButtons();
+    if (color === 'red') {
+        ifColorRed();
+    } else if (color === 'orange') {
+        ifColorOrange();
+    } else if (color === 'green') {
+        ifColorGreen();
+    }
+}
+
+function ifColorRed() {
+    let redButton = document.getElementById('redButton');
+    redButton.style.backgroundColor = "red";
+    redButton.style.color = "white";
+    redButton.querySelector("img").src = "./img/angles-up-solid-2.svg";
+}
+
+function ifColorOrange() {
+    let orangeButton = document.getElementById('orangeButton');
+    orangeButton.style.backgroundColor = "orange";
+    orangeButton.style.color = "white";
+    orangeButton.querySelector("img").src = "./img/grip-lines-solid-2.svg";
+}
+
+function ifColorGreen() {
+    let greenButton = document.getElementById('greenButton');
+    greenButton.style.backgroundColor = "rgb(8,249,0)";
+    greenButton.style.color = "white";
+    greenButton.querySelector("img").src = "./img/angles-down-solid-2.svg";
+}
+
+function resetButtons() {
+    resetRedButton();
+    resetOrangeButton();
+    resetGreenButton();
+}
+
+function resetRedButton() {
+    let redButton = document.getElementById('redButton');
+    redButton.style.backgroundColor = "";
+    redButton.style.color = "black";
+    redButton.querySelector("img").src = "./img/angles-up-solid.svg";
+}
+
+function resetOrangeButton() {
+    let orangeButton = document.getElementById('orangeButton');
+    orangeButton.style.backgroundColor = "";
+    orangeButton.style.color = "black";
+    orangeButton.querySelector("img").src = "./img/grip-lines-solid.svg";
+}
+
+function resetGreenButton() {
+    let greenButton = document.getElementById('greenButton');
+    greenButton.style.backgroundColor = "";
+    greenButton.style.color = "black";
+    greenButton.querySelector("img").src = "./img/angles-down-solid.svg";
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    const addButton = document.querySelector('.inputWithButton');
+
+    addButton.addEventListener('click', function() {
+        const inputField = document.getElementById('Subtasks');
+        const subtaskValue = inputField.value.trim();
+        
+        if (subtaskValue !== '') {
+            addSubtask(subtaskValue);
+            inputField.value = '';
+        }
+    });
+});
+
+function addSubtask(subtask) {
+    const subtaskList = document.getElementById('subtaskList');
+    const newSubtask = document.createElement('li');
+
+    newSubtask.innerHTML = `
+        <div style="display: flex; justify-content: space-between;">
+            <div>${subtask}</div>
+            <div>
+                <img src="./img/delete.png" style="margin-right: 5px; height: 12px;">
+            </div>
+        </div>
+    `;
+
+    subtaskList.appendChild(newSubtask);
+}
+
+function replaceAddButton() {
+    const inputWithButtonContainer = document.getElementById('inputWithButtonContainer');
+    inputWithButtonContainer.innerHTML = `
+        <input placeholder="Add new subtask" type="text" id="Subtasks" name="Subtasks" class="inputWithButton">
+        <img class="vectorImg1" src="./img/VectorBlack.png" onclick="clearSubtasks()">
+        <div class="divider"></div>
+        <img class="vectorImg2" src="./img/Vector 17.png" onclick="addSubtaskToList()">
+    `;
+}
+
+function addSubtaskToList() {
+    const inputField = document.getElementById('Subtasks');
+    const subtaskValue = inputField.value.trim();
+    
+    if (subtaskValue !== '') {
+        addSubtask(subtaskValue);
+        clearSubtasks();
+    }
+}
+
+function clearSubtasks() {
+    const inputField = document.getElementById('Subtasks');
+    inputField.value = '';
+    chanceButton();
+}
+
+function chanceButton() {
+    const inputWithButtonContainer = document.getElementById('inputWithButtonContainer');
+    inputWithButtonContainer.innerHTML = `
+        <input onclick="replaceAddButton()" placeholder="Add new subtask" type="text" id="Subtasks" name="Subtasks" class="inputWithButton">
+        <img class="addButtonSubtask" id="addBlack" src="./img/addBlack.png" onclick="replaceAddButton()">
+    `;
 }
