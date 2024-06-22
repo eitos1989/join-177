@@ -480,7 +480,8 @@
 .awaitFeedbackContainer,
 .doneContainer {
     width: 100%;
-    height: 100vh;
+    height: 70vh;
+    overflow-y: auto;
     border: none;
     padding: 10px;
     margin: 10px;
@@ -528,3 +529,31 @@
     cursor: pointer;
 }
 
+@media (max-width: 1100px) {
+    .completeRightContainerBoard {
+      margin-left: 0;
+    }
+    .boradSide{
+        flex-direction: column;
+        overflow-y: auto;
+        align-items: center;
+        height: 50vh;
+    }
+    .rightContainerWithoutHeadline {
+        margin-left: 16px;
+    }
+    .toDo,
+    .inProgress,
+    .awaitFeedback,
+    .done {
+        width: 80%;
+    }
+    .headlineBoardSide {
+        display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 0;
+    flex-direction: column;
+    margin-bottom: 32px;
+    }
+}  

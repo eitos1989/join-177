@@ -130,7 +130,7 @@ function showTaskDetails(taskId) {
     `;
 }
 
-let selectedContacts = []; // Stellen Sie sicher, dass dieses Array definiert ist
+let selectedContacts = []; 
 
 function editTaskDetails(taskId) {
     const task = tasks[taskId];
@@ -152,7 +152,7 @@ function editTaskDetails(taskId) {
 
     const saveButton = `
         <button class="containerImgAndText" onclick="saveTaskDetails('${taskId}')">
-            <img src="./img/save.png">
+            <img src="./img/save.svg">
             <p>Save</p>
         </button>
     `;

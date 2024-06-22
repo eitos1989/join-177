@@ -354,3 +354,17 @@ textarea:hover {
 #containerForBoardSide{
     padding: 0 72px;
 }
+
+@media (max-width: 950px) {
+    .addTaskContainer{
+      flex-direction: column;
+      overflow-y: auto;
+      max-height: 300px;
+    }
+    .addTaskRightSide{
+        flex: 1;
+        margin-right: 72px;
+        margin-left: 0;
+        margin-top: 32px;
+    }
+}    
