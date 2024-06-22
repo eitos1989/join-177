@@ -109,7 +109,7 @@ function showTaskDetails(taskId) {
             </div>
             <div class="assignetToDetailsContainer">
                 <p class="textAssignetToDetails">Assigned To:</p>
-                <div class="assignedContactsDetails">${getAssignedContactsHTML(task.assignedContacts)}</div>
+                <div id="taskContacts" class="assignedContactsDetails">${getAssignedContactsHTML(task.assignedContacts)}</div>
             </div>
             <div class="subtasksDetailsContainer">
                 <p class="textSubtasksDetails">Subtasks:</p>
@@ -130,6 +130,8 @@ function showTaskDetails(taskId) {
     `;
 }
 
+let selectedContacts = []; // Stellen Sie sicher, dass dieses Array definiert ist
+
 function editTaskDetails(taskId) {
     const task = tasks[taskId];
 
@@ -143,6 +145,10 @@ function editTaskDetails(taskId) {
             <option value="urgent" ${task.priority === 'urgent' ? 'selected' : ''}>Urgent</option>
         </select>
     `;
+    document.getElementById('taskContacts').innerHTML = `
+    <input placeholder="Select contacts to assign" type="text" id="AssignedTo" name="AssignedTo" onclick="showContacts()">
+    <div id="contactList" style="display: none; max-height: 100px; overflow-y: auto;"></div>
+    `;
 
     const saveButton = `
         <button class="containerImgAndText" onclick="saveTaskDetails('${taskId}')">
@@ -155,13 +161,71 @@ function editTaskDetails(taskId) {
     editContainer.innerHTML = saveButton;
 }
 
+function showContacts() {
+    let contactListDiv = document.getElementById("contactList");
+    if (contactListDiv.style.display === "none") {
+        fetch('https://contact-storage-f1196-default-rtdb.europe-west1.firebasedatabase.app/contacts.json')
+            .then(response => response.json())
+            .then(data => {
+                let contactListHTML = "<ul>";
+                for (let key in data) {
+                    if (data.hasOwnProperty(key)) {
+                        let contact = data[key];
+                        let badge = createContactBadge(contact);
+                        let contactName = contact.name;
+                        contactListHTML += `<li class="contactBadge" onclick='toggleContact("${contactName}", "${contact.color}")'>${badge.outerHTML}<span>${contactName}</span></li>`;
+                    }
+                }
+                contactListHTML += "</ul>";
+                contactListDiv.innerHTML = contactListHTML;
+                contactListDiv.style.display = "block";
+            })
+            .catch(error => console.error('Error fetching contacts:', error));
+    } else {
+        contactListDiv.style.display = "none";
+    }
+}
+
+function toggleContact(contactName, contactColor) {
+    let index = selectedContacts.findIndex(contact => contact.name === contactName);
+    if (index === -1) {
+        selectedContacts.push({ name: contactName, color: contactColor });
+    } else {
+        selectedContacts.splice(index, 1);
+    }
+    updateAssignedToInput();
+}
+
+function updateAssignedToInput() {
+    const contactNames = selectedContacts.map(contact => contact.name);
+    document.getElementById("AssignedTo").value = contactNames.join(", ");
+}
+
+function createContactBadge(contact) {
+    let badge = document.createElement("div");
+    badge.className = "profil_badge";
+    if (contact && contact.name) {
+        let names = contact.name.split(" ");
+        if (names.length > 1) {
+            badge.textContent = names[0][0].toUpperCase() + names[1][0].toUpperCase();
+        } else if (names.length === 1) {
+            badge.textContent = names[0][0].toUpperCase();
+        }
+        badge.style.backgroundColor = contact.color;
+    }
+    return badge;
+}
+
 function saveTaskDetails(taskId) {
     const updatedTask = {
         title: document.getElementById('editTitle').value,
         description: document.getElementById('editDescription').value,
         dueDate: document.getElementById('editDueDate').value,
         priority: document.getElementById('editPriority').value,
-        // Füge hier ggf. weitere Felder hinzu, die bearbeitet werden können
+        assignedContacts: selectedContacts.map(contact => ({
+            name: contact.name,
+            color: contact.color
+        }))
     };
 
     // Sende die aktualisierten Daten an die API
@@ -179,7 +243,6 @@ function saveTaskDetails(taskId) {
         // Aktualisiere die Anzeige
         showTaskDetails(taskId);
         fetchAndDisplayTasks();
-
     })
     .catch(error => {
         console.error('Error:', error);
