@@ -562,6 +562,20 @@
     }
 }  
 
+@media (max-width: 950px) {
+    .headlineContainerFotBoardSide {
+      margin-right: 90px;
+    }
+    .clearButton {
+        font-size: smaller;
+        padding: 4px;
+    }
+    .createTaskButton {
+        font-size: smaller;
+        padding: 4px;
+    }
+}    
+
 .buttonFindTask:hover {
     cursor: pointer;
 }

@@ -305,7 +305,9 @@ textarea:hover {
     font-size: small;
 }
 
-
+.rightContainerWithoutHeadline {
+    margin-left: 74px;
+}
 
 .vectorImg1 {
     width: 12px; 
@@ -351,10 +353,6 @@ textarea:hover {
     transition: bottom 0.5s ease-in-out;
 }
 
-#containerForBoardSide{
-    padding: 0 72px;
-}
-
 @media (max-width: 950px) {
     .addTaskContainer{
       flex-direction: column;
@@ -367,4 +365,24 @@ textarea:hover {
         margin-left: 0;
         margin-top: 32px;
     }
-}    
+    .createTask {
+        margin-right: 90px;
+    }
+} 
+
+@media (max-width: 500px) {
+    .clearButton {
+        font-size: smaller;
+        padding: 4px;
+    }
+    .createTaskButton {
+        font-size: smaller;
+        padding: 4px;
+    }
+    .requiredInfo {
+        font-size: x-small;
+    }
+    .inputFieldFindTask {
+        width: 140px;
+    }
+}
