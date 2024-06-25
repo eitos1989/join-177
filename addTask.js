@@ -1,5 +1,14 @@
+/**
+ * Initializes the task ID counter from localStorage or defaults to 0.
+ * @type {number}
+ */
 let taskIdCounter = parseInt(localStorage.getItem('taskIdCounter')) || 0;
 
+/**
+ * Changes the priority button styles based on the specified color.
+ * Resets all buttons to default before applying the selected color style.
+ * @param {string} color - The color identifier ('red', 'orange', 'green').
+ */
 function changePriority(color) {
     resetButtons();
     if (color === 'red') {
@@ -11,6 +20,10 @@ function changePriority(color) {
     }
 }
 
+/**
+ * Sets the styles for the red priority button.
+ * Updates background color to red, text color to white, and image source.
+ */
 function ifColorRed() {
     let redButton = document.getElementById('redButton');
     redButton.style.backgroundColor = "red";
@@ -18,6 +31,10 @@ function ifColorRed() {
     redButton.querySelector("img").src = "./img/angles-up-solid-2.svg";
 }
 
+/**
+ * Sets the styles for the orange priority button.
+ * Updates background color to orange, text color to white, and image source.
+ */
 function ifColorOrange() {
     let orangeButton = document.getElementById('orangeButton');
     orangeButton.style.backgroundColor = "orange";
@@ -25,6 +42,10 @@ function ifColorOrange() {
     orangeButton.querySelector("img").src = "./img/grip-lines-solid-2.svg";
 }
 
+/**
+ * Sets the styles for the green priority button.
+ * Updates background color to a specific green shade, text color to white, and image source.
+ */
 function ifColorGreen() {
     let greenButton = document.getElementById('greenButton');
     greenButton.style.backgroundColor = "rgb(8,249,0)";
@@ -32,18 +53,31 @@ function ifColorGreen() {
     greenButton.querySelector("img").src = "./img/angles-down-solid-2.svg";
 }
 
+/**
+ * Resets the styles of all priority buttons to their default state.
+ * Calls individual reset functions for each button.
+ */
 function resetButtons() {
     resetRedButton();
     resetOrangeButton();
     resetGreenButton();
 }
 
+/**
+ * Resets the styles of the red priority button to its default state.
+ * Updates background color to default, text color to black, and image source.
+ */
 function resetRedButton() {
     let redButton = document.getElementById('redButton');
     redButton.style.backgroundColor = "";
     redButton.style.color = "black";
     redButton.querySelector("img").src = "./img/angles-up-solid.svg";
 }
+
+/**
+ * Resets the styles of the orange priority button to its default state.
+ * Updates background color to default, text color to black, and image source.
+ */
 
 function resetOrangeButton() {
     let orangeButton = document.getElementById('orangeButton');
@@ -52,6 +86,10 @@ function resetOrangeButton() {
     orangeButton.querySelector("img").src = "./img/grip-lines-solid.svg";
 }
 
+/**
+ * Resets the styles of the green priority button to its default state.
+ * Updates background color to default, text color to black, and image source.
+ */
 function resetGreenButton() {
     let greenButton = document.getElementById('greenButton');
     greenButton.style.backgroundColor = "";
@@ -59,8 +97,18 @@ function resetGreenButton() {
     greenButton.querySelector("img").src = "./img/angles-down-solid.svg";
 }
 
+/**
+ * Base URL for the Firebase Realtime Database API.
+ * @constant {string}
+ */
 const BASE_URL = "https://contact-storage-f1196-default-rtdb.europe-west1.firebasedatabase.app/";
 
+/**
+ * Sends a POST request to the Firebase Realtime Database API.
+ * @param {string} path - The path for the API endpoint.
+ * @param {Object} data - The data to be sent in the request body.
+ * @returns {Promise<Object>} - A promise resolving to the JSON response data.
+ */
 async function putData(path = "", data = {}) {
     try {
         const response = await fetch(BASE_URL + path + ".json", {
@@ -79,6 +127,11 @@ async function putData(path = "", data = {}) {
     }
 }
 
+/**
+ * Creates a new task by sending a POST request to the tasks endpoint.
+ * Reads input values from the DOM and constructs task data.
+ * Displays a success message and redirects after creating the task.
+ */
 async function createTask() {
     const title = document.getElementById('title').value;
     const description = document.getElementById('description').value;
@@ -133,6 +186,11 @@ async function createTask() {
     
 }
 
+/**
+ * Fetches data from the Firebase Realtime Database API.
+ * @param {string} path - The path for the API endpoint.
+ * @returns {Promise<Object>} - A promise resolving to the JSON response data.
+ */
 async function getData(path = "") {
     try {
         const response = await fetch(BASE_URL + path + ".json");
@@ -144,6 +202,10 @@ async function getData(path = "") {
     }
 }
 
+/**
+ * Determines the priority of a task based on the selected button color.
+ * @returns {string} - The priority ('urgent', 'medium', 'low') or an empty string.
+ */
 function getPriority() {
     const redButton = document.getElementById('redButton');
     const orangeButton = document.getElementById('orangeButton');
@@ -174,6 +236,10 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+/**
+ * Adds a new subtask to the list in the DOM.
+ * @param {string} subtask - The name of the subtask to be added.
+ */
 function addSubtask(subtask) {
     const subtaskList = document.getElementById('subtaskList');
     const newSubtask = document.createElement('li');
@@ -190,6 +256,10 @@ function addSubtask(subtask) {
     subtaskList.appendChild(newSubtask);
 }
 
+/**
+ * Replaces the 'Add new subtask' button with input and two action icons.
+ * Used for UI interaction to facilitate adding subtasks.
+ */
 function replaceAddButton() {
     const inputWithButtonContainer = document.getElementById('inputWithButtonContainer');
     inputWithButtonContainer.innerHTML = `
@@ -200,6 +270,10 @@ function replaceAddButton() {
     `;
 }
 
+/**
+ * Adds a new subtask to the list and clears the input field.
+ * Invoked when clicking the corresponding action icon in the UI.
+ */
 function addSubtaskToList() {
     const inputField = document.getElementById('Subtasks');
     const subtaskValue = inputField.value.trim();
@@ -210,12 +284,20 @@ function addSubtaskToList() {
     }
 }
 
+/**
+ * Clears the input field used for adding subtasks.
+ * Resets the UI state after adding or canceling a subtask addition.
+ */
 function clearSubtasks() {
     const inputField = document.getElementById('Subtasks');
     inputField.value = '';
     chanceButton();
 }
 
+/**
+ * Updates the UI state to show the input field for adding subtasks.
+ * Replaces the action icon with the input field and appropriate icons.
+ */
 function chanceButton() {
     const inputWithButtonContainer = document.getElementById('inputWithButtonContainer');
     inputWithButtonContainer.innerHTML = `
@@ -224,12 +306,22 @@ function chanceButton() {
     `;
 }
 
+/**
+ * Reloads the current page to clear all task-related data and state.
+ * Used to reset the task creation form or task details view.
+ */
+
 function clearTask() {
     location.reload();
 }
 
 const selectedContacts = [];
 
+/**
+ * Toggles the visibility of the contact list in the UI.
+ * Fetches contact data from the Firebase Realtime Database and generates HTML dynamically.
+ * Handles click events to toggle contact selection.
+ */
 function showContacts() {
     let contactListDiv = document.getElementById("contactList");
     if (contactListDiv.style.display === "none") {
@@ -255,6 +347,13 @@ function showContacts() {
     }
 }
 
+/**
+ * Toggles the selection of a contact.
+ * Adds or removes the contact from the selectedContacts array.
+ * Updates the assignedTo input field based on selected contacts.
+ * @param {string} contactName - The name of the contact to toggle.
+ * @param {string} contactColor - The color associated with the contact badge.
+ */
 function toggleContact(contactName, contactColor) {
     let index = selectedContacts.findIndex(contact => contact.name === contactName);
     if (index === -1) {
@@ -265,11 +364,20 @@ function toggleContact(contactName, contactColor) {
     updateAssignedToInput();
 }
 
+/**
+ * Updates the 'AssignedTo' input field based on selected contacts.
+ * Updates the displayed names of selected contacts in the input field.
+ */
 function updateAssignedToInput() {
     const contactNames = selectedContacts.map(contact => contact.name);
     document.getElementById("AssignedTo").value = contactNames.join(", ");
 }
 
+/**
+ * Creates a DOM element representing a contact badge.
+ * @param {Object} contact - The contact object containing name and color information.
+ * @returns {HTMLElement} - The DOM element representing the contact badge.
+ */
 function createContactBadge(contact) {
     let badge = document.createElement("div");
     badge.className = "profil_badge";
@@ -285,6 +393,10 @@ function createContactBadge(contact) {
     return badge;
 }
 
+/**
+ * Enables or disables the create task button based on form validity.
+ * Listens for input events on the form to dynamically update button state.
+ */
 function checkFormValidity() {
     const form = document.getElementById('addTaskForm');
     const createTaskButton = document.getElementById('createTaskButton');
@@ -294,6 +406,3 @@ function checkFormValidity() {
     });
 }
 
-function clearTask() {
-    location.reload();
-}

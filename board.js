@@ -1,21 +1,30 @@
-
+/**
+ * Base URL for Firebase database where tasks are stored.
+ * @type {string}
+ */
 const BASE_URL = "https://contact-storage-f1196-default-rtdb.europe-west1.firebasedatabase.app/";
-let tasks = {}; 
 
-// Funktion zum Laden und Anzeigen der Tasks
+/**
+ * Object to store tasks fetched from Firebase.
+ * @type {Object}
+ */
+let tasks = {};
+
+/**
+ * Fetches tasks data from Firebase and displays them in respective containers.
+ * Clears existing containers before populating with fetched tasks.
+ * @returns {Promise<void>}
+ */
 async function fetchAndDisplayTasks() {
     const url = `${BASE_URL}/tasks.json`;
 
     try {
         const response = await fetch(url);
         const data = await response.json();
-
-        // Leere alle Container, bevor neue Tasks hinzugefügt werden
         clearContainer('toDoContainer');
         clearContainer('inProgressContainer');
         clearContainer('awaitFeedbackContainer');
         clearContainer('doneContainer');
-
         for (const taskId in data) {
             if (data.hasOwnProperty(taskId)) {
                 const task = data[taskId];
@@ -24,10 +33,8 @@ async function fetchAndDisplayTasks() {
                 const containerId = localStorage.getItem(`task-${taskId}-container`);
 
                 if (containerId) {
-                    // Füge den Task dem gespeicherten Container hinzu
                     document.getElementById(containerId).appendChild(taskElement);
                 } else {
-                    // Standardmäßig hinzufügen, falls kein gespeicherter Container gefunden wird
                     document.getElementById('toDoContainer').appendChild(taskElement);
                 }
             }
@@ -38,16 +45,20 @@ async function fetchAndDisplayTasks() {
     }
 }
 
-// Funktion zum Erstellen eines Task-Elements
+/**
+ * Creates an HTML element representing a task with details.
+ * @param {Object} task - The task object containing title, description, etc.
+ * @param {string} taskId - The ID of the task.
+ * @returns {HTMLElement} - The created task element.
+ */
 function createTaskElement(task, taskId) {
     const taskElement = document.createElement('div');
     taskElement.classList.add('createTasksContainer');
     taskElement.setAttribute('draggable', 'true');
     taskElement.setAttribute('id', `task-${taskId}`);
     taskElement.setAttribute('ondragstart', 'startDragging(event)');
-    taskElement.setAttribute('onclick', `showTaskDetails('${taskId}')`); 
-   
-    // Berechne den Fortschritt für die Progressbar
+    taskElement.setAttribute('onclick', `showTaskDetails('${taskId}')`);
+
     const progress = calculateProgress(task);
     const completedSubtasks = task.subtasks ? task.subtasks.filter(subtask => subtask.completed).length : 0;
     const totalSubtasks = task.subtasks ? task.subtasks.length : 0;
@@ -61,7 +72,7 @@ function createTaskElement(task, taskId) {
                 <div class="progressbar" style="width: ${progress}%"></div>
             </div>
             <div class="progressText">${completedSubtasks}/${totalSubtasks}</div>
-        </div>    
+        </div>
         <div class="contactsAndPriority">
             <div class="assignedContacts">${getAssignedContactsHTML(task.assignedContacts)}</div>
             <div class="priorityImage">
@@ -69,10 +80,15 @@ function createTaskElement(task, taskId) {
             </div>
         </div>
     `;
+
     return taskElement;
 }
 
-// Funktion zur Berechnung des Fortschritts
+/**
+ * Calculates the progress of a task based on its subtasks completion.
+ * @param {Object} task - The task object containing subtasks.
+ * @returns {number} - The percentage of completion.
+ */
 function calculateProgress(task) {
     if (!task.subtasks || task.subtasks.length === 0) {
         return 0;
@@ -81,7 +97,10 @@ function calculateProgress(task) {
     return (completedSubtasks / task.subtasks.length) * 100;
 }
 
-
+/**
+ * Displays detailed view of a task.
+ * @param {string} taskId - The ID of the task to display details for.
+ */
 function showTaskDetails(taskId) {
     const task = tasks[taskId];
     const detailsContainer = document.getElementById('containerForDetailsTask');
@@ -131,9 +150,14 @@ function showTaskDetails(taskId) {
 
 let selectedContacts = []; 
 
+/**
+ * Function to edit details of a task.
+ * 
+ * Allows editing details of a task and saving the changes.
+ * @param {string} taskId - The ID of the task whose details are to be edited.
+ */
 function editTaskDetails(taskId) {
     const task = tasks[taskId];
-
     document.getElementById('taskTitle').innerHTML = `<input type="text" id="editTitle" value="${task.title}">`;
     document.getElementById('taskDescription').innerHTML = `<textarea id="editDescription">${task.description}</textarea>`;
     document.getElementById('taskDueDate').innerHTML = `<input type="date" id="editDueDate" value="${task.dueDate}">`;
@@ -148,18 +172,21 @@ function editTaskDetails(taskId) {
     <input placeholder="Select contacts to assign" type="text" id="AssignedTo" name="AssignedTo" onclick="showContacts()">
     <div id="contactList" style="display: none; max-height: 100px; overflow-y: auto;"></div>
     `;
-
     const saveButton = `
         <button class="containerImgAndText" onclick="saveTaskDetails('${taskId}')">
             <img src="./img/save.svg">
             <p>Save</p>
         </button>
     `;
-
     const editContainer = document.querySelector('.deleteAndEditContainer');
     editContainer.innerHTML = saveButton;
 }
 
+/**
+ * Function to show available contacts.
+ * 
+ * Displays the list of available contacts from Firebase database.
+ */
 function showContacts() {
     let contactListDiv = document.getElementById("contactList");
     if (contactListDiv.style.display === "none") {
@@ -215,6 +242,12 @@ function createContactBadge(contact) {
     return badge;
 }
 
+/**
+ * Function to save edited details of a task.
+ * 
+ * Saves the edited details of a task to Firebase database.
+ * @param {string} taskId - The ID of the task whose details are to be saved.
+ */
 function saveTaskDetails(taskId) {
     const updatedTask = {
         title: document.getElementById('editTitle').value,
@@ -227,7 +260,6 @@ function saveTaskDetails(taskId) {
         }))
     };
 
-    // Sende die aktualisierten Daten an die API
     fetch(`${BASE_URL}/tasks/${taskId}.json`, {
         method: 'PATCH',
         headers: {
@@ -237,9 +269,7 @@ function saveTaskDetails(taskId) {
     })
     .then(response => response.json())
     .then(data => {
-        // Aktualisiere die lokale Task-Liste
         tasks[taskId] = data;
-        // Aktualisiere die Anzeige
         showTaskDetails(taskId);
         fetchAndDisplayTasks();
     })
@@ -264,14 +294,21 @@ function getSubtasksHTML(taskId, task) {
     return '';
 }
 
-// Funktion zum Aktualisieren des Abschlussstatus eines Subtasks
+/**
+ * Function to toggle the completion status of a subtask.
+ * 
+ * Changes the completion status of a subtask and updates it in Firebase database.
+ * @param {string} taskId - The ID of the task to which the subtask belongs.
+ * @param {number} subtaskIndex - The index of the subtask in the subtask list.
+ * @param {boolean} completed - The new completion status of the subtask.
+ * @returns {Promise<void>}
+ */
 async function toggleSubtaskCompletion(taskId, subtaskIndex, completed) {
     const task = tasks[taskId];
     if (task && task.subtasks && task.subtasks[subtaskIndex]) {
         task.subtasks[subtaskIndex].completed = completed;
 
         try {
-            // Aktualisiere den Subtask in Firebase
             await fetch(`${BASE_URL}/tasks/${taskId}/subtasks/${subtaskIndex}.json`, {
                 method: 'PATCH',
                 headers: {
@@ -280,17 +317,19 @@ async function toggleSubtaskCompletion(taskId, subtaskIndex, completed) {
                 body: JSON.stringify({ completed })
             });
             console.log(`Subtask ${subtaskIndex} status updated: ${completed}`);
-
-            // Aktualisiere die Progressbar und die Subtask-Zählung
             updateProgressbar(taskId);
-
         } catch (error) {
             console.error('Fehler beim Aktualisieren des Subtask-Status:', error);
         }
     }
 }
 
-// Funktion zur Aktualisierung der Progressbar
+/**
+ * Function to update the progress bar of a task.
+ * 
+ * Updates the progress bar of a task after changes to its subtasks.
+ * @param {string} taskId - The ID of the task whose progress bar needs to be updated.
+ */
 function updateProgressbar(taskId) {
     const task = tasks[taskId];
     const progress = calculateProgress(task);
@@ -320,36 +359,48 @@ function removeDetailsFromTask() {
     containerForDetailsTask.style.display = 'none';
 }
 
-// Funktion zum Leeren eines Containers
+/**
+ * Clears the content of a specified container by ID.
+ * @param {string} containerId - The ID of the container to clear.
+ */
 function clearContainer(containerId) {
     const container = document.getElementById(containerId);
     container.innerHTML = ''; // Leere den Containerinhalt
 }
 
-// Initialen Abruf und Anzeige der Tasks
 fetchAndDisplayTasks();
 
-// Funktion zum Starten des Drag-and-Drop-Vorgangs
+/**
+ * Function to start the drag-and-drop operation.
+ * 
+ * Initiates the drag-and-drop operation for an element.
+ * @param {DragEvent} event - The DragEvent object that initiates the drag-and-drop operation.
+ */
 function startDragging(event) {
     currentDraggedElement = event.target;
     event.dataTransfer.setData("text", event.target.id);
 }
 
-// Funktion zur Überprüfung des Drag-and-Drop
 function allowDrop(ev) {
     ev.preventDefault();
 }
 
-// Funktion zum Verschieben des Tasks in einen anderen Container
+/**
+ * Function to move a task to another container.
+ * 
+ * Moves a task to another container and updates its status in Firebase database.
+ * @param {string} containerId - The ID of the target container where the task will be moved.
+ * @param {DragEvent} ev - The DragEvent object that triggers the move operation.
+ * @param {string} status - The new status of the task after moving.
+ * @returns {Promise<void>}
+ */
 async function moveTo(containerId, ev, status) {
     ev.preventDefault();
-    const taskId = ev.dataTransfer.getData("text").replace('task-', ''); // Entferne das Präfix 'task-'
+    const taskId = ev.dataTransfer.getData("text").replace('task-', ''); 
     const taskElement = document.getElementById(`task-${taskId}`);
     const targetContainer = document.getElementById(containerId);
     targetContainer.appendChild(taskElement);
     localStorage.setItem(`task-${taskId}-container`, containerId);
-
-    // Update task status in Firebase
     try {
         await fetch(`${BASE_URL}/tasks/${taskId}.json`, {
             method: 'PATCH',
@@ -363,17 +414,33 @@ async function moveTo(containerId, ev, status) {
     }
 }
 
-// Funktion zur Hervorhebung eines Containers beim Drag-and-Drop
+/**
+ * Function to highlight a container during drag-and-drop operation.
+ * 
+ * Adds a CSS class to highlight a container ID during drag-and-drop operation.
+ * @param {string} id - The ID of the container to be highlighted.
+ */
 function highlight(id) {
     document.getElementById(id).classList.add('drag-area-highlight');
 }
 
-// Funktion zum Entfernen der Hervorhebung eines Containers
+/**
+ * Function to remove highlight from a container.
+ * 
+ * Removes the CSS class used to highlight a container after drag-and-drop operation.
+ * @param {string} id - The ID of the container from which highlight needs to be removed.
+ */
 function removeHighlight(id) {
     document.getElementById(id).classList.remove('drag-area-highlight');
 }
 
-// Funktion zur Bestimmung der CSS-Klasse für die Kategorie
+/**
+ * Function to determine the CSS class for a specific category.
+ * 
+ * Returns the corresponding CSS class for a task category.
+ * @param {string} category - The category of the task.
+ * @returns {string} - The CSS class for the specified category.
+ */
 function getCategoryClass(category) {
     switch (category) {
         case 'Technical Task':
@@ -385,7 +452,13 @@ function getCategoryClass(category) {
     }
 }
 
-// Funktion zur Bestimmung der Hintergrundfarbe für die Kategorie
+/**
+ * Function to determine the background color for a specific category.
+ * 
+ * Returns the background color for a task category.
+ * @param {string} category - The category of the task.
+ * @returns {string} - The background color for the specified category.
+ */
 function getCategoryColor(category) {
     switch (category) {
         case 'Technical Task':
@@ -397,7 +470,13 @@ function getCategoryColor(category) {
     }
 }
 
-// Funktion zur Bestimmung der Bildquelle für die Priorität
+/**
+ * Function to determine the image source for a specific priority.
+ * 
+ * Returns the image source for the priority of a task.
+ * @param {string} priority - The priority of the task.
+ * @returns {string} - The image source for the specified priority.
+ */
 function getPriorityImageSrc(priority) {
     switch (priority) {
         case 'urgent':
@@ -411,7 +490,13 @@ function getPriorityImageSrc(priority) {
     }
 }
 
-// Funktion zur Generierung des HTML-Codes für zugewiesene Kontakte
+/**
+ * Function to generate HTML code for assigned contacts badges.
+ * 
+ * Generates HTML code for each assigned contact's badge based on the provided assigned contacts array.
+ * @param {Array} assignedContacts - Array containing assigned contacts data.
+ * @returns {string} - HTML code for assigned contacts badges.
+ */
 function getAssignedContactsHTML(assignedContacts) {
     if (assignedContacts && assignedContacts.length > 0) {
         return assignedContacts.map(contact => `
@@ -423,7 +508,13 @@ function getAssignedContactsHTML(assignedContacts) {
     return '';
 }
 
-// Funktion zur Bestimmung der Initialen aus dem Namen
+/**
+ * Function to determine initials from a name.
+ * 
+ * Extracts initials from the provided name and returns them.
+ * @param {string} name - The name from which initials are to be determined.
+ * @returns {string} - Initials extracted from the name.
+ */
 function getInitials(name) {
     const names = name.split(" ");
     if (names.length > 1) {
@@ -434,15 +525,17 @@ function getInitials(name) {
     return "";
 }
 
+/**
+ * Function to delete a task.
+ * 
+ * Confirms the deletion of a task and sends a DELETE request to the API endpoint.
+ * @param {string} taskId - The ID of the task to be deleted.
+ */
 function deleteTask(taskId) {
-    // Bestätigungsnachricht vor dem Löschen
     if (!confirm('Are you sure you want to delete this task?')) {
         return;
     }
-
     const url = `${BASE_URL}/tasks/${taskId}.json`;
-
-    // Anfrage an die API senden
     fetch(url, {
         method: 'DELETE',
     })
@@ -450,11 +543,8 @@ function deleteTask(taskId) {
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
-        // Task lokal löschen
         delete tasks[taskId];
-        // Details Container ausblenden
         document.getElementById('containerForDetailsTask').style.display = 'none';
-        // Alle Container neu laden
         fetchAndDisplayTasks();
     })
     .catch(error => {
@@ -462,21 +552,42 @@ function deleteTask(taskId) {
     });
 }
 
+/**
+ * Function to move the container for board side.
+ * 
+ * Adds a CSS class to show the container for board side.
+ */
+
 function moveContainer() {
     let container = document.getElementById("containerForBoardSide");
     container.classList.add("showContainer");
 }
 
+/**
+ * Function to remove the included HTML from container for board side.
+ * 
+ * Removes a CSS class to hide the container for board side.
+ */
 function removeIncludetHTML() {
     let container = document.getElementById("containerForBoardSide");
     container.classList.remove("showContainer");
 }
 
+/**
+ * Function to remove details from task.
+ * 
+ * Hides the container for task details.
+ */
 function removeDetailsFromTask() {
     let containerForDetailsTask = document.getElementById('containerForDetailsTask');
     containerForDetailsTask.style.display = 'none';
 }
 
+/**
+ * Function to create a task asynchronously.
+ * 
+ * Collects task data from input fields, sends a POST request to create the task, and handles success and error cases.
+ */
 async function createTask2() {
     const title = document.getElementById('title').value;
     const description = document.getElementById('description').value;
@@ -531,6 +642,12 @@ async function createTask2() {
     
 }
 
+/**
+ * Function to get priority based on button color.
+ * 
+ * Determines the priority of the task based on the color of priority buttons.
+ * @returns {string} - Priority of the task ('urgent', 'medium', 'low').
+ */
 function getPriority() {
     const redButton = document.getElementById('redButton');
     const orangeButton = document.getElementById('orangeButton');
@@ -547,6 +664,14 @@ function getPriority() {
     }
 }
 
+/**
+ * Function to send PUT request to API endpoint.
+ * 
+ * Sends a PUT request to the specified API endpoint with provided data.
+ * @param {string} path - The path to the API endpoint.
+ * @param {object} data - The data to be sent in the request body.
+ * @returns {Promise<object>} - The response data from the API.
+ */
 async function putData(path = "", data = {}) {
     try {
         const response = await fetch(BASE_URL + path + ".json", {
@@ -565,9 +690,21 @@ async function putData(path = "", data = {}) {
     }
 }
 
+/**
+ * Function to clear task inputs.
+ * 
+ * Reloads the current page to clear all task input fields.
+ */
 function clearTask() {
     location.reload();
 }
+
+/**
+ * Function to change priority button styles.
+ * 
+ * Resets all priority buttons to their default styles and updates the clicked button's style.
+ * @param {string} color - The color of the clicked priority button ('red', 'orange', 'green').
+ */
 
 function changePriority(color) {
     resetButtons();
@@ -580,6 +717,11 @@ function changePriority(color) {
     }
 }
 
+/**
+ * Function to update styles for red priority button.
+ * 
+ * Updates the style of the red priority button to indicate selection.
+ */
 function ifColorRed() {
     let redButton = document.getElementById('redButton');
     redButton.style.backgroundColor = "red";
@@ -587,6 +729,11 @@ function ifColorRed() {
     redButton.querySelector("img").src = "./img/angles-up-solid-2.svg";
 }
 
+/**
+ * Function to update styles for orange priority button.
+ * 
+ * Updates the style of the orange priority button to indicate selection.
+ */
 function ifColorOrange() {
     let orangeButton = document.getElementById('orangeButton');
     orangeButton.style.backgroundColor = "orange";
@@ -594,6 +741,11 @@ function ifColorOrange() {
     orangeButton.querySelector("img").src = "./img/grip-lines-solid-2.svg";
 }
 
+/**
+ * Function to update styles for green priority button.
+ * 
+ * Updates the style of the green priority button to indicate selection.
+ */
 function ifColorGreen() {
     let greenButton = document.getElementById('greenButton');
     greenButton.style.backgroundColor = "rgb(8,249,0)";
@@ -601,12 +753,22 @@ function ifColorGreen() {
     greenButton.querySelector("img").src = "./img/angles-down-solid-2.svg";
 }
 
+/**
+ * Function to reset all priority buttons to default style.
+ * 
+ * Resets the style of all priority buttons to their default states.
+ */
 function resetButtons() {
     resetRedButton();
     resetOrangeButton();
     resetGreenButton();
 }
 
+/**
+ * Function to reset red priority button style.
+ * 
+ * Resets the style of the red priority button to its default state.
+ */
 function resetRedButton() {
     let redButton = document.getElementById('redButton');
     redButton.style.backgroundColor = "";
@@ -614,12 +776,23 @@ function resetRedButton() {
     redButton.querySelector("img").src = "./img/angles-up-solid.svg";
 }
 
+/**
+ * Function to reset orange priority button style.
+ * 
+ * Resets the style of the orange priority button to its default state.
+ */
 function resetOrangeButton() {
     let orangeButton = document.getElementById('orangeButton');
     orangeButton.style.backgroundColor = "";
     orangeButton.style.color = "black";
     orangeButton.querySelector("img").src = "./img/grip-lines-solid.svg";
 }
+
+/**
+ * Function to reset green priority button style.
+ * 
+ * Resets the style of the green priority button to its default state.
+ */
 
 function resetGreenButton() {
     let greenButton = document.getElementById('greenButton');
@@ -628,6 +801,12 @@ function resetGreenButton() {
     greenButton.querySelector("img").src = "./img/angles-down-solid.svg";
 }
 
+/**
+ * Function to handle adding a subtask.
+ * 
+ * Adds a new subtask to the subtask list with a delete button.
+ * @param {string} subtask - The text content of the new subtask.
+ */
 document.addEventListener("DOMContentLoaded", function() {
     const addButton = document.querySelector('.inputWithButton');
 
@@ -642,6 +821,11 @@ document.addEventListener("DOMContentLoaded", function() {
     });
 });
 
+/**
+ * Function to add a new subtask to the list.
+ * 
+ * Creates a new list item with the provided subtask text and delete button.
+ */
 function addSubtask(subtask) {
     const subtaskList = document.getElementById('subtaskList');
     const newSubtask = document.createElement('li');
@@ -658,6 +842,11 @@ function addSubtask(subtask) {
     subtaskList.appendChild(newSubtask);
 }
 
+/**
+ * Function to replace the add button with input and vector images.
+ * 
+ * Replaces the add button with input field and vector images for adding subtasks.
+ */
 function replaceAddButton() {
     const inputWithButtonContainer = document.getElementById('inputWithButtonContainer');
     inputWithButtonContainer.innerHTML = `
@@ -668,6 +857,11 @@ function replaceAddButton() {
     `;
 }
 
+/**
+ * Function to add a new subtask to the list and clear input.
+ * 
+ * Adds the new subtask to the list and clears the input field for subtasks.
+ */
 function addSubtaskToList() {
     const inputField = document.getElementById('Subtasks');
     const subtaskValue = inputField.value.trim();
@@ -678,11 +872,22 @@ function addSubtaskToList() {
     }
 }
 
+/**
+ * Function to clear the input field for subtasks.
+ * 
+ * Clears the input field for entering subtasks.
+ */
 function clearSubtasks() {
     const inputField = document.getElementById('Subtasks');
     inputField.value = '';
     chanceButton();
 }
+
+/**
+ * Function to change the add button for subtasks.
+ * 
+ * Replaces the input field and vector images with the add button.
+ */
 
 function chanceButton() {
     const inputWithButtonContainer = document.getElementById('inputWithButtonContainer');
@@ -692,6 +897,11 @@ function chanceButton() {
     `;
 }
 
+/**
+ * Function to filter tasks based on search input.
+ * 
+ * Filters tasks displayed on the page based on the search input value.
+ */
 function filterTasks() {
     const searchInput = document.getElementById('searchInput').value.toLowerCase();
     const taskContainers = document.querySelectorAll('.createTasksContainer');
@@ -699,9 +909,9 @@ function filterTasks() {
     taskContainers.forEach(taskContainer => {
         const taskTitle = taskContainer.querySelector('.createTaskTitle').textContent.toLowerCase();
         if (taskTitle.includes(searchInput)) {
-            taskContainer.style.display = 'block'; // Zeige den Task an, wenn er dem Suchkriterium entspricht
+            taskContainer.style.display = 'block'; 
         } else {
-            taskContainer.style.display = 'none'; // Verstecke den Task, wenn er nicht dem Suchkriterium entspricht
+            taskContainer.style.display = 'none'; 
         }
     });
 }
