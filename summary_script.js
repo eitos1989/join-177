@@ -88,10 +88,10 @@ fetch(url)
         case 'done':
           doneCounter++;
           break;
-        case 'awaitFeedback':
+        case 'await feedback':
           awaitFeedbackCounter++;
           break;
-        case 'inProgress':
+        case 'in progress':
           inProgressCounter++;
           break;
       }

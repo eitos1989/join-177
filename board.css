@@ -529,6 +529,10 @@
     cursor: pointer;
 }
 
+.contactBadge:hover {
+    cursor: pointer;
+} 
+
 @media (max-width: 1100px) {
     .completeRightContainerBoard {
       margin-left: 0;
@@ -557,3 +561,11 @@
     margin-bottom: 32px;
     }
 }  
+
+.buttonFindTask:hover {
+    cursor: pointer;
+}
+
+.inputFieldFindTask:hover {
+    cursor: pointer;
+}

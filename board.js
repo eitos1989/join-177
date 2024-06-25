@@ -38,7 +38,6 @@ async function fetchAndDisplayTasks() {
     }
 }
 
-
 // Funktion zum Erstellen eines Task-Elements
 function createTaskElement(task, taskId) {
     const taskElement = document.createElement('div');
@@ -692,3 +691,18 @@ function chanceButton() {
         <img class="addButtonSubtask" id="addBlack" src="./img/addBlack.png" onclick="replaceAddButton()">
     `;
 }
+
+function filterTasks() {
+    const searchInput = document.getElementById('searchInput').value.toLowerCase();
+    const taskContainers = document.querySelectorAll('.createTasksContainer');
+
+    taskContainers.forEach(taskContainer => {
+        const taskTitle = taskContainer.querySelector('.createTaskTitle').textContent.toLowerCase();
+        if (taskTitle.includes(searchInput)) {
+            taskContainer.style.display = 'block'; // Zeige den Task an, wenn er dem Suchkriterium entspricht
+        } else {
+            taskContainer.style.display = 'none'; // Verstecke den Task, wenn er nicht dem Suchkriterium entspricht
+        }
+    });
+}
+

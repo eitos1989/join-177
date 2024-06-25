@@ -16,6 +16,7 @@
     <script src="includeSidepanel.js"></script>
     <script src="includeHTMLContainerForBoardSide.js"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="icon" href="./img/Capa 2.png">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 </head>
@@ -31,13 +32,13 @@
                     <h1 class="headlineBoard">Board</h1>
                     <div class="rightSideHeadlineBoard">
                         <div class="findTaskInputField">
-                            <input class="inputFieldFindTask" placeholder="Find Task">
-                            <button class="buttonFindTask"><img src="./img/search.png"></button>
+                            <input oninput="filterTasks()" id="searchInput" class="inputFieldFindTask" placeholder="Find Task">
+                            <button onclick="searchTasks()" class="buttonFindTask"><img src="./img/search.png"></button>
                         </div>
                         <button class="addTaskButton" onclick="moveContainer()">Add Task <img src="./img/add.png"></button>    
                     </div>    
                 </div>
-                <div class="boradSide">
+                <div id="boardSide" class="boradSide">
                     <div class="toDo">
                         <div class="toDoHeadline">
                             <h2>To do</h2><img class="plusButton" onclick="moveContainer()" src="./img/plus button.png">
