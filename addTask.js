@@ -141,6 +141,17 @@ async function createTask() {
     const category = document.getElementById('dropdownContent').value;
     const status = "toDoContainer";
     
+    // Manuelle Validierung der erforderlichen Felder
+    if (!title.trim()) {
+        return;
+    }
+    if (!dueDate.trim()) {
+        return;
+    }
+    if (!category.trim()) {
+        return;
+    }
+
     const subtasks = Array.from(document.querySelectorAll('#subtaskList li')).map(li => ({
         name: li.textContent.trim(),
         completed: false
@@ -164,6 +175,7 @@ async function createTask() {
     };
 
     try {
+        // Weiter mit dem Speichern des Tasks
         await putData("tasks", taskData);
         console.log('Task created successfully.');
 
@@ -183,7 +195,6 @@ async function createTask() {
     } catch (error) {
         console.error('Error creating task: ', error);
     }
-    
 }
 
 /**
@@ -221,20 +232,6 @@ function getPriority() {
         return '';
     }
 }
-
-document.addEventListener("DOMContentLoaded", function() {
-    const addButton = document.querySelector('.inputWithButton');
-
-    addButton.addEventListener('click', function() {
-        const inputField = document.getElementById('Subtasks');
-        const subtaskValue = inputField.value.trim();
-        
-        if (subtaskValue !== '') {
-            addSubtask(subtaskValue);
-            inputField.value = '';
-        }
-    });
-});
 
 /**
  * Adds a new subtask to the list in the DOM.
@@ -393,16 +390,39 @@ function createContactBadge(contact) {
     return badge;
 }
 
-/**
- * Enables or disables the create task button based on form validity.
- * Listens for input events on the form to dynamically update button state.
- */
-function checkFormValidity() {
-    const form = document.getElementById('addTaskForm');
-    const createTaskButton = document.getElementById('createTaskButton');
+// Funktion, um den Status des "Create Task" Buttons zu aktualisieren
+function updateCreateTaskButton() {
+    const form = document.getElementById('addTaskContainer');
+    if (!form) return; // Sicherstellen, dass das Formular gefunden wurde
 
-    form.addEventListener('input', () => {
-        createTaskButton.disabled = !form.checkValidity();
+    const createTaskButton = document.querySelector('.createTaskButton');
+
+    // Überprüfen, ob alle erforderlichen Felder ausgefüllt sind
+    const isValid = Array.from(form.elements).every(element => {
+        return (element.tagName === 'SELECT' || element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') && element.required ? element.value.trim() !== '' : true;
     });
+
+    // Button aktivieren oder deaktivieren basierend auf der Validität
+    createTaskButton.disabled = !isValid;
 }
 
+// Event Listener hinzufügen, um bei Eingabe die Validität zu überprüfen
+document.addEventListener('DOMContentLoaded', function() {
+    updateCreateTaskButton(); // Beim Laden der Seite überprüfen
+
+    const formInputs = document.querySelectorAll('#addTaskForm input, #addTaskForm textarea, #addTaskForm select');
+    formInputs.forEach(input => {
+        input.addEventListener('input', updateCreateTaskButton);
+    });
+
+    // Event Listener für das Absenden des Formulars hinzufügen
+    const form = document.getElementById('addTaskForm');
+    if (form) {
+        form.addEventListener('submit', function(event) {
+            event.preventDefault(); // Standard-Verhalten des Formulars verhindern
+            createTask(); // Funktion zum Erstellen des Tasks aufrufen
+        });
+    } else {
+        console.error('Form element not found.');
+    }
+});

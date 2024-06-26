@@ -597,6 +597,17 @@ async function createTask2() {
     const category = document.getElementById('dropdownContent').value;
     const status = "toDoContainer";
     
+    // Manuelle Validierung der erforderlichen Felder
+    if (!title.trim()) {
+        return;
+    }
+    if (!dueDate.trim()) {
+        return;
+    }
+    if (!category.trim()) {
+        return;
+    }
+
     const subtasks = Array.from(document.querySelectorAll('#subtaskList li')).map(li => ({
         name: li.textContent.trim(),
         completed: false
@@ -620,6 +631,7 @@ async function createTask2() {
     };
 
     try {
+        // Weiter mit dem Speichern des Tasks
         await putData("tasks", taskData);
         console.log('Task created successfully.');
 
@@ -639,7 +651,6 @@ async function createTask2() {
     } catch (error) {
         console.error('Error creating task: ', error);
     }
-    
 }
 
 /**

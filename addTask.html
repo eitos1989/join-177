@@ -18,7 +18,7 @@
     <link rel="icon" href="./img/Capa 2.png">
     <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 </head>
-<body onload="includeSidepanelHTML(); checkFormValidity()">
+<body onload="includeSidepanelHTML()">
     <div class="container">
         <div class="sidepanelContainer" w3-include-html="./sidepanel.html"></div>
         <div id="completeRightContainer" class="completeRightContainer">
@@ -74,14 +74,14 @@
                         </div>
                     </div>
                 </div>    
-            </div>
+            </form>
         </div> 
             <section>
                 <div class="createTask">
                     <p class="requiredInfo"><span class="required">*</span>This field is required</p>
                     <div class="createTaskButtons">
                         <button type="button" onclick="clearTask()" class="clearButton">Clear <img src="./img/VectorBlack.png"></button>
-                        <button type="submit" onclick="createTask()" class="createTaskButton">Create Task <img src="./img/check.png"></button>
+                        <button type="submit" onclick="createTask()" id="createTaskButton" class="createTaskButton">Create Task <img src="./img/check.png"></button>
                     </div>
                 </div>
             </section>
