@@ -158,9 +158,9 @@ let selectedContacts = [];
  */
 function editTaskDetails(taskId) {
     const task = tasks[taskId];
-    document.getElementById('taskTitle').innerHTML = `<input type="text" id="editTitle" value="${task.title}">`;
-    document.getElementById('taskDescription').innerHTML = `<textarea id="editDescription">${task.description}</textarea>`;
-    document.getElementById('taskDueDate').innerHTML = `<input type="date" id="editDueDate" value="${task.dueDate}">`;
+    document.getElementById('taskTitle').innerHTML = `<input type="text" class="editTitle" id="editTitle" value="${task.title}">`;
+    document.getElementById('taskDescription').innerHTML = `<textarea class="editDescription" id="editDescription">${task.description}</textarea>`;
+    document.getElementById('taskDueDate').innerHTML = `<input type="date" class="editDueDate" id="editDueDate" value="${task.dueDate}">`;
     document.getElementById('taskPriority').innerHTML = `
         <select id="editPriority">
             <option value="low" ${task.priority === 'low' ? 'selected' : ''}>Low</option>
@@ -168,16 +168,19 @@ function editTaskDetails(taskId) {
             <option value="urgent" ${task.priority === 'urgent' ? 'selected' : ''}>Urgent</option>
         </select>
     `;
-    document.getElementById('taskContacts').innerHTML = `
-    <input placeholder="Select contacts to assign" type="text" id="AssignedTo" name="AssignedTo" onclick="showContacts()">
+    let assignedContactNames = task.assignedContacts.map(contact => contact.name);
+    let assignedContactsHTML = `
+    <input placeholder="Select contacts to assign" type="text" id="AssignedTo" name="AssignedTo" value="${assignedContactNames.join(', ')}" onclick="showContacts()">
     <div id="contactList" style="display: none; max-height: 100px; overflow-y: auto;"></div>
     `;
-    const saveButton = `
-        <button class="containerImgAndText" onclick="saveTaskDetails('${taskId}')">
-            <img src="./img/save.svg">
-            <p>Save</p>
-        </button>
-    `;
+    document.getElementById('taskContacts').innerHTML = assignedContactsHTML;
+    document.getElementById('taskContacts').innerHTML = assignedContactsHTML;
+        const saveButton = `
+            <button class="containerImgAndText" onclick="saveTaskDetails('${taskId}')">
+                <img src="./img/save.svg">
+                <p>Save</p>
+            </button>
+        `;
     const editContainer = document.querySelector('.deleteAndEditContainer');
     editContainer.innerHTML = saveButton;
 }

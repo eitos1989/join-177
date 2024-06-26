@@ -574,6 +574,9 @@
         font-size: smaller;
         padding: 4px;
     }
+    .rightContainerWithoutHeadlineBoard {
+        margin-left: 0px !important;
+    }
 }    
 
 .buttonFindTask:hover {
@@ -581,5 +584,61 @@
 }
 
 .inputFieldFindTask:hover {
+    cursor: pointer;
+}
+
+.insideContainerForDetailTask {
+    width: 100%;
+    padding: 8px;
+    border: unset;
+    box-sizing: border-box;
+    border-radius: 8px;
+}
+
+.rightContainerWithoutHeadlineBoard {
+    margin-left: 74px;
+}
+
+.editTitle {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    font-family: "PT Sans", sans-serif;
+}
+
+.editTitle:hover {
+    cursor: pointer;
+}
+
+.editDescription {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    font-family: "PT Sans", sans-serif;
+}
+
+.editDueDate {
+    width: 100%;
+    padding: 2px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    font-family: "PT Sans", sans-serif;
+}
+
+.editDueDate:hover {
+    cursor: pointer;
+} 
+
+.editPriority {
+    width: 100%;
+    padding: 2px;
+    box-sizing: border-box;
+    border-radius: 8px;
+    font-family: "PT Sans", sans-serif;
+}
+
+.editPriority:hover {
     cursor: pointer;
 }
