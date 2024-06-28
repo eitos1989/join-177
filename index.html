@@ -1,50 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
     <script src="./scripts/script.js"></script>
-    <link rel="stylesheet" href="./styles/style.css">
-    <link rel="icon" type="image/vnd.icon" href="img/favicon_join.svg">
+    <link rel="stylesheet" href="./styles/style.css" />
+    <link rel="icon" type="image/vnd.icon" href="img/favicon_join.svg" />
+    <link rel="stylesheet" href="index_responisve.css" />
     <title>Join</title>
     <script src="index.js"></script>
-</head>
-<body>
-    <div id="start-logo" class="overlay">
-    </div>
+  </head>
+  <body>
+    <div id="start-logo" class="overlay"></div>
     <div class="logo-container">
-        <img class="logo_img" src="img/join_logo.svg" />
+      <img class="logo_img" src="img/join_logo.svg" />
     </div>
+
     <div class="headerLine">
-        <div class="text-middle mr-35">Not a Join user?</div>
-        <div class="btn-dark"><a href="register.html">Sign up</a></div>
+      <div class="text-middle mr-35">Not a Join user?</div>
+      <div class="btn-dark"><a href="register.html">Sign up</a></div>
     </div>
-    <img class="cornerImg" src="img/join_logo.svg" />
+
     <div class="mainWrapper">
-        <div class="loginContainer">
-            <div class="loginHeadline mb-32">Log in</div>
-            <form action="/#; false;">
-                <div class="formCenter">
-                    <input id="email" type="email" placeholder="Email" required class="mb-32 mail" autocomplete="username">
-                    <input id="password" type="password" placeholder="Password" required class="mb-32 lock" autocomplete="current-password">
-                    <div class="error-msg hide" id="error-msg">username or password is invalid <br> please try again</div>
-                    <label class="checkContainer mb-20">
-                        <input type="checkbox"> Remember me
-                    </label>
-                </div>
-                <div class="dFlexJC">
-                    <button onclick="checkUserInDatabase(document.getElementById('email').value, document.getElementById('password').value)" class="btn-dark text-middle mr-35">Log in</button>
-                    <button type="reset" class="btn-light text-middle" onclick="location.href='summary.html'; assignGuestLogIn()">Guest Log in</button>
-                </div>
-            </form>
-       
-        </div>
+      <div class="loginContainer">
+        <div class="loginHeadline mb-32">Log in</div>
+        <form action="/#; false;">
+          <div class="formCenter">
+            <input
+              id="email"
+              type="email"
+              placeholder="Email"
+              required
+              class="mb-32 mail"
+              autocomplete="username"
+            />
+            <input
+              id="password"
+              type="password"
+              placeholder="Password"
+              required
+              class="mb-32 lock"
+              autocomplete="current-password"
+            />
+            <div class="error-msg hide" id="error-msg">
+              username or password is invalid <br />
+              please try again
+            </div>
+            <label class="checkContainer mb-20">
+              <input type="checkbox" /> Remember me
+            </label>
+          </div>
+          <div class="dFlexJC">
+            <button
+              onclick="checkUserInDatabase(document.getElementById('email').value, document.getElementById('password').value)"
+              class="btn-dark text-middle mr-35"
+            >
+              Log in
+            </button>
+            <button
+              type="reset"
+              class="btn-light text-middle"
+              onclick="location.href='summary.html'; assignGuestLogIn()"
+            >
+              Guest Log in
+            </button>
+          </div>
+        </form>
+      </div>
     </div>
     <div class="footer">
-        <a href="privacy_policy.html">Privacy Policy</a>
-        <a href="legal_notice.html">Legal notice</a>
+      <a href="privacy_policy.html" onclick="setUserLoggedInStatus(false)"
+        >Privacy Policy</a
+      >
+      <a href="legal_notice.html" onclick="setUserLoggedInStatus(false)"
+        >Legal Notice</a
+      >
     </div>
-    <img src="">
-</body>
+    <img src="" />
+  </body>
 </html>

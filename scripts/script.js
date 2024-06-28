@@ -16,4 +16,10 @@ function assignGuestLogIn(){
   localStorage.setItem('username', 'Guest');
   localStorage.setItem('usernameAlias', 'G');
   window.location.href = 'summary.html';
+  setUserLoggedInStatus('true');
+}
+
+function setUserLoggedInStatus(isLoggedIn) {
+  // Setzt den Anmeldestatus im LocalStorage
+  localStorage.setItem('isUserLoggedIn', isLoggedIn);
 }

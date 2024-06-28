@@ -11,6 +11,7 @@ async function checkUserInDatabase(email, password) {
         let usernameAlias = getUserAlias(user.name);
         localStorage.setItem('username', user.name);
         localStorage.setItem('usernameAlias', usernameAlias);
+        setUserLoggedInStatus(true); 
         window.location.href = 'summary.html';
         return true;
       }
@@ -27,6 +28,7 @@ async function locateUserToJoin(email, password) {
     if (!userExists) {
       const errorMsg = document.getElementById('error-msg');
       errorMsg.classList.remove('hide');
+
     }
   } catch (error) {
     console.error('Error locating user to join:', error);
@@ -41,3 +43,8 @@ document.addEventListener('DOMContentLoaded', () => {
     locateUserToJoin(email, password);
   });
 });
+
+function setUserLoggedInStatus(isLoggedIn) {
+  // Setzt den Anmeldestatus im LocalStorage
+  localStorage.setItem('isUserLoggedIn', isLoggedIn);
+}

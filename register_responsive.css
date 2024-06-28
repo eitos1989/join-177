@@ -1,0 +1,48 @@
+@media (max-width: 1040px) {
+    .cornerImg {
+        position: absolute;
+        top: 40px;
+        left: 40px;
+        height: 150px;
+        width: 100px;
+        
+    }
+    .mainWrapper {
+        margin-top: 160px;
+        min-height: 700px;
+        height: unset;
+    }   
+
+    .loginContainer {
+        padding: 20px 80px 20px 80px; 
+    }
+
+    .arrowleft {
+        top: 40px;
+    }
+}
+
+@media (max-width: 550px){
+    .loginContainer {
+        padding: 20px 12px 20px 12px ;
+        
+    }
+    .arrowleft {
+        top: 30px;
+        left: 12px;
+    }
+    .loginHeadline {
+        font-size: 40px;
+    }
+
+    .footer {
+        position: relative;
+        bottom: 0;      
+    }
+}
+
+@media (max-width: 350px){
+    .loginContainer {
+        padding: 8px 12px;  
+    }
+}
