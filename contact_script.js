@@ -37,7 +37,7 @@ function createCardHTML() {
         <input type="email" id="email" name="email" placeholder="Email" autocomplete="email" required />
       </div>
       <div class="input-with-image_2">
-        <input type="tel" id="phone" name="phone" placeholder="Phone" autocomplete="tel" required />
+        <input type="tel" id="phone" name="phone" placeholder="Phone" autocomplete="tel" required pattern="\+?\d*" />
       </div>
       <div class="button_row">
       <button type="button" class="cancel_but" onclick="closeCard()">cancel
@@ -52,7 +52,17 @@ function createCardHTML() {
     </form>
     </div>
   `;
+  
 }
+document.body.addEventListener("input", function(event) {
+  const target = event.target;
+  if (target.id === "phone") {
+    let currentValue = target.value;
+    // Erlaubt nur Zahlen und ein optionales Pluszeichen am Anfang
+    let filteredValue = currentValue.replace(/[^0-9+]|(?!^)\+/g, '');
+    target.value = filteredValue;
+  }
+});
 
 // Funktion um die Animation zu erstellen und auszuführen für die Erfolgreiche Erstellung eines Kontakts
 function showSuccessAnimation() {
@@ -205,10 +215,6 @@ function toggleContactView() {
   let contactContent = document.querySelector(".contact_content");
   let contactHeadline = document.querySelector(".contact_headline");
   let backButton = document.querySelector(".back_button");
-  
-
-  
-
   if (window.innerWidth <= 810) {
     if (!contactContainer.classList.contains("d-none")) {
       contactContainer.classList.add("d-none");
@@ -216,8 +222,6 @@ function toggleContactView() {
       contactHeadline.classList.add("d-block");
       backButton.classList.remove("d-none");
       addnewButton.innerHTML = '<img src="./img/more_vert.svg" alt="add_contact_img" />';
-
-
     } else {
       contactContainer.classList.remove("d-none");
       contactContent.classList.add("d-none");
@@ -432,11 +436,9 @@ async function removeContact(id) {
   let contactContent = document.querySelector(".contact_content");
   contactContent.innerHTML = "";
   renderContactsInSidePanel();
-}
+  toggleContactView();
 
-const FORM_SELECTOR = ".contact_details_collumn";
-const CANCEL_BUTTON_SELECTOR = ".cancel_but";
-const SAVE_BUTTON_SELECTOR = ".create__contact_but";
+}
 
 async function editContact(id) {
   await createCard();
@@ -467,6 +469,10 @@ function setFormSubmitEventToUpdateContact(id) {
   };
 }
 
+const FORM_SELECTOR = ".contact_details_collumn";
+const CANCEL_BUTTON_SELECTOR = ".cancel_but";
+const SAVE_BUTTON_SELECTOR = ".create__contact_but";
+
 function changeToEditCard(contactId) {
   let cancelButton = document.querySelector(CANCEL_BUTTON_SELECTOR);
   let saveButton = document.querySelector(SAVE_BUTTON_SELECTOR);
@@ -474,6 +480,7 @@ function changeToEditCard(contactId) {
   cancelButton.onclick = function () {
     removeContact(contactId);
     closeCard();
+    toggleContactView();
   };
   saveButton.innerHTML =
     'Save <img src="./img/create_contact_check.svg" alt="Save_button_img" />';
