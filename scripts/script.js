@@ -23,3 +23,17 @@ function setUserLoggedInStatus(isLoggedIn) {
   // Setzt den Anmeldestatus im LocalStorage
   localStorage.setItem('isUserLoggedIn', isLoggedIn);
 }
+
+function changeHeaderToMobile() {
+  let header = document.getElementById('headerLeftSide');
+  let helpsign = document.getElementById('question_mark');
+if (window.innerWidth <= 810) {
+  header.innerHTML = '<img class="Header_Logo" src="./img/join_logo.svg">'
+  helpsign.style.display = 'none';
+}
+else {
+  header.innerHTML = 'Kanban Project Management Tool'
+  helpsign.style.display = 'block';
+}
+}
+window.addEventListener('resize', changeHeaderToMobile);

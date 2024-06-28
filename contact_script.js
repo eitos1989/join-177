@@ -139,7 +139,7 @@ function createContactDetails(name, email) {
   details.appendChild(nameElement);
 
   let emailElement = document.createElement("a");
-  emailElement.href = `mailto:${email}`;
+  
   emailElement.textContent = email;
   details.appendChild(emailElement);
 

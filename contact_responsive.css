@@ -240,7 +240,7 @@ padding-bottom: 150px;
 
   .contact_sidebar {
     width: calc(100% - 20px);
-    height: calc(100% - 250px);
+    height: calc(100% - 200px);
   }
   .contact_container {
     width: calc(100% - 20px);
