@@ -40,7 +40,7 @@ function createCardHTML() {
         <input type="tel" id="phone" name="phone" placeholder="Phone" autocomplete="tel" required />
       </div>
       <div class="button_row">
-      <button type="button" class="cancel_but" onclick="closeCard(), addSlideOutAnimation()">cancel
+      <button type="button" class="cancel_but" onclick="closeCard()">cancel
       <svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M7.001 6.50008L12.244 11.7431M1.758 11.7431L7.001 6.50008L1.758 11.7431ZM12.244 1.25708L7 6.50008L12.244 1.25708ZM7 6.50008L1.758 1.25708L7 6.50008Z" stroke="#2A3647" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
       </svg>
@@ -73,7 +73,7 @@ function showSuccessAnimation() {
 //erstellt overlay für contact_card
 function createOverlay() {
   let overlay = document.createElement("div");
-  overlay.className = "overlay";
+  overlay.className = "contact_overlay";
   document.body.appendChild(overlay);
   return overlay;
 }
@@ -192,7 +192,7 @@ let addnewButton = document.querySelector(".add_button");
 
 //adds event listener to the addnewButton that checks which function should get executed
 addnewButton.addEventListener('click', function() {
-  var imgSrc = this.querySelector('img').getAttribute('src');
+  let imgSrc = this.querySelector('img').getAttribute('src');
   if (imgSrc.includes('person_add_button.svg')) {
     createCard();
   } else if (imgSrc.includes('more_vert.svg')) {
@@ -473,6 +473,7 @@ function changeToEditCard(contactId) {
   cancelButton.innerHTML = "Delete";
   cancelButton.onclick = function () {
     removeContact(contactId);
+    closeCard();
   };
   saveButton.innerHTML =
     'Save <img src="./img/create_contact_check.svg" alt="Save_button_img" />';
@@ -504,9 +505,12 @@ async function updateContact(id) {
 
 function closeCard() {
   let card = document.querySelector(".card_template");
-  let overlay = document.querySelector(".overlay");
-  overlay.remove();
-  card.remove();
+  let overlay = document.querySelector(".contact_overlay");
+  card.classList.add("slide-out");
+  card.addEventListener("animationend", function () {
+    // Entfernt das Overlay und die Karte nach der Animation
+    overlay.remove();
+    card.remove();
+});
 }
-
 
