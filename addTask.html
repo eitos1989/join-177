@@ -7,8 +7,8 @@
     <link rel="stylesheet" href="sidepanel.css">
     <link rel="stylesheet" href="addTask.css">
     <link rel="stylesheet" href="header.css">
-    <link rel="stylesheet" href="contact_styles.css">
-    <link rel="stylesheet" href="contact_responsive.css">
+    
+   
     
     <script src="includeSidepanel.js"></script>
     <script src="addTask.js"></script>
@@ -18,7 +18,7 @@
     <link rel="icon" href="./img/Capa 2.png">
     <link href="https://fonts.googleapis.com/css2?family=PT+Sans:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
 </head>
-<body onload="includeSidepanelHTML()">
+<body onload="includeSidepanelHTML(), currentDate(), ifColorOrange()">
     <div class="container">
         <div class="sidepanelContainer" w3-include-html="./sidepanel.html"></div>
         <div id="completeRightContainer" class="completeRightContainer">
@@ -47,7 +47,7 @@
                 <div class="addTaskRightSide">
                     <div class="inputContainerDate">
                         <label for="gebdat">Due date<span class="required">*</span></label>
-                        <input type="date" id="gebdat" required>
+                        <input type="date" id="gebdat" required min="">
                     </div>
                     <p class="prioText">Prio</p>
                     <div class="prioButtons">

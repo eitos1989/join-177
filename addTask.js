@@ -4,6 +4,10 @@
  */
 let taskIdCounter = parseInt(localStorage.getItem('taskIdCounter')) || 0;
 
+function currentDate() {
+    document.getElementById('gebdat').min = new Date().toISOString().split('T')[0];
+}
+
 /**
  * Changes the priority button styles based on the specified color.
  * Resets all buttons to default before applying the selected color style.
@@ -309,7 +313,17 @@ function chanceButton() {
  */
 
 function clearTask() {
-    location.reload();
+    document.getElementById('title').value = '';
+    document.getElementById('description').value = '';
+    document.getElementById('AssignedTo').value = '';
+    document.getElementById('gebdat').value = '';
+    document.getElementById('dropdownContent').value = '';
+    document.getElementById('subtaskList').innerHTML = '';
+    document.getElementById('Subtasks').value = '';
+    document.getElementById("contactList").style.display = "none";
+    ifColorOrange();
+    resetGreenButton();
+    resetRedButton();
 }
 
 const selectedContacts = [];
