@@ -243,18 +243,50 @@ function getPriority() {
  */
 function addSubtask(subtask) {
     const subtaskList = document.getElementById('subtaskList');
+    const subtaskId = 'subtask-' + Date.now(); 
     const newSubtask = document.createElement('li');
+    newSubtask.id = subtaskId; 
 
     newSubtask.innerHTML = `
-        <div style="display: flex; justify-content: space-between;">
+        <div id="createdSubtask-${subtaskId}" style="display: flex; justify-content: space-between;">
             <div>${subtask}</div>
             <div>
-                <img src="./img/delete.png" style="margin-right: 5px; height: 12px;">
+                <img src="./img/delete.png" onclick="clearCreatedSubtask('${subtaskId}')" style="margin-right: 5px; height: 12px;">
+                <img src="./img/edit.png" onclick="editCreatedSubtask('${subtaskId}', '${subtask}')" style="margin-right: 5px; height: 12px;">
             </div>
         </div>
     `;
 
     subtaskList.appendChild(newSubtask);
+}
+
+function editCreatedSubtask(subtaskId, subtask) {
+    const createdSubtask = document.getElementById(`createdSubtask-${subtaskId}`);
+    createdSubtask.innerHTML = `
+        <div class="editSubtask" style="display: flex; justify-content: space-between;">
+            <input id="editSubtaskInput-${subtaskId}" type="text" value="${subtask}" style="margin-right: 5px; border: unset; font-size: medium; font-weight: 400; border-radius: 4px;">
+            <img src="./img/Vector 17.png" onclick="editSubtaskToList('${subtaskId}')" style="margin-right: 5px; height: 12px;">
+        </div>
+    `;
+}
+
+function editSubtaskToList(subtaskId) {
+    const editedSubtaskInput = document.getElementById(`editSubtaskInput-${subtaskId}`);
+    const newSubtaskText = editedSubtaskInput.value;
+
+    const createdSubtask = document.getElementById(`createdSubtask-${subtaskId}`);
+    createdSubtask.innerHTML = `
+        <div>${newSubtaskText}</div>
+        <div>
+            <img src="./img/delete.png" onclick="clearCreatedSubtask('${subtaskId}')" style="margin-right: 5px; height: 12px;">
+            <img src="./img/edit.png" onclick="editCreatedSubtask('${subtaskId}', '${newSubtaskText}')" style="margin-right: 5px; height: 12px;">
+        </div>
+    `;
+}
+
+function clearCreatedSubtask(subtaskId) {
+    const subtaskElement = document.getElementById(subtaskId);
+    subtaskElement.remove();
 }
 
 /**
