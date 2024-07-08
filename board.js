@@ -926,10 +926,12 @@ function filterTasks() {
 
     taskContainers.forEach(taskContainer => {
         const taskTitle = taskContainer.querySelector('.createTaskTitle').textContent.toLowerCase();
-        if (taskTitle.includes(searchInput)) {
-            taskContainer.style.display = 'block'; 
+        const taskDescription = taskContainer.querySelector('.createTaskDescription').textContent.toLowerCase();
+
+        if (taskTitle.includes(searchInput) || taskDescription.includes(searchInput)) {
+            taskContainer.style.display = 'block';
         } else {
-            taskContainer.style.display = 'none'; 
+            taskContainer.style.display = 'none';
         }
     });
 }
