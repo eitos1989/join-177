@@ -66,6 +66,12 @@ function createTaskElement(task, taskId) {
 
     taskElement.innerHTML = `
         <p class="createTaskCategory ${getCategoryClass(task.category)}" style="background-color: ${getCategoryColor(task.category)}">${task.category}</p>
+        <select id="status-selector-${taskId}" class="status-selector"> 
+            <option value="toDoContainer" ${task.status === 'toDo' ? 'selected' : ''}>To do</option>
+            <option value="await feedback" ${task.status === 'awaitFeedback' ? 'selected' : ''}>Await feedback</option>
+            <option value="in progress" ${task.status === 'inProgress' ? 'selected' : ''}>In progress</option>
+            <option value="done" ${task.status === 'done' ? 'selected' : ''}>Done</option>
+        </select>
         <h3 class="createTaskTitle">${task.title}</h3>
         <p class="createTaskDescription">${task.description}</p>
     `;
@@ -87,7 +93,32 @@ function createTaskElement(task, taskId) {
             </div>
         </div>
     `;
+
+    // Event listener for status change
+    const statusSelector = taskElement.querySelector(`#status-selector-${taskId}`);
+    statusSelector.addEventListener('change', (event) => {
+        const newStatus = event.target.value;
+        updateTaskStatus(taskId, newStatus);
+    });
+
     return taskElement;
+}
+
+function updateTaskStatus(taskId, newStatus) {
+    fetch(`${BASE_URL}tasks/${taskId}.json`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ status: newStatus })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Task status updated successfully:', data);
+    })
+    .catch(error => {
+        console.error('Error updating task status:', error);
+    });
 }
 
 /**
