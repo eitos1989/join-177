@@ -43,6 +43,7 @@ async function fetchAndDisplayTasks() {
     } catch (error) {
         console.error('Fehler beim Abrufen und Anzeigen der Tasks:', error);
     }
+    checkAndToggleNoTasksMessages();
 }
 
 /**
@@ -65,14 +66,26 @@ function createTaskElement(task, taskId) {
 
     taskElement.innerHTML = `
         <p class="createTaskCategory ${getCategoryClass(task.category)}" style="background-color: ${getCategoryColor(task.category)}">${task.category}</p>
+        <select id="status-selector-${taskId}" class="status-selector"> 
+            <option value="toDoContainer" ${task.status === 'toDo' ? 'selected' : ''}>To do</option>
+            <option value="await feedback" ${task.status === 'awaitFeedback' ? 'selected' : ''}>Await feedback</option>
+            <option value="in progress" ${task.status === 'inProgress' ? 'selected' : ''}>In progress</option>
+            <option value="done" ${task.status === 'done' ? 'selected' : ''}>Done</option>
+        </select>
         <h3 class="createTaskTitle">${task.title}</h3>
         <p class="createTaskDescription">${task.description}</p>
-        <div class="progressbarAndQuantity">
-            <div class="progressbarContainer">
-                <div class="progressbar" style="width: ${progress}%"></div>
+    `;
+    if (totalSubtasks > 0) {
+        taskElement.innerHTML += `
+            <div class="progressbarAndQuantity">
+                <div class="progressbarContainer">
+                    <div class="progressbar" style="width: ${progress}%"></div>
+                </div>
+                <div class="progressText">${completedSubtasks}/${totalSubtasks}</div>
             </div>
-            <div class="progressText">${completedSubtasks}/${totalSubtasks}</div>
-        </div>
+        `;
+    }
+    taskElement.innerHTML += `
         <div class="contactsAndPriority">
             <div class="assignedContacts">${getAssignedContactsHTML(task.assignedContacts)}</div>
             <div class="priorityImage">
@@ -81,7 +94,31 @@ function createTaskElement(task, taskId) {
         </div>
     `;
 
+    // Event listener for status change
+    const statusSelector = taskElement.querySelector(`#status-selector-${taskId}`);
+    statusSelector.addEventListener('change', (event) => {
+        const newStatus = event.target.value;
+        updateTaskStatus(taskId, newStatus);
+    });
+
     return taskElement;
+}
+
+function updateTaskStatus(taskId, newStatus) {
+    fetch(`${BASE_URL}tasks/${taskId}.json`, {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ status: newStatus })
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Task status updated successfully:', data);
+    })
+    .catch(error => {
+        console.error('Error updating task status:', error);
+    });
 }
 
 /**
@@ -415,6 +452,7 @@ async function moveTo(containerId, ev, status) {
     } catch (error) {
         console.error('Fehler beim Aktualisieren des Status:', error);
     }
+    checkAndToggleNoTasksMessages();
 }
 
 /**
@@ -535,9 +573,6 @@ function getInitials(name) {
  * @param {string} taskId - The ID of the task to be deleted.
  */
 function deleteTask(taskId) {
-    if (!confirm('Are you sure you want to delete this task?')) {
-        return;
-    }
     const url = `${BASE_URL}/tasks/${taskId}.json`;
     fetch(url, {
         method: 'DELETE',
@@ -922,11 +957,51 @@ function filterTasks() {
 
     taskContainers.forEach(taskContainer => {
         const taskTitle = taskContainer.querySelector('.createTaskTitle').textContent.toLowerCase();
-        if (taskTitle.includes(searchInput)) {
-            taskContainer.style.display = 'block'; 
+        const taskDescription = taskContainer.querySelector('.createTaskDescription').textContent.toLowerCase();
+
+        if (taskTitle.includes(searchInput) || taskDescription.includes(searchInput)) {
+            taskContainer.style.display = 'block';
         } else {
-            taskContainer.style.display = 'none'; 
+            taskContainer.style.display = 'none';
         }
     });
 }
 
+/**
+ * Checks and updates the visibility of "No tasks..." messages in various container elements.
+ * 
+ * The function iterates over a list of container elements and their associated "No tasks..." messages.
+ * If a container is empty, the corresponding "No tasks..." message is displayed. If the container contains tasks,
+ * the message is hidden.
+ */
+
+function checkAndToggleNoTasksMessages() {
+    const containers = [
+        { containerId: 'toDoContainer', noTasksId: 'noTasksToDo' },
+        { containerId: 'inProgressContainer', noTasksId: 'noInProgress' },
+        { containerId: 'awaitFeedbackContainer', noTasksId: 'noAwaitFeedback' },
+        { containerId: 'doneContainer', noTasksId: 'noDone' }
+    ];
+    containers.forEach(({ containerId, noTasksId }) => {
+        const container = document.getElementById(containerId);
+        const noTasksMessage = document.getElementById(noTasksId);
+        if (container && noTasksMessage) {
+            if (container.children.length === 0) {
+                noTasksMessage.style.display = 'block';
+            } else {
+                let hasTasks = false;
+                for (let i = 0; i < container.children.length; i++) {
+                    if (container.children[i].id !== noTasksId) {
+                        hasTasks = true;
+                        break;
+                    }
+                }
+                if (hasTasks) {
+                    noTasksMessage.style.display = 'none';
+                } else {
+                    noTasksMessage.style.display = 'block';
+                }
+            }
+        }
+    });
+}

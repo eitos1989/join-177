@@ -386,3 +386,10 @@ textarea:hover {
         width: 140px;
     }
 }
+
+.editSubtask {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    width: 100%;
+}
