@@ -37,6 +37,7 @@
     align-items: center;
     position: fixed;
     bottom: 0;
+    
   }
 
   .side-panel .logo {
@@ -109,7 +110,7 @@
     flex-direction: column;
     color: white;
     background-color: rgb(42, 54, 71);
-    padding: 80px 32px;
+    padding: 60px 32px;
     border-radius: 20px 0 0 20px;
     justify-content: center;
     width: auto;
@@ -132,6 +133,7 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
+    gap: 12px;
   }
 }
 
@@ -240,7 +242,7 @@ padding-bottom: 150px;
 
   .contact_sidebar {
     width: calc(100% - 20px);
-    height: calc(100% - 200px);
+    height: calc(100% - 220px);
   }
   .contact_container {
     width: calc(100% - 20px);
@@ -251,9 +253,7 @@ padding-bottom: 150px;
     bottom: 0;
   }
 
-.sidePanelLinks a{
-    border: 1px solid #1d2531;
-  }
+
 
   .contact h2 {
     font-size: 1.2em;
@@ -289,11 +289,21 @@ padding-bottom: 150px;
     margin-top: 0;
 
   }
+
+  .contact {
+    gap: 8px;
+}
 }
 
-@media (max-height: 900px){
+
+@media (max-height: 800px){
   contact-content{
     margin-bottom: 150px;
   }
+  .empty_user_img {
+    width: 80px;
+    height: 80px;
+}
 
 }
+

@@ -19,3 +19,28 @@ a:hover{
     color: rgb(41, 171, 226);
     opacity: 0.75;
 }
+
+li a{
+    padding-bottom: 50px;
+}
+@media (max-width: 550px) {
+    .padding_container{
+        padding: 0 12px !important;
+    }
+    ul{
+        padding-inline-start: 20px;
+    }
+}
+
+
+@media (max-width: 1100px) {
+    li a{
+        padding-bottom: 150px;
+    }
+}
+
+@media (max-width: 450px) {
+    li a{
+        padding-bottom: 120px;
+    }
+}

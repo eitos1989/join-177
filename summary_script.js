@@ -24,9 +24,8 @@ document
   function greetUser() {
     const currentHour = new Date().getHours();
     const username = localStorage.getItem('username');
-  
-    // Determine the greeting based on the current hour
     let greeting;
+    
     if (currentHour < 12) {
       greeting = "Guten Morgen, <br>" + username;
     } else if (currentHour < 18) {
