@@ -1,70 +1,28 @@
-let colors = [
-  "#9747FF",
-  "#FF5EB3",
-  "#6E52FF",
-  "#9327FF",
-  "#00BEE8",
-  "#1FD7C1",
-  "#FF745E",
-  "#FFA35E",
-  "#FC71FF",
-  "#FFC701",
-  "#0038FF",
-  "#C3FF2B",
-  "#FFE62B",
-  "#FF4646",
-  "#FFBB2B",
-];
-let contacts = [
-];
-BASE_URL = "https://contact-storage-f1196-default-rtdb.europe-west1.firebasedatabase.app";
-//html template für Contact_card
-function createCardHTML() {
-  return `
-    <div class="left_collumn">
-      <img src="./img/join_white_logo.svg" alt="Join_logo" />
-      <h1 id="card_headline">Add contact</h1>
-      <h3 id="remove">Tasks are better with a team!</h3>
-      <div class="blue_seperator_card"></div>
-    </div>
-    <div class="flex_row">
-      <img class="empty_user_img" src="./img/empty_user_img.svg" alt="empty_profile picture" />
-      <form class="contact_details_collumn" onsubmit="saveContact(event)">
-      <div class="input-with-image">
-      <input type="text" id="name" name="name" placeholder="Name" autocomplete="name" required/>
-      </div>
-      <div class="input-with-image_1">
-        <input type="email" id="email" name="email" placeholder="Email" autocomplete="email" required />
-      </div>
-      <div class="input-with-image_2">
-        <input type="tel" id="phone" name="phone" placeholder="Phone" autocomplete="tel" required pattern="\+?\d*" />
-      </div>
-      <div class="button_row">
-      <button type="button" class="cancel_but" onclick="closeCard()">cancel
-      <svg width="14" height="13" viewBox="0 0 14 13" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M7.001 6.50008L12.244 11.7431M1.758 11.7431L7.001 6.50008L1.758 11.7431ZM12.244 1.25708L7 6.50008L12.244 1.25708ZM7 6.50008L1.758 1.25708L7 6.50008Z" stroke="#2A3647" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
-      </svg>
-    </button>
-        <button class="create__contact_but" type="submit" id="save" >Create contact
-          <img src="./img/create_contact_check.svg" alt="Save_button_img" />
-        </button>
-      </div>
-    </form>
-    </div>
-  `;
-  
+
+
+let colors = ["#9747FF","#FF5EB3","#6E52FF","#9327FF","#00BEE8","#1FD7C1","#FF745E","#FFA35E","#FC71FF","#FFC701","#0038FF","#C3FF2B","#FFE62B","#FF4646","#FFBB2B",];
+let contacts = [];
+const BASE_URL = "https://contact-storage-f1196-default-rtdb.europe-west1.firebasedatabase.app";
+
+async function createCardHTML() {
+  try {
+    const response = await fetch('./contactCardTemplate.html');
+    const html = await response.text();
+    return html;
+  } catch (error) {
+    console.error('Error loading the contact card template:', error);
+  }
 }
+
 document.body.addEventListener("input", function(event) {
   const target = event.target;
   if (target.id === "phone") {
     let currentValue = target.value;
-    // Erlaubt nur Zahlen und ein optionales Pluszeichen am Anfang
     let filteredValue = currentValue.replace(/[^0-9+]|(?!^)\+/g, '');
     target.value = filteredValue;
   }
 });
 
-// Funktion um die Animation zu erstellen und auszuführen für die Erfolgreiche Erstellung eines Kontakts
 function showSuccessAnimation() {
   let button = document.createElement("div");
   button.style.display = "block";
@@ -74,13 +32,12 @@ function showSuccessAnimation() {
   contactContent.appendChild(button);
 
   button.addEventListener("animationend", function () {
-    // Check if the animation name is 'slideOut'
     if (event.animationName === "slideOut") {
       button.remove();
     }
   });
 }
-//erstellt overlay für contact_card
+
 function createOverlay() {
   let overlay = document.createElement("div");
   overlay.className = "contact_overlay";
@@ -88,15 +45,15 @@ function createOverlay() {
   return overlay;
 }
 
-//erstellt eine card in der das Template gerändert wird
-function createCardElement() {
+
+async function createCardElement() {
   let card = document.createElement("div");
   card.className = "card_template";
-  card.innerHTML = createCardHTML();
+  card.innerHTML = await createCardHTML();
   document.body.appendChild(card);
   return card;
 }
-//slide out animation für card
+
 function addSlideOutAnimation(card, overlay) {
   overlay.addEventListener("click", function () {
     card.classList.add("slide-out");
@@ -107,23 +64,18 @@ function addSlideOutAnimation(card, overlay) {
   });
 }
 
-function createCard() {
+async function createCard() {
   let overlay = createOverlay();
-  let card = createCardElement();
+  let card = await createCardElement();
   addSlideOutAnimation(card, overlay);
-
-  // Event-Listener für den "Create contact" Button
   card
     .querySelector(".contact_details_collumn")
     .addEventListener("submit", function (event) {
       event.preventDefault();
-      // Führt die Animation aus und entfernt das Overlay und die Karte
       card.classList.add("slide-out");
       card.addEventListener("animationend", function () {
         overlay.remove();
         card.remove();
-
-        // Zeigt die Erfolgsanimation an
         showSuccessAnimation();
       });
     });
@@ -133,16 +85,12 @@ function createCard() {
 function createContactDetails(name, email) {
   let details = document.createElement("div");
   details.className = "flex_col";
-
   let nameElement = document.createElement("h2");
   nameElement.textContent = name;
   details.appendChild(nameElement);
-
   let emailElement = document.createElement("a");
-  
   emailElement.textContent = email;
   details.appendChild(emailElement);
-
   return details;
 }
 // Funktion um das Contact Element zu erstellen und die Badge und Details anzuzeigen
@@ -158,7 +106,6 @@ function createContactElement(contact) {
   contactElement.addEventListener("click", function () {
     updateContactDetails(contact);
   });
-
   return contactElement;
 }
 //template für die Detailansicht eines Contacts
@@ -187,28 +134,6 @@ function renderContactDetails(contact) {
     <a href="tel:${contact.phone}">${contact.phone}</a>
   `;
 }
-//überarbeitet den main bereich der angeklickten Contact Details
-function updateContactDetails(contact) {
-  let contactContent = document.querySelector(".contact_content");
-  contactContent.innerHTML = renderContactDetails(contact);
-  updateActiveContact(contact);
-
-  if (window.innerWidth <= 810) {
-    toggleContactView(contact);
-  }
-}
-
-let addnewButton = document.querySelector(".add_button");
-
-//adds event listener to the addnewButton that checks which function should get executed
-addnewButton.addEventListener('click', function() {
-  let imgSrc = this.querySelector('img').getAttribute('src');
-  if (imgSrc.includes('person_add_button.svg')) {
-    createCard();
-  } else if (imgSrc.includes('more_vert.svg')) {
-    toggleDropup();
-  }
-});
 
 function toggleContactView() {
   let contactContainer = document.querySelector(".contact_sidebar");
@@ -232,6 +157,27 @@ function toggleContactView() {
   }
 }
 
+function updateContactDetails(contact) {
+  let contactContent = document.querySelector(".contact_content");
+  contactContent.innerHTML = renderContactDetails(contact);
+  updateActiveContact(contact);
+
+  if (window.innerWidth <= 810) {
+    toggleContactView(contact);
+  }
+}
+let addnewButton = document.querySelector(".add_button");
+addnewButton.addEventListener('click', function() {
+  let imgSrc = this.querySelector('img').getAttribute('src');
+  if (imgSrc.includes('person_add_button.svg')) {
+    createCard();
+  } else if (imgSrc.includes('more_vert.svg')) {
+    toggleDropup();
+  }
+});
+
+
+
 function addButtonToContact(contact) {
   const container = document.getElementById("dropupMenu");
   const buttonHTML = `
@@ -245,15 +191,11 @@ function addButtonToContact(contact) {
   container.innerHTML = buttonHTML;
 }
 
-//fügt eine 'active' Klasse zum angeklickten Kontakt hinzu
 function updateActiveContact(contact) {
-  // Remove the 'active' class from all contact divs
   let contactElements = document.querySelectorAll(".contact");
   contactElements.forEach(function (contactElement) {
     contactElement.classList.remove("active");
   });
-
-  // Add the 'active' class to the selected contact
   let activeContactElement = document.querySelector(
     `.contact[data-id="${contact.id}"]`
   );
@@ -262,7 +204,6 @@ function updateActiveContact(contact) {
   }
 }
 
-//diese Funktion leert das Sidepanel
 function clearSidePanel() {
   let contactContainer = document.querySelector(".contact_container");
   while (contactContainer.firstChild) {
@@ -270,7 +211,6 @@ function clearSidePanel() {
   }
 }
 
-//diese Funktion erstellt den Buchstaben für die Contact Elemente
 function createLetterElement(name) {
   let letter = document.createElement("div");
   letter.className = "letter";
@@ -278,7 +218,6 @@ function createLetterElement(name) {
   return letter;
 }
 
-// diese Funktion erstellt den Grauen Seperator zwischen den Contact Elementen
 function createSeparatorElement() {
   let separator = document.createElement("div");
   separator.className = "grey_seperator_1";
@@ -301,12 +240,7 @@ function createAndAppendContact(contactContainer, contact) {
 
 function renderContactsInSidePanel() {
   let contactContainer = document.querySelector(".contact_container");
-  if (!contactContainer) {
-    console.error("Contact container not found");
-    return;
-  }
   clearSidePanel();
-  // Sort contacts alphabetically by name
   contacts.sort((a, b) => a.name.localeCompare(b.name));
   let currentLetter = "";
   for (let contact of contacts) {
@@ -326,7 +260,6 @@ function getRandomColor() {
   return colors[randomIndex];
 }
 
-// diese FUnktion erstellt das Badge für die Contact Elemente es nimmt den ersten Buchstaben des Vornamens und des Nachnamens diese werden dann in Großbuchstaben umgewandelt und als Badge angezeigt mit einer Random Color
 function createContactBadge(contact) {
   let badge = document.createElement("div");
   badge.className = "profil_badge";
@@ -344,11 +277,9 @@ function createContactBadge(contact) {
 
 function addHoverEffect(selector, hoverImagePath, originalImagePath) {
   const contactContent = document.querySelector(".contact_content");
-
   contactContent.addEventListener("mouseover", function (event) {
     if (event.target.matches(selector)) {
       event.target.src = hoverImagePath;
-
       event.target.addEventListener(
         "mouseleave",
         function () {
@@ -371,12 +302,8 @@ addHoverEffect(
   "./img/delete_basket_white.svg"
 );
 
-//Kommunikation mit Backend
-
-
 async function saveContact(event) {
   event.preventDefault();
-  // Kontaktinformationen sammeln
   let contact = {
     name: document.getElementById("name").value,
     email: document.getElementById("email").value,
@@ -414,7 +341,7 @@ async function addContactToDatabase(contact) {
     body: JSON.stringify(contact),
   });
   let responseData = await response.json();
-  return responseData.name; // Firebase generiert eine eindeutige ID, die hier zurückgegeben wird
+  return responseData.name; 
 }
 
 async function loadContacts() {
@@ -437,7 +364,6 @@ async function removeContact(id) {
   contactContent.innerHTML = "";
   renderContactsInSidePanel();
   toggleContactView();
-
 }
 
 async function editContact(id) {
@@ -491,21 +417,17 @@ function changeToEditCard(contactId) {
 }
 
 async function updateContact(id) {
-  // Get the updated contact information from the form
   let name = document.getElementById("name").value;
   let email = document.getElementById("email").value;
   let phone = document.getElementById("phone").value;
-  // Update the contact in the local contacts array
   let contact = contacts.find((contact) => contact.id === id);
   contact.name = name;
   contact.email = email;
   contact.phone = phone;
-  // Update the contact in the database
   await fetch(BASE_URL + "/contacts/" + id + ".json", {
     method: "PUT",
     body: JSON.stringify(contact),
   });
-  // Re-render the contacts in the side panel
   renderContactsInSidePanel();
   updateContactDetails(contact);
 }
@@ -515,9 +437,9 @@ function closeCard() {
   let overlay = document.querySelector(".contact_overlay");
   card.classList.add("slide-out");
   card.addEventListener("animationend", function () {
-    // Entfernt das Overlay und die Karte nach der Animation
     overlay.remove();
     card.remove();
 });
 }
 
+loadContacts();
