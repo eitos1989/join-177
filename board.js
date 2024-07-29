@@ -66,7 +66,7 @@ function createTaskElement(task, taskId) {
 
     taskElement.innerHTML = `
         <p class="createTaskCategory ${getCategoryClass(task.category)}" style="background-color: ${getCategoryColor(task.category)}">${task.category}</p>
-        <select id="status-selector-${taskId}" class="status-selector"> 
+        <select id="statusSelector-${taskId}" class="statusSelector"> 
             <option value="toDoContainer" ${task.status === 'toDo' ? 'selected' : ''}>To do</option>
             <option value="await feedback" ${task.status === 'awaitFeedback' ? 'selected' : ''}>Await feedback</option>
             <option value="in progress" ${task.status === 'inProgress' ? 'selected' : ''}>In progress</option>
@@ -94,11 +94,14 @@ function createTaskElement(task, taskId) {
         </div>
     `;
 
-    // Event listener for status change
-    const statusSelector = taskElement.querySelector(`#status-selector-${taskId}`);
+    const statusSelector = taskElement.querySelector(`#statusSelector-${taskId}`);
     statusSelector.addEventListener('change', (event) => {
+        event.stopPropagation();
         const newStatus = event.target.value;
         updateTaskStatus(taskId, newStatus);
+    });
+    statusSelector.addEventListener('click', (event) => {
+        event.stopPropagation();
     });
 
     return taskElement;
