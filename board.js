@@ -68,8 +68,8 @@ function createTaskElement(task, taskId) {
         <p class="createTaskCategory ${getCategoryClass(task.category)}" style="background-color: ${getCategoryColor(task.category)}">${task.category}</p>
         <select id="statusSelector-${taskId}" class="statusSelector"> 
             <option value="toDoContainer" ${task.status === 'toDo' ? 'selected' : ''}>To do</option>
-            <option value="await feedback" ${task.status === 'awaitFeedback' ? 'selected' : ''}>Await feedback</option>
-            <option value="in progress" ${task.status === 'inProgress' ? 'selected' : ''}>In progress</option>
+            <option value="await feedback" ${task.status === 'await feedback' ? 'selected' : ''}>Await feedback</option>
+            <option value="in progress" ${task.status === 'in progress' ? 'selected' : ''}>In progress</option>
             <option value="done" ${task.status === 'done' ? 'selected' : ''}>Done</option>
         </select>
         <h3 class="createTaskTitle">${task.title}</h3>
@@ -411,8 +411,6 @@ function clearContainer(containerId) {
     container.innerHTML = ''; // Leere den Containerinhalt
 }
 
-fetchAndDisplayTasks();
-
 /**
  * Function to start the drag-and-drop operation.
  * 
@@ -456,6 +454,7 @@ async function moveTo(containerId, ev, status) {
         console.error('Fehler beim Aktualisieren des Status:', error);
     }
     checkAndToggleNoTasksMessages();
+    fetchAndDisplayTasks();
 }
 
 /**
