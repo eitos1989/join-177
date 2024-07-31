@@ -68,9 +68,9 @@ function createTaskElement(task, taskId) {
         <p class="createTaskCategory ${getCategoryClass(task.category)}" style="background-color: ${getCategoryColor(task.category)}">${task.category}</p>
         <select id="statusSelector-${taskId}" class="statusSelector"> 
             <option value="toDoContainer" ${task.status === 'toDo' ? 'selected' : ''}>To do</option>
-            <option value="await feedback" ${task.status === 'await feedback' ? 'selected' : ''}>Await feedback</option>
-            <option value="in progress" ${task.status === 'in progress' ? 'selected' : ''}>In progress</option>
-            <option value="done" ${task.status === 'done' ? 'selected' : ''}>Done</option>
+            <option value="awaitFeedbackContainer" ${task.status === 'await feedback' ? 'selected' : ''}>Await feedback</option>
+            <option value="inProgressContainer" ${task.status === 'in progress' ? 'selected' : ''}>In progress</option>
+            <option value="doneContainer" ${task.status === 'done' ? 'selected' : ''}>Done</option>
         </select>
         <h3 class="createTaskTitle">${task.title}</h3>
         <p class="createTaskDescription">${task.description}</p>
@@ -99,6 +99,7 @@ function createTaskElement(task, taskId) {
         event.stopPropagation();
         const newStatus = event.target.value;
         updateTaskStatus(taskId, newStatus);
+        moveTaskToContainer(taskId, newStatus);
     });
     statusSelector.addEventListener('click', (event) => {
         event.stopPropagation();
@@ -122,6 +123,17 @@ function updateTaskStatus(taskId, newStatus) {
     .catch(error => {
         console.error('Error updating task status:', error);
     });
+}
+
+function moveTaskToContainer(taskId, newStatus) {
+    const taskElement = document.getElementById(`task-${taskId}`);
+    const newContainer = document.getElementById(newStatus);
+    if (newContainer) {
+        newContainer.appendChild(taskElement);
+    } else {
+        console.error(`Container with id ${newStatus} not found`);
+    }
+    checkAndToggleNoTasksMessages();
 }
 
 /**
