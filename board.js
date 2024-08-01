@@ -31,7 +31,6 @@ async function fetchAndDisplayTasks() {
                 tasks[taskId] = task; 
                 const taskElement = createTaskElement(task, taskId);
                 const containerId = localStorage.getItem(`task-${taskId}-container`);
-
                 if (containerId) {
                     document.getElementById(containerId).appendChild(taskElement);
                 } else {
@@ -130,11 +129,14 @@ function moveTaskToContainer(taskId, newStatus) {
     const newContainer = document.getElementById(newStatus);
     if (newContainer) {
         newContainer.appendChild(taskElement);
+        const statusSelector = taskElement.querySelector(`#statusSelector-${taskId}`);
+        statusSelector.value = newStatus; 
     } else {
         console.error(`Container with id ${newStatus} not found`);
     }
     checkAndToggleNoTasksMessages();
 }
+
 
 /**
  * Calculates the progress of a task based on its subtasks completion.
@@ -465,8 +467,9 @@ async function moveTo(containerId, ev, status) {
     } catch (error) {
         console.error('Fehler beim Aktualisieren des Status:', error);
     }
+    const statusSelector = taskElement.querySelector(`#statusSelector-${taskId}`);
+    statusSelector.value = containerId; 
     checkAndToggleNoTasksMessages();
-    fetchAndDisplayTasks();
 }
 
 /**
