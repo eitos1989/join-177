@@ -377,7 +377,8 @@ function showContacts() {
                         let contact = data[key];
                         let badge = createContactBadge(contact);
                         let contactName = contact.name;
-                        contactListHTML += `<li class="contactBadge" onclick='toggleContact("${contactName}", "${contact.color}")'>${badge.outerHTML}<span>${contactName}</span></li>`
+                        let isSelected = selectedContacts.some(c => c.name === contactName);
+                        contactListHTML += `<li class="contactBadge ${isSelected ? 'selected' : ''}" onclick='toggleContact("${contactName}", "${contact.color}")'>${badge.outerHTML}<span>${contactName}</span></li>`;
                     }
                 }
                 contactListHTML += "</ul>";
@@ -405,6 +406,25 @@ function toggleContact(contactName, contactColor) {
         selectedContacts.splice(index, 1);
     }
     updateAssignedToInput();
+    highlightSelectedContacts();
+}
+
+function updateAssignedToInput() {
+    const contactNames = selectedContacts.map(contact => contact.name);
+    document.getElementById("AssignedTo").value = contactNames.join(", ");
+    highlightSelectedContacts();
+}
+
+function highlightSelectedContacts() {
+    let contactBadges = document.querySelectorAll('.contactBadge');
+    contactBadges.forEach(badge => {
+        let contactName = badge.querySelector('span').textContent;
+        if (selectedContacts.some(contact => contact.name === contactName)) {
+            badge.classList.add('selected');
+        } else {
+            badge.classList.remove('selected');
+        }
+    });
 }
 
 /**

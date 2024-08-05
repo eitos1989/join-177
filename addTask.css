@@ -393,3 +393,8 @@ textarea:hover {
     align-items: baseline;
     width: 100%;
 }
+
+.selected {
+    background-color: #f3c2ed;
+    border-radius: 8px; 
+}

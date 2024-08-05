@@ -658,3 +658,8 @@
 .statusSelector:hover {
     cursor: pointer;
 }
+
+.selected {
+    background-color: #f3c2ed;
+    border-radius: 8px; 
+}

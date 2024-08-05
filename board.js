@@ -212,6 +212,8 @@ let selectedContacts = [];
  */
 function editTaskDetails(taskId) {
     const task = tasks[taskId];
+    selectedContacts = task.assignedContacts ? [...task.assignedContacts] : []; 
+
     document.getElementById('taskTitle').innerHTML = `<input type="text" class="editTitle" id="editTitle" value="${task.title}">`;
     document.getElementById('taskDescription').innerHTML = `<textarea class="editDescription" id="editDescription">${task.description}</textarea>`;
     document.getElementById('taskDueDate').innerHTML = `<input type="date" class="editDueDate" id="editDueDate" value="${task.dueDate}">`;
@@ -222,19 +224,22 @@ function editTaskDetails(taskId) {
             <option value="urgent" ${task.priority === 'urgent' ? 'selected' : ''}>Urgent</option>
         </select>
     `;
-    let assignedContactNames = task.assignedContacts.map(contact => contact.name);
+
+    let assignedContactNames = selectedContacts.map(contact => contact.name);
     let assignedContactsHTML = `
-    <input placeholder="Select contacts to assign" type="text" id="AssignedTo" name="AssignedTo" value="${assignedContactNames.join(', ')}" onclick="showContacts()">
-    <div id="contactList" style="display: none; max-height: 100px; overflow-y: auto;"></div>
+        <input placeholder="Select contacts to assign" type="text" id="AssignedTo" name="AssignedTo" value="${assignedContactNames.join(', ')}" onclick="showContacts()">
+        <div id="contactList" style="display: none; max-height: 100px; overflow-y: auto;"></div>
     `;
+    
     document.getElementById('taskContacts').innerHTML = assignedContactsHTML;
-    document.getElementById('taskContacts').innerHTML = assignedContactsHTML;
-        const saveButton = `
-            <button class="containerImgAndText" onclick="saveTaskDetails('${taskId}')">
-                <img src="./img/save.svg">
-                <p>Save</p>
-            </button>
-        `;
+
+    const saveButton = `
+        <button class="containerImgAndText" onclick="saveTaskDetails('${taskId}')">
+            <img src="./img/save.svg">
+            <p>Save</p>
+        </button>
+    `;
+    
     const editContainer = document.querySelector('.deleteAndEditContainer');
     editContainer.innerHTML = saveButton;
 }
@@ -256,7 +261,8 @@ function showContacts() {
                         let contact = data[key];
                         let badge = createContactBadge(contact);
                         let contactName = contact.name;
-                        contactListHTML += `<li class="contactBadge" onclick='toggleContact("${contactName}", "${contact.color}")'>${badge.outerHTML}<span>${contactName}</span></li>`;
+                        let isSelected = selectedContacts.some(c => c.name === contactName);
+                        contactListHTML += `<li class="contactBadge ${isSelected ? 'selected' : ''}" onclick='toggleContact("${contactName}", "${contact.color}")'>${badge.outerHTML}<span>${contactName}</span></li>`;
                     }
                 }
                 contactListHTML += "</ul>";
@@ -269,15 +275,6 @@ function showContacts() {
     }
 }
 
-function toggleContact(contactName, contactColor) {
-    let index = selectedContacts.findIndex(contact => contact.name === contactName);
-    if (index === -1) {
-        selectedContacts.push({ name: contactName, color: contactColor });
-    } else {
-        selectedContacts.splice(index, 1);
-    }
-    updateAssignedToInput();
-}
 
 function updateAssignedToInput() {
     const contactNames = selectedContacts.map(contact => contact.name);
@@ -349,6 +346,35 @@ function getSubtasksHTML(taskId, task) {
         `).join('');
     }
     return '';
+}
+
+function toggleContact(contactName, contactColor) {
+    let index = selectedContacts.findIndex(contact => contact.name === contactName);
+    if (index === -1) {
+        selectedContacts.push({ name: contactName, color: contactColor });
+    } else {
+        selectedContacts.splice(index, 1);
+    }
+    updateAssignedToInput();
+    highlightSelectedContacts();
+}
+
+function highlightSelectedContacts() {
+    let contactBadges = document.querySelectorAll('.contactBadge');
+    contactBadges.forEach(badge => {
+        let contactName = badge.querySelector('span').textContent;
+        if (selectedContacts.some(contact => contact.name === contactName)) {
+            badge.classList.add('selected');
+        } else {
+            badge.classList.remove('selected');
+        }
+    });
+}
+
+function updateAssignedToInput() {
+    const contactNames = selectedContacts.map(contact => contact.name);
+    document.getElementById("AssignedTo").value = contactNames.join(", ");
+    highlightSelectedContacts();
 }
 
 /**
