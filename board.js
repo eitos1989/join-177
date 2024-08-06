@@ -31,7 +31,6 @@ async function fetchAndDisplayTasks() {
                 tasks[taskId] = task; 
                 const taskElement = createTaskElement(task, taskId);
                 const containerId = localStorage.getItem(`task-${taskId}-container`);
-
                 if (containerId) {
                     document.getElementById(containerId).appendChild(taskElement);
                 } else {
@@ -66,11 +65,11 @@ function createTaskElement(task, taskId) {
 
     taskElement.innerHTML = `
         <p class="createTaskCategory ${getCategoryClass(task.category)}" style="background-color: ${getCategoryColor(task.category)}">${task.category}</p>
-        <select id="status-selector-${taskId}" class="status-selector"> 
+        <select id="statusSelector-${taskId}" class="statusSelector"> 
             <option value="toDoContainer" ${task.status === 'toDo' ? 'selected' : ''}>To do</option>
-            <option value="await feedback" ${task.status === 'awaitFeedback' ? 'selected' : ''}>Await feedback</option>
-            <option value="in progress" ${task.status === 'inProgress' ? 'selected' : ''}>In progress</option>
-            <option value="done" ${task.status === 'done' ? 'selected' : ''}>Done</option>
+            <option value="awaitFeedbackContainer" ${task.status === 'await feedback' ? 'selected' : ''}>Await feedback</option>
+            <option value="inProgressContainer" ${task.status === 'in progress' ? 'selected' : ''}>In progress</option>
+            <option value="doneContainer" ${task.status === 'done' ? 'selected' : ''}>Done</option>
         </select>
         <h3 class="createTaskTitle">${task.title}</h3>
         <p class="createTaskDescription">${task.description}</p>
@@ -94,11 +93,15 @@ function createTaskElement(task, taskId) {
         </div>
     `;
 
-    // Event listener for status change
-    const statusSelector = taskElement.querySelector(`#status-selector-${taskId}`);
+    const statusSelector = taskElement.querySelector(`#statusSelector-${taskId}`);
     statusSelector.addEventListener('change', (event) => {
+        event.stopPropagation();
         const newStatus = event.target.value;
         updateTaskStatus(taskId, newStatus);
+        moveTaskToContainer(taskId, newStatus);
+    });
+    statusSelector.addEventListener('click', (event) => {
+        event.stopPropagation();
     });
 
     return taskElement;
@@ -120,6 +123,20 @@ function updateTaskStatus(taskId, newStatus) {
         console.error('Error updating task status:', error);
     });
 }
+
+function moveTaskToContainer(taskId, newStatus) {
+    const taskElement = document.getElementById(`task-${taskId}`);
+    const newContainer = document.getElementById(newStatus);
+    if (newContainer) {
+        newContainer.appendChild(taskElement);
+        const statusSelector = taskElement.querySelector(`#statusSelector-${taskId}`);
+        statusSelector.value = newStatus; 
+    } else {
+        console.error(`Container with id ${newStatus} not found`);
+    }
+    checkAndToggleNoTasksMessages();
+}
+
 
 /**
  * Calculates the progress of a task based on its subtasks completion.
@@ -195,6 +212,8 @@ let selectedContacts = [];
  */
 function editTaskDetails(taskId) {
     const task = tasks[taskId];
+    selectedContacts = task.assignedContacts ? [...task.assignedContacts] : []; 
+
     document.getElementById('taskTitle').innerHTML = `<input type="text" class="editTitle" id="editTitle" value="${task.title}">`;
     document.getElementById('taskDescription').innerHTML = `<textarea class="editDescription" id="editDescription">${task.description}</textarea>`;
     document.getElementById('taskDueDate').innerHTML = `<input type="date" class="editDueDate" id="editDueDate" value="${task.dueDate}">`;
@@ -205,19 +224,22 @@ function editTaskDetails(taskId) {
             <option value="urgent" ${task.priority === 'urgent' ? 'selected' : ''}>Urgent</option>
         </select>
     `;
-    let assignedContactNames = task.assignedContacts.map(contact => contact.name);
+
+    let assignedContactNames = selectedContacts.map(contact => contact.name);
     let assignedContactsHTML = `
-    <input placeholder="Select contacts to assign" type="text" id="AssignedTo" name="AssignedTo" value="${assignedContactNames.join(', ')}" onclick="showContacts()">
-    <div id="contactList" style="display: none; max-height: 100px; overflow-y: auto;"></div>
+        <input placeholder="Select contacts to assign" type="text" id="AssignedTo" name="AssignedTo" value="${assignedContactNames.join(', ')}" onclick="showContacts()">
+        <div id="contactList" style="display: none; max-height: 100px; overflow-y: auto;"></div>
     `;
+    
     document.getElementById('taskContacts').innerHTML = assignedContactsHTML;
-    document.getElementById('taskContacts').innerHTML = assignedContactsHTML;
-        const saveButton = `
-            <button class="containerImgAndText" onclick="saveTaskDetails('${taskId}')">
-                <img src="./img/save.svg">
-                <p>Save</p>
-            </button>
-        `;
+
+    const saveButton = `
+        <button class="containerImgAndText" onclick="saveTaskDetails('${taskId}')">
+            <img src="./img/save.svg">
+            <p>Save</p>
+        </button>
+    `;
+    
     const editContainer = document.querySelector('.deleteAndEditContainer');
     editContainer.innerHTML = saveButton;
 }
@@ -239,7 +261,8 @@ function showContacts() {
                         let contact = data[key];
                         let badge = createContactBadge(contact);
                         let contactName = contact.name;
-                        contactListHTML += `<li class="contactBadge" onclick='toggleContact("${contactName}", "${contact.color}")'>${badge.outerHTML}<span>${contactName}</span></li>`;
+                        let isSelected = selectedContacts.some(c => c.name === contactName);
+                        contactListHTML += `<li class="contactBadge ${isSelected ? 'selected' : ''}" onclick='toggleContact("${contactName}", "${contact.color}")'>${badge.outerHTML}<span>${contactName}</span></li>`;
                     }
                 }
                 contactListHTML += "</ul>";
@@ -252,15 +275,6 @@ function showContacts() {
     }
 }
 
-function toggleContact(contactName, contactColor) {
-    let index = selectedContacts.findIndex(contact => contact.name === contactName);
-    if (index === -1) {
-        selectedContacts.push({ name: contactName, color: contactColor });
-    } else {
-        selectedContacts.splice(index, 1);
-    }
-    updateAssignedToInput();
-}
 
 function updateAssignedToInput() {
     const contactNames = selectedContacts.map(contact => contact.name);
@@ -332,6 +346,35 @@ function getSubtasksHTML(taskId, task) {
         `).join('');
     }
     return '';
+}
+
+function toggleContact(contactName, contactColor) {
+    let index = selectedContacts.findIndex(contact => contact.name === contactName);
+    if (index === -1) {
+        selectedContacts.push({ name: contactName, color: contactColor });
+    } else {
+        selectedContacts.splice(index, 1);
+    }
+    updateAssignedToInput();
+    highlightSelectedContacts();
+}
+
+function highlightSelectedContacts() {
+    let contactBadges = document.querySelectorAll('.contactBadge');
+    contactBadges.forEach(badge => {
+        let contactName = badge.querySelector('span').textContent;
+        if (selectedContacts.some(contact => contact.name === contactName)) {
+            badge.classList.add('selected');
+        } else {
+            badge.classList.remove('selected');
+        }
+    });
+}
+
+function updateAssignedToInput() {
+    const contactNames = selectedContacts.map(contact => contact.name);
+    document.getElementById("AssignedTo").value = contactNames.join(", ");
+    highlightSelectedContacts();
 }
 
 /**
@@ -408,8 +451,6 @@ function clearContainer(containerId) {
     container.innerHTML = ''; // Leere den Containerinhalt
 }
 
-fetchAndDisplayTasks();
-
 /**
  * Function to start the drag-and-drop operation.
  * 
@@ -452,6 +493,8 @@ async function moveTo(containerId, ev, status) {
     } catch (error) {
         console.error('Fehler beim Aktualisieren des Status:', error);
     }
+    const statusSelector = taskElement.querySelector(`#statusSelector-${taskId}`);
+    statusSelector.value = containerId; 
     checkAndToggleNoTasksMessages();
 }
 
