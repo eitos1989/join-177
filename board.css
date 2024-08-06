@@ -311,11 +311,13 @@
     font-size: xxx-large;
     font-weight: 700;
     margin: 0;
+    overflow-y: auto;
 }
 
 .createTaskDescriptionDetails {
     margin: 0;
     margin-top: 8px;
+    overflow-y: auto;
 }
 
 .dueDateDetails {
@@ -352,6 +354,7 @@
 
 .subtasksDetails {
     margin-top: 8px;
+    overflow-y: auto;
 }
 
 .subtaskTextDetails {
