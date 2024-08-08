@@ -137,24 +137,15 @@ async function putData(path = "", data = {}) {
  * Displays a success message and redirects after creating the task.
  */
 async function createTask() {
-    const title = document.getElementById('title').value;
+    const title = document.getElementById('title').value.trim();
+    const dueDate = document.getElementById('gebdat').value.trim();
+    const category = document.getElementById('dropdownContent').value.trim();
+
+    // Restliche Logik bleibt unverändert
     const description = document.getElementById('description').value;
     const assignedTo = document.getElementById('AssignedTo').value;
-    const dueDate = document.getElementById('gebdat').value;
     const priority = getPriority();
-    const category = document.getElementById('dropdownContent').value;
     const status = "toDoContainer";
-    
-    // Manuelle Validierung der erforderlichen Felder
-    if (!title.trim()) {
-        return;
-    }
-    if (!dueDate.trim()) {
-        return;
-    }
-    if (!category.trim()) {
-        return;
-    }
 
     const subtasks = Array.from(document.querySelectorAll('#subtaskList li')).map(li => ({
         name: li.textContent.trim(),
@@ -482,3 +473,4 @@ document.addEventListener('DOMContentLoaded', function() {
         console.error('Form element not found.');
     }
 });
+

@@ -27,7 +27,7 @@
         <div id="containerForBoardSide">
         <div class="rightContainerWithoutHeadline">    
             <h1 class="headlineAddTask">Add Task</h1>
-            <form class="addTaskContainer">
+            <form id="addTaskForm" class="addTaskContainer" onsubmit="return handleSubmit(event)">
                 <div class="addTaskLeftSide">   
                     <div class="inputContainerTitle">
                         <label for="title">Title<span class="required">*</span></label>
@@ -48,17 +48,17 @@
                 <div class="addTaskRightSide">
                     <div class="inputContainerDate">
                         <label for="gebdat">Due date<span class="required">*</span></label>
-                        <input type="date" id="gebdat" required min="">
+                        <input type="date" id="gebdat" name="gebdat" required min="">
                     </div>
                     <p class="prioText">Prio</p>
                     <div class="prioButtons">
-                        <button id="redButton" class="prioButton active" onclick="changePriority('red')">Urgent <img src="./img/angles-up-solid.svg"></button>
-                        <button id="orangeButton" class="prioButton" onclick="changePriority('orange')">Medium <img src="./img/grip-lines-solid.svg"></button>
-                        <button id="greenButton" class="prioButton" onclick="changePriority('green')">Low <img src="./img/angles-down-solid.svg"></button>
+                        <button id="redButton" class="prioButton active" type="button" onclick="changePriority('red')">Urgent <img src="./img/angles-up-solid.svg"></button>
+                        <button id="orangeButton" class="prioButton" type="button" onclick="changePriority('orange')">Medium <img src="./img/grip-lines-solid.svg"></button>
+                        <button id="greenButton" class="prioButton" type="button" onclick="changePriority('green')">Low <img src="./img/angles-down-solid.svg"></button>
                     </div>
                     <p class="categoryText">Category<span class="required">*</span></p>
                     <div>
-                        <select id="dropdownContent" class="dropdownContent" required>
+                        <select id="dropdownContent" class="dropdownContent" name="category" required>
                             <option value="" disabled selected class="selectedClassDropdown">Select task category</option>
                             <option value="Technical Task">Technical Task</option>
                             <option value="User Story">User Story</option>
@@ -75,14 +75,13 @@
                         </div>
                     </div>
                 </div>    
-            </form>
-        </div> 
+            </div> 
             <section>
                 <div class="createTask">
                     <p class="requiredInfo"><span class="required">*</span>This field is required</p>
                     <div class="createTaskButtons">
                         <button type="button" onclick="clearTask()" class="clearButton">Clear <img src="./img/VectorBlack.png"></button>
-                        <button type="submit" onclick="createTask()" id="createTaskButton" class="createTaskButton">Create Task <img src="./img/check.png"></button>
+                        <button type="submit" id="createTaskButton" class="createTaskButton">Create Task <img src="./img/check.png"></button>
                     </div>
                 </div>
             </section>

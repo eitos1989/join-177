@@ -287,6 +287,8 @@
     margin: 0;
     margin-top: 16px;
     gap: 8px;
+    max-height: 100px;
+    overflow-y: auto;
     p {
         margin: 0;
     }
@@ -355,6 +357,7 @@
 .subtasksDetails {
     margin-top: 8px;
     overflow-y: auto;
+    max-height: 100px;
 }
 
 .subtaskTextDetails {
