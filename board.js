@@ -308,6 +308,7 @@ function saveTaskDetails(taskId) {
         description: document.getElementById('editDescription').value,
         dueDate: document.getElementById('editDueDate').value,
         priority: document.getElementById('editPriority').value,
+        subtasks: tasks[taskId].subtasks, 
         assignedContacts: selectedContacts.map(contact => ({
             name: contact.name,
             color: contact.color
@@ -330,6 +331,7 @@ function saveTaskDetails(taskId) {
     .catch(error => {
         console.error('Error:', error);
     });
+    showTaskDetails(taskId);
 }
 
 function removeDetailsFromTask() {
