@@ -498,6 +498,7 @@ async function moveTo(containerId, ev, status) {
     const statusSelector = taskElement.querySelector(`#statusSelector-${taskId}`);
     statusSelector.value = containerId; 
     checkAndToggleNoTasksMessages();
+    removeHighlight(containerId);
 }
 
 /**
@@ -507,7 +508,7 @@ async function moveTo(containerId, ev, status) {
  * @param {string} id - The ID of the container to be highlighted.
  */
 function highlight(id) {
-    document.getElementById(id).classList.add('drag-area-highlight');
+    document.getElementById(id).classList.add('dragAreaHighlight');
 }
 
 /**
@@ -517,7 +518,7 @@ function highlight(id) {
  * @param {string} id - The ID of the container from which highlight needs to be removed.
  */
 function removeHighlight(id) {
-    document.getElementById(id).classList.remove('drag-area-highlight');
+    document.getElementById(id).classList.remove('dragAreaHighlight');
 }
 
 /**
