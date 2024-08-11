@@ -671,7 +671,7 @@
 }
 
 .dragAreaHighlight {
-    border: 2px dashed #4CAF50; /* Grüner, gestrichelter Rand */
-    background-color: #f0fff0;  /* Hellgrüner Hintergrund */
+    border: 2px dashed #4CAF50; 
+    background-color: #f0fff0; 
     
 }
