@@ -546,6 +546,7 @@
     .boradSide{
         flex-direction: column;
         overflow-y: auto;
+        overflow-x: hidden;
         align-items: center;
         height: 50vh;
     }
