@@ -137,6 +137,19 @@ async function putData(path = "", data = {}) {
  * Displays a success message and redirects after creating the task.
  */
 async function createTask() {
+    try {
+        const taskData = getTaskData();
+        await saveTask(taskData);
+        displaySuccessImage();
+        setTimeout(() => {
+            window.location.href = 'board.html';
+        }, 2000); 
+    } catch (error) {
+        console.error('Error creating task: ', error);
+    }
+}
+
+function getTaskData() {
     const title = document.getElementById('title').value.trim();
     const dueDate = document.getElementById('gebdat').value.trim();
     const category = document.getElementById('dropdownContent').value.trim();
@@ -145,49 +158,45 @@ async function createTask() {
     const priority = getPriority();
     const status = "toDoContainer";
 
-    const subtasks = Array.from(document.querySelectorAll('#subtaskList li')).map(li => ({
+    return {
+        title,
+        description,
+        assignedTo,
+        dueDate,
+        priority,
+        category,
+        subtasks: getSubtasks(),
+        assignedContacts: getAssignedContacts(),
+        status
+    };
+}
+
+function getSubtasks() {
+    return Array.from(document.querySelectorAll('#subtaskList li')).map(li => ({
         name: li.textContent.trim(),
         completed: false
     })).filter(subtask => subtask.name !== '');
+}
 
-    const assignedContacts = selectedContacts.map(contact => ({
+function getAssignedContacts() {
+    return selectedContacts.map(contact => ({
         name: contact.name,
         color: contact.color
     }));
+}
 
-    const taskData = {
-        title: title,
-        description: description,
-        assignedTo: assignedTo,
-        dueDate: dueDate,
-        priority: priority,
-        category: category,
-        subtasks: subtasks,
-        assignedContacts: assignedContacts,
-        status: status
-    };
+async function saveTask(taskData) {
+    await putData("tasks", taskData);
+    console.log('Task created successfully.');
+}
 
-    try {
-        // Weiter mit dem Speichern des Tasks
-        await putData("tasks", taskData);
-        console.log('Task created successfully.');
-
-        const img = document.createElement('img');
-        img.src = './img/Added to back log V1.png';
-        img.id = 'addedToBacklogImg';
-        document.body.appendChild(img);
-
-        img.offsetHeight;
-
-        img.style.bottom = '50%';
-
-        setTimeout(() => {
-            window.location.href = 'board.html';
-        }, 2000); 
-
-    } catch (error) {
-        console.error('Error creating task: ', error);
-    }
+function displaySuccessImage() {
+    const img = document.createElement('img');
+    img.src = './img/Added to back log V1.png';
+    img.id = 'addedToBacklogImg';
+    document.body.appendChild(img);
+    img.offsetHeight; // Trigger reflow
+    img.style.bottom = '50%';
 }
 
 /**
