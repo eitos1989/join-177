@@ -585,6 +585,15 @@
     }
 }    
 
+@media (max-width: 450px) {
+    .containerForDetailsTask {
+        width: 250px;
+    }
+    .createTaskTitleDetails {
+        font-size: xx-large;
+    }
+}
+
 .buttonFindTask:hover {
     cursor: pointer;
 }

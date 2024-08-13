@@ -36,27 +36,27 @@
                             <input oninput="filterTasks()" id="searchInput" class="inputFieldFindTask" placeholder="Find Task">
                             <button onclick="searchTasks()" class="buttonFindTask"><img src="./img/search.png"></button>
                         </div>
-                        <button class="addTaskButton" onclick="moveContainer()">Add Task <img src="./img/add.png"></button>    
+                        <a href="addTask.html" class="addTaskButton">Add Task <img src="./img/add.png"></a>    
                     </div>    
                 </div>
                 <div id="boardSide" class="boradSide">
                     <div class="toDo">
                         <div class="toDoHeadline">
-                            <h2>To do</h2><img class="plusButton" onclick="moveContainer()" src="./img/plus button.png">
+                            <h2>To do</h2><a href="addTask.html"><img class="plusButton" src="./img/plus button.png"></a>
                         </div>
                         <div id="noTasksToDo" class="noTasksToDo"><p class="noTasksHeadlines">No tasks To do</p></div>    
                         <div class="toDoContainer" id="toDoContainer" ondrop="moveTo('toDoContainer', event, 'toDoContainer')" ondragleave="removeHighlight('toDoContainer')" ondragover="allowDrop(event); highlight('toDoContainer')"></div>
                     </div>
                     <div class="inProgress">
                         <div class="inProgressHeadline">
-                            <h2>In progress</h2><img class="plusButton" onclick="moveContainer()" src="./img/plus button.png">
+                            <h2>In progress</h2><a href="addTask.html"><img class="plusButton" src="./img/plus button.png"></a>
                         </div>
                         <div id="noInProgress" class="noInProgress"><p class="noTasksHeadlines">No tasks in progress</p></div>
                         <div class="inProgressContainer" id="inProgressContainer" ondrop="moveTo('inProgressContainer', event, 'in progress')" ondragleave="removeHighlight('inProgressContainer')" ondragover="allowDrop(event); highlight('inProgressContainer')"></div>
                     </div>
                     <div class="awaitFeedback">
                         <div class="awaitFeedbackHeadline">
-                            <h2>Await feedback</h2><img class="plusButton" onclick="moveContainer()" src="./img/plus button.png">
+                            <h2>Await feedback</h2><a href="addTask.html"><img class="plusButton" src="./img/plus button.png"></a>
                         </div>
                         <div id="noAwaitFeedback" class="noAwaitFeedback"><p class="noTasksHeadlines">No tasks await feedback</p></div>
                         <div class="awaitFeedbackContainer" id="awaitFeedbackContainer" ondrop="moveTo('awaitFeedbackContainer', event, 'await feedback')" ondragleave="removeHighlight('awaitFeedbackContainer')" ondragover="allowDrop(event); highlight('awaitFeedbackContainer')"></div>

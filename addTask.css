@@ -11,6 +11,11 @@ body {
     height: 100vh; 
 }
 
+.containerForBoardSide {
+    overflow-y: scroll;
+    height: 80%;
+}
+
 .completeRightContainer {
     width: 100%;
     margin-left: 250px;
@@ -19,6 +24,7 @@ body {
 .addTaskContainer {
     display: flex;
     flex: 84%;
+    max-height: 80vh;
 }
 
 .headlineAddTask {
@@ -357,7 +363,7 @@ textarea:hover {
     .addTaskContainer{
       flex-direction: column;
       overflow-y: auto;
-      max-height: 300px;
+      max-height: 80vh;
     }
     .addTaskRightSide{
         flex: 1;

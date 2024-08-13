@@ -140,8 +140,6 @@ async function createTask() {
     const title = document.getElementById('title').value.trim();
     const dueDate = document.getElementById('gebdat').value.trim();
     const category = document.getElementById('dropdownContent').value.trim();
-
-    // Restliche Logik bleibt unverändert
     const description = document.getElementById('description').value;
     const assignedTo = document.getElementById('AssignedTo').value;
     const priority = getPriority();
