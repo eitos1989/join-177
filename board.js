@@ -181,7 +181,7 @@ function showTaskDetails(taskId) {
             </div>
             <div class="assignetToDetailsContainer">
                 <p class="textAssignetToDetails">Assigned To:</p>
-                <div id="taskContacts" class="assignedContactsDetails">${getAssignedContactsHTML(task.assignedContacts)}</div>
+                <div id="taskContacts" class="assignedContactsDetails">${getAssignedContactsHTML(task.assignedContacts, true)}</div> 
             </div>
             <div class="subtasksDetailsContainer">
                 <p class="textSubtasksDetails">Subtasks:</p>
@@ -584,12 +584,13 @@ function getPriorityImageSrc(priority) {
  * @param {Array} assignedContacts - Array containing assigned contacts data.
  * @returns {string} - HTML code for assigned contacts badges.
  */
-function getAssignedContactsHTML(assignedContacts) {
+function getAssignedContactsHTML(assignedContacts, showName = false) {
     if (assignedContacts && assignedContacts.length > 0) {
         return assignedContacts.map(contact => `
             <div class="profil_badge" style="background-color: ${contact.color};">
-                ${getInitials(contact.name)} 
+                ${getInitials(contact.name)}
             </div>
+            ${showName ? `<span class="contact_name">${contact.name}</span>` : ''} 
         `).join('');
     }
     return '';

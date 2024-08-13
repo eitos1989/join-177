@@ -398,3 +398,15 @@ textarea:hover {
     background-color: #f3c2ed;
     border-radius: 8px; 
 }
+
+.profil_badge {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: inline-block;
+    color: white;
+    text-align: center;
+    line-height: 30px;
+    font-size: 14px;
+    font-weight: bold;
+}
