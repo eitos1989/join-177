@@ -1,8 +1,134 @@
 /**
- * Function to save edited details of a task.
+ * Opens the edit view for a specific task and populates it with current task details.
+ * @param {string} taskId - The ID of the task to be edited.
+ */
+function editTaskDetails(taskId) {
+    const task = tasks[taskId];
+    selectedContacts = task.assignedContacts ? [...task.assignedContacts] : [];
+    
+    updateTaskFields(task);
+    updateTaskPriority(task);
+    updateAssignedContacts(task);
+    updateEditContainer(taskId);
+}
+
+/**
+ * Updates the task fields in the edit view with the current task data.
+ * @param {Object} task - The task object containing the current task details.
+ */
+function updateTaskFields(task) {
+    setInnerHTML('taskTitle', `<input type="text" class="editTitle" id="editTitle" value="${task.title}">`);
+    setInnerHTML('taskDescription', `<textarea class="editDescription" id="editDescription">${task.description}</textarea>`);
+    setInnerHTML('taskDueDate', `<input type="date" class="editDueDate" id="editDueDate" value="${task.dueDate}">`);
+}
+
+/**
+ * Updates the priority selection in the edit view based on the current task priority.
+ * @param {Object} task - The task object containing the current task priority.
+ */
+function updateTaskPriority(task) {
+    const priorityOptions = ['low', 'medium', 'urgent'].map(priority => 
+        `<option value="${priority}" ${task.priority === priority ? 'selected' : ''}>${priority.charAt(0).toUpperCase() + priority.slice(1)}</option>`
+    ).join('');
+    setInnerHTML('taskPriority', `<select id="editPriority">${priorityOptions}</select>`);
+}
+
+/**
+ * Updates the assigned contacts input field with the current task's assigned contacts.
+ * @param {Object} task - The task object containing the current task's assigned contacts.
+ */
+function updateAssignedContacts(task) {
+    const contactNames = selectedContacts.map(contact => contact.name).join(', ');
+    setInnerHTML('taskContacts', `
+        <input placeholder="Select contacts to assign" type="text" id="AssignedTo" value="${contactNames}" onclick="showContacts()">
+        <div id="contactList" style="display: none; max-height: 100px; overflow-y: auto;"></div>
+    `);
+}
+
+/**
+ * Updates the edit container with the save button.
+ * @param {string} taskId - The ID of the task being edited.
+ */
+function updateEditContainer(taskId) {
+    const saveButton = `
+        <button class="containerImgAndText" onclick="saveTaskDetails('${taskId}')">
+            <img src="./img/save.svg">
+            <p>Save</p>
+        </button>
+    `;
+    document.querySelector('.deleteAndEditContainer').innerHTML = saveButton;
+}
+
+/**
+ * Sets the inner HTML of a specified element.
+ * @param {string} elementId - The ID of the element to update.
+ * @param {string} html - The HTML string to set as the element's content.
+ */
+function setInnerHTML(elementId, html) {
+    document.getElementById(elementId).innerHTML = html;
+}
+
+/**
+ * Function to show available contacts.
  * 
- * Saves the edited details of a task to Firebase database.
- * @param {string} taskId - The ID of the task whose details are to be saved.
+ * Displays the list of available contacts from Firebase database.
+ */
+function showContacts() {
+    const contactListDiv = document.getElementById("contactList");
+    if (contactListDiv.style.display === "none") {
+        fetch('https://contact-storage-f1196-default-rtdb.europe-west1.firebasedatabase.app/contacts.json')
+            .then(response => response.json())
+            .then(data => {
+                contactListDiv.innerHTML = `<ul>${Object.keys(data).map(key => {
+                    const contact = data[key];
+                    const isSelected = selectedContacts.some(c => c.name === contact.name);
+                    return `<li class="contactBadge ${isSelected ? 'selected' : ''}" 
+                            onclick='toggleContact("${contact.name}", "${contact.color}")'>
+                            ${createContactBadge(contact).outerHTML}<span>${contact.name}</span></li>`;
+                }).join('')}</ul>`;
+                contactListDiv.style.display = "block";
+            })
+            .catch(console.error);
+    } else {
+        contactListDiv.style.display = "none";
+    }
+}
+
+/**
+ * Updates the "Assigned To" input field with the names of the currently selected contacts.
+ */
+function updateAssignedToInput() {
+    const contactNames = selectedContacts.map(contact => contact.name);
+    document.getElementById("AssignedTo").value = contactNames.join(", ");
+}
+
+/**
+ * Creates a contact badge element with the initials of the contact's name and background color.
+ * @param {Object} contact - The contact object containing name and color properties.
+ * @param {string} contact.name - The name of the contact.
+ * @param {string} contact.color - The color for the badge's background.
+ * @returns {HTMLElement} The created badge element.
+ */
+function createContactBadge(contact) {
+    let badge = document.createElement("div");
+    badge.className = "profil_badge";
+    if (contact && contact.name) {
+        let names = contact.name.split(" ");
+        if (names.length > 1) {
+            badge.textContent = names[0][0].toUpperCase() + names[1][0].toUpperCase();
+        } else if (names.length === 1) {
+            badge.textContent = names[0][0].toUpperCase();
+        }
+        badge.style.backgroundColor = contact.color;
+    }
+    return badge;
+}
+
+/**
+ * Saves the details of a task after editing.
+ * Updates the task data on the server and refreshes the task details and task list.
+ * @param {string} taskId - The ID of the task to be updated.
+ * @returns {Promise<void>}
  */
 function saveTaskDetails(taskId) {
     const updatedTask = {
@@ -24,10 +150,20 @@ function saveTaskDetails(taskId) {
     .catch(console.error);
 }
 
+/**
+ * Hides the task details container.
+ */
 function removeDetailsFromTask() {
     document.getElementById('containerForDetailsTask').style.display = 'none';
 }
 
+/**
+ * Generates HTML for displaying subtasks of a task.
+ * @param {string} taskId - The ID of the task.
+ * @param {Object} task - The task object containing subtasks.
+ * @param {Object[]} task.subtasks - Array of subtasks with `name` and `completed` properties.
+ * @returns {string} HTML string for subtasks.
+ */
 function getSubtasksHTML(taskId, task) {
     if (task.subtasks && task.subtasks.length > 0) {
         return task.subtasks.map((subtask, index) => `
@@ -40,6 +176,12 @@ function getSubtasksHTML(taskId, task) {
     return '';
 }
 
+/**
+ * Toggles the selection status of a contact.
+ * Adds or removes a contact from the `selectedContacts` list and updates the input field.
+ * @param {string} contactName - The name of the contact to toggle.
+ * @param {string} contactColor - The color associated with the contact.
+ */
 function toggleContact(contactName, contactColor) {
     let index = selectedContacts.findIndex(contact => contact.name === contactName);
     if (index === -1) {
@@ -51,6 +193,9 @@ function toggleContact(contactName, contactColor) {
     highlightSelectedContacts();
 }
 
+/**
+ * Highlights selected contact badges in the contact list.
+ */
 function highlightSelectedContacts() {
     let contactBadges = document.querySelectorAll('.contactBadge');
     contactBadges.forEach(badge => {
@@ -63,6 +208,10 @@ function highlightSelectedContacts() {
     });
 }
 
+/**
+ * Updates the "Assigned To" input field with the names of selected contacts.
+ * Also highlights the selected contacts in the contact list.
+ */
 function updateAssignedToInput() {
     const contactNames = selectedContacts.map(contact => contact.name);
     document.getElementById("AssignedTo").value = contactNames.join(", ");
@@ -120,6 +269,13 @@ function updateProgressbar(taskId) {
     }
 }
 
+/**
+ * Calculates the progress percentage of a task based on its subtasks.
+ * @param {Object} task - The task object.
+ * @param {Object[]} task.subtasks - An array of subtasks.
+ * @param {boolean} task.subtasks.completed - A boolean indicating if the subtask is completed.
+ * @returns {number} The progress percentage, ranging from 0 to 100.
+ */
 function calculateProgress(task) {
     if (!task.subtasks || task.subtasks.length === 0) {
         return 0;
@@ -128,6 +284,9 @@ function calculateProgress(task) {
     return (completedSubtasks / task.subtasks.length) * 100;
 }
 
+/**
+ * Hides the task details container.
+ */
 function removeDetailsFromTask() {
     const containerForDetailsTask = document.getElementById('containerForDetailsTask');
     containerForDetailsTask.style.display = 'none';
@@ -153,6 +312,11 @@ function startDragging(event) {
     event.dataTransfer.setData("text", event.target.id);
 }
 
+/**
+ * Allows dropping elements by preventing the default behavior of the dragover event.
+ * @param {DragEvent} ev - The drag event object.
+ * @returns {void}
+ */
 function allowDrop(ev) {
     ev.preventDefault();
 }
@@ -204,120 +368,4 @@ function highlight(id) {
  */
 function removeHighlight(id) {
     document.getElementById(id).classList.remove('dragAreaHighlight');
-}
-
-/**
- * Function to determine the CSS class for a specific category.
- * 
- * Returns the corresponding CSS class for a task category.
- * @param {string} category - The category of the task.
- * @returns {string} - The CSS class for the specified category.
- */
-function getCategoryClass(category) {
-    switch (category) {
-        case 'Technical Task':
-            return 'technical-task';
-        case 'User Story':
-            return 'user-story';
-        default:
-            return 'default-category';
-    }
-}
-
-/**
- * Function to determine the background color for a specific category.
- * 
- * Returns the background color for a task category.
- * @param {string} category - The category of the task.
- * @returns {string} - The background color for the specified category.
- */
-function getCategoryColor(category) {
-    switch (category) {
-        case 'Technical Task':
-            return 'rgb(32,215,193)';
-        case 'User Story':
-            return 'rgb(0,56,255)';
-        default:
-            return 'white';
-    }
-}
-
-/**
- * Function to determine the image source for a specific priority.
- * 
- * Returns the image source for the priority of a task.
- * @param {string} priority - The priority of the task.
- * @returns {string} - The image source for the specified priority.
- */
-function getPriorityImageSrc(priority) {
-    switch (priority) {
-        case 'urgent':
-            return './img/angles-up-solid.svg';
-        case 'medium':
-            return './img/grip-lines-solid.svg';
-        case 'low':
-            return './img/angles-down-solid.svg';
-        default:
-            return '';
-    }
-}
-
-/**
- * Function to generate HTML code for assigned contacts badges.
- * 
- * Generates HTML code for each assigned contact's badge based on the provided assigned contacts array.
- * @param {Array} assignedContacts - Array containing assigned contacts data.
- * @returns {string} - HTML code for assigned contacts badges.
- */
-function getAssignedContactsHTML(assignedContacts, showName = false) {
-    if (assignedContacts && assignedContacts.length > 0) {
-        return assignedContacts.map(contact => `
-            <div class="profil_badge" style="background-color: ${contact.color};">
-                ${getInitials(contact.name)}
-            </div>
-            ${showName ? `<span class="contact_name">${contact.name}</span>` : ''} 
-        `).join('');
-    }
-    return '';
-}
-
-/**
- * Function to determine initials from a name.
- * 
- * Extracts initials from the provided name and returns them.
- * @param {string} name - The name from which initials are to be determined.
- * @returns {string} - Initials extracted from the name.
- */
-function getInitials(name) {
-    const names = name.split(" ");
-    if (names.length > 1) {
-        return names[0][0].toUpperCase() + names[1][0].toUpperCase();
-    } else if (names.length === 1) {
-        return names[0][0].toUpperCase();
-    }
-    return "";
-}
-
-/**
- * Function to delete a task.
- * 
- * Confirms the deletion of a task and sends a DELETE request to the API endpoint.
- * @param {string} taskId - The ID of the task to be deleted.
- */
-function deleteTask(taskId) {
-    const url = `${BASE_URL}/tasks/${taskId}.json`;
-    fetch(url, {
-        method: 'DELETE',
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Network response was not ok');
-        }
-        delete tasks[taskId];
-        document.getElementById('containerForDetailsTask').style.display = 'none';
-        fetchAndDisplayTasks();
-    })
-    .catch(error => {
-        console.error('Error deleting task:', error);
-    });
 }

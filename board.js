@@ -11,8 +11,12 @@ const BASE_URL = "https://contact-storage-f1196-default-rtdb.europe-west1.fireba
 let tasks = {};
 
 /**
- * Fetches tasks data from Firebase and displays them in respective containers.
- * Clears existing containers before populating with fetched tasks.
+ * Fetches tasks from Firebase and updates task containers on the page.
+ * Clears all containers before adding new tasks.
+ * Logs errors if the fetch operation fails.
+ * 
+ * @async
+ * @function fetchAndDisplayTasks
  * @returns {Promise<void>}
  */
 async function fetchAndDisplayTasks() {
@@ -31,10 +35,12 @@ async function fetchAndDisplayTasks() {
 }
 
 /**
- * Creates an HTML element representing a task with details.
- * @param {Object} task - The task object containing title, description, etc.
- * @param {string} taskId - The ID of the task.
- * @returns {HTMLElement} - The created task element.
+ * Creates a task element and populates it with task details.
+ * Sets up the status selector for the task.
+ * 
+ * @param {Object} task - The task data.
+ * @param {string} taskId - The unique identifier of the task.
+ * @returns {HTMLElement} The task element.
  */
 function createTaskElement(task, taskId) {
     const taskElement = createBaseTaskElement(taskId);
@@ -50,6 +56,12 @@ function createTaskElement(task, taskId) {
     return taskElement;
 }
 
+/**
+ * Creates a base task element with necessary attributes.
+ * 
+ * @param {string} taskId - The unique identifier of the task.
+ * @returns {HTMLElement} The base task element.
+ */
 function createBaseTaskElement(taskId) {
     const taskElement = document.createElement('div');
     taskElement.classList.add('createTasksContainer');
@@ -60,10 +72,23 @@ function createBaseTaskElement(taskId) {
     return taskElement;
 }
 
+/**
+ * Creates the task category element.
+ * 
+ * @param {Object} task - The task data.
+ * @returns {string} HTML string for the task category.
+ */
 function createTaskCategory(task) {
     return `<p class="createTaskCategory ${getCategoryClass(task.category)}" style="background-color: ${getCategoryColor(task.category)}">${task.category}</p>`;
 }
 
+/**
+ * Creates a status selector dropdown for the task.
+ * 
+ * @param {Object} task - The task data.
+ * @param {string} taskId - The unique identifier of the task.
+ * @returns {string} HTML string for the status selector.
+ */
 function createStatusSelector(task, taskId) {
     return `
         <select id="statusSelector-${taskId}" class="statusSelector"> 
@@ -75,6 +100,12 @@ function createStatusSelector(task, taskId) {
     `;
 }
 
+/**
+ * Creates a progress bar showing the completion of subtasks.
+ * 
+ * @param {Object} task - The task data.
+ * @returns {string} HTML string for the progress bar.
+ */
 function createProgressbar(task) {
     const progress = calculateProgress(task);
     const completedSubtasks = task.subtasks.filter(subtask => subtask.completed).length;
@@ -89,6 +120,12 @@ function createProgressbar(task) {
     `;
 }
 
+/**
+ * Creates HTML for assigned contacts and priority.
+ * 
+ * @param {Object} task - The task data.
+ * @returns {string} HTML string for contacts and priority.
+ */
 function createContactsAndPriority(task) {
     return `
         <div class="contactsAndPriority">
@@ -100,6 +137,12 @@ function createContactsAndPriority(task) {
     `;
 }
 
+/**
+ * Sets up event listeners for the task's status selector.
+ * 
+ * @param {HTMLElement} taskElement - The task element.
+ * @param {string} taskId - The unique identifier of the task.
+ */
 function setupStatusSelector(taskElement, taskId) {
     const statusSelector = taskElement.querySelector(`#statusSelector-${taskId}`);
     statusSelector.addEventListener('change', (event) => {
@@ -113,7 +156,13 @@ function setupStatusSelector(taskElement, taskId) {
     });
 }
 
-
+/**
+ * Updates the status of a task in the database.
+ * 
+ * @param {string} taskId - The unique identifier of the task.
+ * @param {string} newStatus - The new status to set.
+ * @returns {Promise<void>}
+ */
 function updateTaskStatus(taskId, newStatus) {
     fetch(`${BASE_URL}tasks/${taskId}.json`, {
         method: 'PATCH',
@@ -131,6 +180,12 @@ function updateTaskStatus(taskId, newStatus) {
     });
 }
 
+/**
+ * Moves a task element to a new container and updates its status.
+ * 
+ * @param {string} taskId - The unique identifier of the task.
+ * @param {string} newStatus - The new status/container ID.
+ */
 function moveTaskToContainer(taskId, newStatus) {
     const taskElement = document.getElementById(`task-${taskId}`);
     const newContainer = document.getElementById(newStatus);
@@ -175,15 +230,27 @@ function showTaskDetails(taskId) {
         ${createSubtasks(taskId, task)}
         ${createDeleteAndEditButtons(taskId)}
     `;
-    addCloseEvent();  // Stellt sicher, dass das X-Symbol funktioniert.
+    addCloseEvent();  
 }
 
+/**
+ * Sets up and returns the details container element.
+ * Makes the container visible by setting its display style to 'block'.
+ *
+ * @returns {HTMLElement} The details container element.
+ */
 function setupDetailsContainer() {
     const detailsContainer = document.getElementById('containerForDetailsTask');
     detailsContainer.style.display = 'block';
     return detailsContainer;
 }
 
+/**
+ * Creates the HTML for the category line of the task details.
+ *
+ * @param {Object} task - The task object.
+ * @returns {string} HTML string for the category line.
+ */
 function createCategoryLine(task) {
     return `
         <div class="categoryLineDetailsTask">
@@ -193,14 +260,32 @@ function createCategoryLine(task) {
     `;
 }
 
+/**
+ * Creates the HTML for the task title in the details view.
+ *
+ * @param {Object} task - The task object.
+ * @returns {string} HTML string for the task title.
+ */
 function createTaskTitle(task) {
     return `<h3 class="createTaskTitleDetails" id="taskTitle">${task.title}</h3>`;
 }
 
+/**
+ * Creates the HTML for the task description in the details view.
+ *
+ * @param {Object} task - The task object.
+ * @returns {string} HTML string for the task description.
+ */
 function createTaskDescription(task) {
     return `<p class="createTaskDescriptionDetails" id="taskDescription">${task.description}</p>`;
 }
 
+/**
+ * Creates the HTML for the due date section of the task details.
+ *
+ * @param {Object} task - The task object.
+ * @returns {string} HTML string for the due date section.
+ */
 function createDueDate(task) {
     return `
         <div class="dueDateDetails">
@@ -210,6 +295,12 @@ function createDueDate(task) {
     `;
 }
 
+/**
+ * Creates the HTML for the priority section of the task details.
+ *
+ * @param {Object} task - The task object.
+ * @returns {string} HTML string for the priority section.
+ */
 function createPriority(task) {
     return `
         <div class="priorityDetails">
@@ -222,6 +313,12 @@ function createPriority(task) {
     `;
 }
 
+/**
+ * Creates the HTML for the assigned contacts section of the task details.
+ *
+ * @param {Object} task - The task object.
+ * @returns {string} HTML string for the assigned contacts section.
+ */
 function createAssignedTo(task) {
     return `
         <div class="assignetToDetailsContainer">
@@ -231,6 +328,13 @@ function createAssignedTo(task) {
     `;
 }
 
+/**
+ * Creates the HTML for the subtasks section of the task details.
+ *
+ * @param {string} taskId - The ID of the task.
+ * @param {Object} task - The task object.
+ * @returns {string} HTML string for the subtasks section.
+ */
 function createSubtasks(taskId, task) {
     return `
         <div class="subtasksDetailsContainer">
@@ -240,6 +344,12 @@ function createSubtasks(taskId, task) {
     `;
 }
 
+/**
+ * Creates the HTML for the delete and edit buttons of the task details.
+ *
+ * @param {string} taskId - The ID of the task.
+ * @returns {string} HTML string for the delete and edit buttons.
+ */
 function createDeleteAndEditButtons(taskId) {
     return `
         <div class="deleteAndEditContainer">
@@ -256,108 +366,12 @@ function createDeleteAndEditButtons(taskId) {
     `;
 }
 
+/**
+ * Adds a click event listener to the close button to remove task details.
+ */
+
 function addCloseEvent() {
     document.getElementById('closeTaskDetails').addEventListener('click', removeDetailsFromTask);
 }
 
 let selectedContacts = []; 
-
-/**
- * Function to edit details of a task.
- * 
- * Allows editing details of a task and saving the changes.
- * @param {string} taskId - The ID of the task whose details are to be edited.
- */
-function editTaskDetails(taskId) {
-    const task = tasks[taskId];
-    selectedContacts = task.assignedContacts ? [...task.assignedContacts] : [];
-    
-    updateTaskFields(task);
-    updateTaskPriority(task);
-    updateAssignedContacts(task);
-    updateEditContainer(taskId);
-}
-
-function updateTaskFields(task) {
-    setInnerHTML('taskTitle', `<input type="text" class="editTitle" id="editTitle" value="${task.title}">`);
-    setInnerHTML('taskDescription', `<textarea class="editDescription" id="editDescription">${task.description}</textarea>`);
-    setInnerHTML('taskDueDate', `<input type="date" class="editDueDate" id="editDueDate" value="${task.dueDate}">`);
-}
-
-function updateTaskPriority(task) {
-    const priorityOptions = ['low', 'medium', 'urgent'].map(priority => 
-        `<option value="${priority}" ${task.priority === priority ? 'selected' : ''}>${priority.charAt(0).toUpperCase() + priority.slice(1)}</option>`
-    ).join('');
-    setInnerHTML('taskPriority', `<select id="editPriority">${priorityOptions}</select>`);
-}
-
-function updateAssignedContacts(task) {
-    const contactNames = selectedContacts.map(contact => contact.name).join(', ');
-    setInnerHTML('taskContacts', `
-        <input placeholder="Select contacts to assign" type="text" id="AssignedTo" value="${contactNames}" onclick="showContacts()">
-        <div id="contactList" style="display: none; max-height: 100px; overflow-y: auto;"></div>
-    `);
-}
-
-function updateEditContainer(taskId) {
-    const saveButton = `
-        <button class="containerImgAndText" onclick="saveTaskDetails('${taskId}')">
-            <img src="./img/save.svg">
-            <p>Save</p>
-        </button>
-    `;
-    document.querySelector('.deleteAndEditContainer').innerHTML = saveButton;
-}
-
-function setInnerHTML(elementId, html) {
-    document.getElementById(elementId).innerHTML = html;
-}
-
-/**
- * Function to show available contacts.
- * 
- * Displays the list of available contacts from Firebase database.
- */
-function showContacts() {
-    const contactListDiv = document.getElementById("contactList");
-    if (contactListDiv.style.display === "none") {
-        fetch('https://contact-storage-f1196-default-rtdb.europe-west1.firebasedatabase.app/contacts.json')
-            .then(response => response.json())
-            .then(data => {
-                contactListDiv.innerHTML = `<ul>${Object.keys(data).map(key => {
-                    const contact = data[key];
-                    const isSelected = selectedContacts.some(c => c.name === contact.name);
-                    return `<li class="contactBadge ${isSelected ? 'selected' : ''}" 
-                            onclick='toggleContact("${contact.name}", "${contact.color}")'>
-                            ${createContactBadge(contact).outerHTML}<span>${contact.name}</span></li>`;
-                }).join('')}</ul>`;
-                contactListDiv.style.display = "block";
-            })
-            .catch(console.error);
-    } else {
-        contactListDiv.style.display = "none";
-    }
-}
-
-
-function updateAssignedToInput() {
-    const contactNames = selectedContacts.map(contact => contact.name);
-    document.getElementById("AssignedTo").value = contactNames.join(", ");
-}
-
-function createContactBadge(contact) {
-    let badge = document.createElement("div");
-    badge.className = "profil_badge";
-    if (contact && contact.name) {
-        let names = contact.name.split(" ");
-        if (names.length > 1) {
-            badge.textContent = names[0][0].toUpperCase() + names[1][0].toUpperCase();
-        } else if (names.length === 1) {
-            badge.textContent = names[0][0].toUpperCase();
-        }
-        badge.style.backgroundColor = contact.color;
-    }
-    return badge;
-}
-
-
