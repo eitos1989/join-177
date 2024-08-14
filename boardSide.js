@@ -1,3 +1,102 @@
+/**
+ * Function to save edited details of a task.
+ * 
+ * Saves the edited details of a task to Firebase database.
+ * @param {string} taskId - The ID of the task whose details are to be saved.
+ */
+function saveTaskDetails(taskId) {
+    const updatedTask = {
+        title: document.getElementById('editTitle').value,
+        description: document.getElementById('editDescription').value,
+        dueDate: document.getElementById('editDueDate').value,
+        priority: document.getElementById('editPriority').value,
+        subtasks: tasks[taskId].subtasks,
+        assignedContacts: selectedContacts.map(c => ({ name: c.name, color: c.color }))
+    };
+
+    fetch(`${BASE_URL}/tasks/${taskId}.json`, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedTask)
+    })
+    .then(response => response.json())
+    .then(data => (tasks[taskId] = data, showTaskDetails(taskId), fetchAndDisplayTasks()))
+    .catch(console.error);
+}
+
+function removeDetailsFromTask() {
+    document.getElementById('containerForDetailsTask').style.display = 'none';
+}
+
+function getSubtasksHTML(taskId, task) {
+    if (task.subtasks && task.subtasks.length > 0) {
+        return task.subtasks.map((subtask, index) => `
+            <div class="subtask" id="subtask-${index}">
+                <input class="subtaskCheck" type="checkbox" ${subtask.completed ? 'checked' : ''} onchange="toggleSubtaskCompletion('${taskId}', ${index}, this.checked)">
+                <label>${subtask.name}</label>
+            </div>
+        `).join('');
+    }
+    return '';
+}
+
+function toggleContact(contactName, contactColor) {
+    let index = selectedContacts.findIndex(contact => contact.name === contactName);
+    if (index === -1) {
+        selectedContacts.push({ name: contactName, color: contactColor });
+    } else {
+        selectedContacts.splice(index, 1);
+    }
+    updateAssignedToInput();
+    highlightSelectedContacts();
+}
+
+function highlightSelectedContacts() {
+    let contactBadges = document.querySelectorAll('.contactBadge');
+    contactBadges.forEach(badge => {
+        let contactName = badge.querySelector('span').textContent;
+        if (selectedContacts.some(contact => contact.name === contactName)) {
+            badge.classList.add('selected');
+        } else {
+            badge.classList.remove('selected');
+        }
+    });
+}
+
+function updateAssignedToInput() {
+    const contactNames = selectedContacts.map(contact => contact.name);
+    document.getElementById("AssignedTo").value = contactNames.join(", ");
+    highlightSelectedContacts();
+}
+
+/**
+ * Function to toggle the completion status of a subtask.
+ * 
+ * Changes the completion status of a subtask and updates it in Firebase database.
+ * @param {string} taskId - The ID of the task to which the subtask belongs.
+ * @param {number} subtaskIndex - The index of the subtask in the subtask list.
+ * @param {boolean} completed - The new completion status of the subtask.
+ * @returns {Promise<void>}
+ */
+async function toggleSubtaskCompletion(taskId, subtaskIndex, completed) {
+    const task = tasks[taskId];
+    if (task && task.subtasks && task.subtasks[subtaskIndex]) {
+        task.subtasks[subtaskIndex].completed = completed;
+        try {
+            await fetch(`${BASE_URL}/tasks/${taskId}/subtasks/${subtaskIndex}.json`, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ completed })
+            });
+            console.log(`Subtask ${subtaskIndex} status updated: ${completed}`);
+            updateProgressbar(taskId);
+        } catch (error) {
+            console.error('Fehler beim Aktualisieren des Subtask-Status:', error);
+        }
+    }
+}
 
 /**
  * Function to update the progress bar of a task.
@@ -69,24 +168,20 @@ function allowDrop(ev) {
  */
 async function moveTo(containerId, ev, status) {
     ev.preventDefault();
-    const taskId = ev.dataTransfer.getData("text").replace('task-', ''); 
+    const taskId = ev.dataTransfer.getData("text").replace('task-', '');
     const taskElement = document.getElementById(`task-${taskId}`);
-    const targetContainer = document.getElementById(containerId);
-    targetContainer.appendChild(taskElement);
+    document.getElementById(containerId).appendChild(taskElement);
     localStorage.setItem(`task-${taskId}-container`, containerId);
     try {
         await fetch(`${BASE_URL}/tasks/${taskId}.json`, {
             method: 'PATCH',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ status: status })
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ status })
         });
     } catch (error) {
         console.error('Fehler beim Aktualisieren des Status:', error);
     }
-    const statusSelector = taskElement.querySelector(`#statusSelector-${taskId}`);
-    statusSelector.value = containerId; 
+    taskElement.querySelector(`#statusSelector-${taskId}`).value = containerId;
     checkAndToggleNoTasksMessages();
     removeHighlight(containerId);
 }
@@ -224,390 +319,5 @@ function deleteTask(taskId) {
     })
     .catch(error => {
         console.error('Error deleting task:', error);
-    });
-}
-
-/**
- * Function to remove details from task.
- * 
- * Hides the container for task details.
- */
-function removeDetailsFromTask() {
-    let containerForDetailsTask = document.getElementById('containerForDetailsTask');
-    containerForDetailsTask.style.display = 'none';
-}
-
-/**
- * Function to create a task asynchronously.
- * 
- * Collects task data from input fields, sends a POST request to create the task, and handles success and error cases.
- */
-async function createTask2() {
-    const title = document.getElementById('title').value;
-    const description = document.getElementById('description').value;
-    const assignedTo = document.getElementById('AssignedTo').value;
-    const dueDate = document.getElementById('gebdat').value;
-    const priority = getPriority();
-    const category = document.getElementById('dropdownContent').value;
-    const status = "toDoContainer";
-    if (!title.trim()) {
-        return;
-    }
-    if (!dueDate.trim()) {
-        return;
-    }
-    if (!category.trim()) {
-        return;
-    }
-    const subtasks = Array.from(document.querySelectorAll('#subtaskList li')).map(li => ({
-        name: li.textContent.trim(),
-        completed: false
-    })).filter(subtask => subtask.name !== '');
-
-    const assignedContacts = selectedContacts.map(contact => ({
-        name: contact.name,
-        color: contact.color
-    }));
-    const taskData = {
-        title: title,
-        description: description,
-        assignedTo: assignedTo,
-        dueDate: dueDate,
-        priority: priority,
-        category: category,
-        subtasks: subtasks,
-        assignedContacts: assignedContacts,
-        status: status
-    };
-    try {
-        // Weiter mit dem Speichern des Tasks
-        await putData("tasks", taskData);
-        console.log('Task created successfully.');
-        const img = document.createElement('img');
-        img.src = './img/Added to back log V1.png';
-        img.id = 'addedToBacklogImg';
-        document.body.appendChild(img);
-        img.offsetHeight;
-        img.style.bottom = '50%';
-        setTimeout(() => {
-            window.location.href = 'board.html';
-        }, 2000); 
-    } catch (error) {
-        console.error('Error creating task: ', error);
-    }
-}
-
-/**
- * Function to get priority based on button color.
- * 
- * Determines the priority of the task based on the color of priority buttons.
- * @returns {string} - Priority of the task ('urgent', 'medium', 'low').
- */
-function getPriority() {
-    const redButton = document.getElementById('redButton');
-    const orangeButton = document.getElementById('orangeButton');
-    const greenButton = document.getElementById('greenButton');
-
-    if (redButton.style.backgroundColor === 'red') {
-        return 'urgent';
-    } else if (orangeButton.style.backgroundColor === 'orange') {
-        return 'medium';
-    } else if (greenButton.style.backgroundColor === 'rgb(8, 249, 0)') {
-        return 'low';
-    } else {
-        return '';
-    }
-}
-
-/**
- * Function to send PUT request to API endpoint.
- * 
- * Sends a PUT request to the specified API endpoint with provided data.
- * @param {string} path - The path to the API endpoint.
- * @param {object} data - The data to be sent in the request body.
- * @returns {Promise<object>} - The response data from the API.
- */
-async function putData(path = "", data = {}) {
-    try {
-        const response = await fetch(BASE_URL + path + ".json", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(data)
-        });
-        const responseAsJson = await response.json();
-        console.log(responseAsJson);
-        return responseAsJson;
-    } catch (error) {
-        console.error('Error putting data: ', error);
-        throw error;
-    }
-}
-
-/**
- * Function to clear task inputs.
- * 
- * Reloads the current page to clear all task input fields.
- */
-function clearTask() {
-    location.reload();
-}
-
-/**
- * Function to change priority button styles.
- * 
- * Resets all priority buttons to their default styles and updates the clicked button's style.
- * @param {string} color - The color of the clicked priority button ('red', 'orange', 'green').
- */
-
-function changePriority(color) {
-    resetButtons();
-    if (color === 'red') {
-        ifColorRed();
-    } else if (color === 'orange') {
-        ifColorOrange();
-    } else if (color === 'green') {
-        ifColorGreen();
-    }
-}
-
-/**
- * Function to update styles for red priority button.
- * 
- * Updates the style of the red priority button to indicate selection.
- */
-function ifColorRed() {
-    let redButton = document.getElementById('redButton');
-    redButton.style.backgroundColor = "red";
-    redButton.style.color = "white";
-    redButton.querySelector("img").src = "./img/angles-up-solid-2.svg";
-}
-
-/**
- * Function to update styles for orange priority button.
- * 
- * Updates the style of the orange priority button to indicate selection.
- */
-function ifColorOrange() {
-    let orangeButton = document.getElementById('orangeButton');
-    orangeButton.style.backgroundColor = "orange";
-    orangeButton.style.color = "white";
-    orangeButton.querySelector("img").src = "./img/grip-lines-solid-2.svg";
-}
-
-/**
- * Function to update styles for green priority button.
- * 
- * Updates the style of the green priority button to indicate selection.
- */
-function ifColorGreen() {
-    let greenButton = document.getElementById('greenButton');
-    greenButton.style.backgroundColor = "rgb(8,249,0)";
-    greenButton.style.color = "white";
-    greenButton.querySelector("img").src = "./img/angles-down-solid-2.svg";
-}
-
-/**
- * Function to reset all priority buttons to default style.
- * 
- * Resets the style of all priority buttons to their default states.
- */
-function resetButtons() {
-    resetRedButton();
-    resetOrangeButton();
-    resetGreenButton();
-}
-
-/**
- * Function to reset red priority button style.
- * 
- * Resets the style of the red priority button to its default state.
- */
-function resetRedButton() {
-    let redButton = document.getElementById('redButton');
-    redButton.style.backgroundColor = "";
-    redButton.style.color = "black";
-    redButton.querySelector("img").src = "./img/angles-up-solid.svg";
-}
-
-/**
- * Function to reset orange priority button style.
- * 
- * Resets the style of the orange priority button to its default state.
- */
-function resetOrangeButton() {
-    let orangeButton = document.getElementById('orangeButton');
-    orangeButton.style.backgroundColor = "";
-    orangeButton.style.color = "black";
-    orangeButton.querySelector("img").src = "./img/grip-lines-solid.svg";
-}
-
-/**
- * Function to reset green priority button style.
- * 
- * Resets the style of the green priority button to its default state.
- */
-
-function resetGreenButton() {
-    let greenButton = document.getElementById('greenButton');
-    greenButton.style.backgroundColor = "";
-    greenButton.style.color = "black";
-    greenButton.querySelector("img").src = "./img/angles-down-solid.svg";
-}
-
-/**
- * Function to handle adding a subtask.
- * 
- * Adds a new subtask to the subtask list with a delete button.
- * @param {string} subtask - The text content of the new subtask.
- */
-document.addEventListener("DOMContentLoaded", function() {
-    const addButton = document.querySelector('.inputWithButton');
-
-    addButton.addEventListener('click', function() {
-        const inputField = document.getElementById('Subtasks');
-        const subtaskValue = inputField.value.trim();
-        
-        if (subtaskValue !== '') {
-            addSubtask(subtaskValue);
-            inputField.value = '';
-        }
-    });
-});
-
-/**
- * Function to add a new subtask to the list.
- * 
- * Creates a new list item with the provided subtask text and delete button.
- */
-function addSubtask(subtask) {
-    const subtaskList = document.getElementById('subtaskList');
-    const newSubtask = document.createElement('li');
-
-    newSubtask.innerHTML = `
-        <div style="display: flex; justify-content: space-between;">
-            <div>${subtask}</div>
-            <div>
-                <img src="./img/delete.png" style="margin-right: 5px; height: 12px;">
-            </div>
-        </div>
-    `;
-
-    subtaskList.appendChild(newSubtask);
-}
-
-/**
- * Function to replace the add button with input and vector images.
- * 
- * Replaces the add button with input field and vector images for adding subtasks.
- */
-function replaceAddButton() {
-    const inputWithButtonContainer = document.getElementById('inputWithButtonContainer');
-    inputWithButtonContainer.innerHTML = `
-        <input placeholder="Add new subtask" type="text" id="Subtasks" name="Subtasks" class="inputWithButton">
-        <img class="vectorImg1" src="./img/VectorBlack.png" onclick="clearSubtasks()">
-        <div class="divider"></div>
-        <img class="vectorImg2" src="./img/Vector 17.png" onclick="addSubtaskToList()">
-    `;
-}
-
-/**
- * Function to add a new subtask to the list and clear input.
- * 
- * Adds the new subtask to the list and clears the input field for subtasks.
- */
-function addSubtaskToList() {
-    const inputField = document.getElementById('Subtasks');
-    const subtaskValue = inputField.value.trim();
-    
-    if (subtaskValue !== '') {
-        addSubtask(subtaskValue);
-        clearSubtasks();
-    }
-}
-
-/**
- * Function to clear the input field for subtasks.
- * 
- * Clears the input field for entering subtasks.
- */
-function clearSubtasks() {
-    const inputField = document.getElementById('Subtasks');
-    inputField.value = '';
-    chanceButton();
-}
-
-/**
- * Function to change the add button for subtasks.
- * 
- * Replaces the input field and vector images with the add button.
- */
-
-function chanceButton() {
-    const inputWithButtonContainer = document.getElementById('inputWithButtonContainer');
-    inputWithButtonContainer.innerHTML = `
-        <input onclick="replaceAddButton()" placeholder="Add new subtask" type="text" id="Subtasks" name="Subtasks" class="inputWithButton">
-        <img class="addButtonSubtask" id="addBlack" src="./img/addBlack.png" onclick="replaceAddButton()">
-    `;
-}
-
-/**
- * Function to filter tasks based on search input.
- * 
- * Filters tasks displayed on the page based on the search input value.
- */
-function filterTasks() {
-    const searchInput = document.getElementById('searchInput').value.toLowerCase();
-    const taskContainers = document.querySelectorAll('.createTasksContainer');
-
-    taskContainers.forEach(taskContainer => {
-        const taskTitle = taskContainer.querySelector('.createTaskTitle').textContent.toLowerCase();
-        const taskDescription = taskContainer.querySelector('.createTaskDescription').textContent.toLowerCase();
-
-        if (taskTitle.includes(searchInput) || taskDescription.includes(searchInput)) {
-            taskContainer.style.display = 'block';
-        } else {
-            taskContainer.style.display = 'none';
-        }
-    });
-}
-
-/**
- * Checks and updates the visibility of "No tasks..." messages in various container elements.
- * 
- * The function iterates over a list of container elements and their associated "No tasks..." messages.
- * If a container is empty, the corresponding "No tasks..." message is displayed. If the container contains tasks,
- * the message is hidden.
- */
-
-function checkAndToggleNoTasksMessages() {
-    const containers = [
-        { containerId: 'toDoContainer', noTasksId: 'noTasksToDo' },
-        { containerId: 'inProgressContainer', noTasksId: 'noInProgress' },
-        { containerId: 'awaitFeedbackContainer', noTasksId: 'noAwaitFeedback' },
-        { containerId: 'doneContainer', noTasksId: 'noDone' }
-    ];
-    containers.forEach(({ containerId, noTasksId }) => {
-        const container = document.getElementById(containerId);
-        const noTasksMessage = document.getElementById(noTasksId);
-        if (container && noTasksMessage) {
-            if (container.children.length === 0) {
-                noTasksMessage.style.display = 'block';
-            } else {
-                let hasTasks = false;
-                for (let i = 0; i < container.children.length; i++) {
-                    if (container.children[i].id !== noTasksId) {
-                        hasTasks = true;
-                        break;
-                    }
-                }
-                if (hasTasks) {
-                    noTasksMessage.style.display = 'none';
-                } else {
-                    noTasksMessage.style.display = 'block';
-                }
-            }
-        }
     });
 }
