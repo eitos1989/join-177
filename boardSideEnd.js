@@ -216,26 +216,6 @@ function resetGreenButton() {
 }
 
 /**
- * Function to handle adding a subtask.
- * 
- * Adds a new subtask to the subtask list with a delete button.
- * @param {string} subtask - The text content of the new subtask.
- */
-document.addEventListener("DOMContentLoaded", function() {
-    const addButton = document.querySelector('.inputWithButton');
-
-    addButton.addEventListener('click', function() {
-        const inputField = document.getElementById('Subtasks');
-        const subtaskValue = inputField.value.trim();
-        
-        if (subtaskValue !== '') {
-            addSubtask(subtaskValue);
-            inputField.value = '';
-        }
-    });
-});
-
-/**
  * Function to add a new subtask to the list.
  * 
  * Creates a new list item with the provided subtask text and delete button.

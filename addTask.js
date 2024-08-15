@@ -200,22 +200,6 @@ function displaySuccessImage() {
 }
 
 /**
- * Fetches data from the Firebase Realtime Database API.
- * @param {string} path - The path for the API endpoint.
- * @returns {Promise<Object>} - A promise resolving to the JSON response data.
- */
-async function getData(path = "") {
-    try {
-        const response = await fetch(BASE_URL + path + ".json");
-        const data = await response.json();
-        return data;
-    } catch (error) {
-        console.error('Error getting data: ', error);
-        throw error;
-    }
-}
-
-/**
  * Determines the priority of a task based on the selected button color.
  * @returns {string} - The priority ('urgent', 'medium', 'low') or an empty string.
  */
