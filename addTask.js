@@ -105,7 +105,7 @@ function resetGreenButton() {
  * Base URL for the Firebase Realtime Database API.
  * @constant {string}
  */
-const BASE_URL = "https://contact-storage-f1196-default-rtdb.europe-west1.firebasedatabase.app/";
+const BASE__URL = "https://contact-storage-f1196-default-rtdb.europe-west1.firebasedatabase.app/";
 
 /**
  * Sends a POST request to the Firebase Realtime Database API.
@@ -115,7 +115,7 @@ const BASE_URL = "https://contact-storage-f1196-default-rtdb.europe-west1.fireba
  */
 async function putData(path = "", data = {}) {
     try {
-        const response = await fetch(BASE_URL + path + ".json", {
+        const response = await fetch(BASE__URL + path + ".json", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -340,8 +340,6 @@ function clearTask() {
     resetRedButton();
 }
 
-const selectedContacts = [];
-
 /**
  * Toggles the visibility of the contact list in the UI.
  * Fetches contact data from the Firebase Realtime Database and generates HTML dynamically.
@@ -460,8 +458,6 @@ document.addEventListener('DOMContentLoaded', function() {
             event.preventDefault(); 
             createTask(); 
         });
-    } else {
-        console.error('Form element not found.');
-    }
+    } 
 });
 
